@@ -1,0 +1,196 @@
+/**
+ * General elements
+ */
+
+
+body {
+  color: #333;
+  overflow-y: scroll;
+}
+
+
+a {
+  color: #088D00;
+  text-decoration: none;
+}
+
+output {
+  color: #845D23;
+  margin-bottom: 15px;
+  padding: 15px;
+  width: 600px;
+  display: inline-block;
+}
+
+td,
+th {
+  padding: 8px;
+}
+
+
+/**
+ * Positioning
+ *
+ */
+ 
+ .z-normal {
+  position: static;
+  
+  z-index: 0;
+} 
+
+.z-over {
+  position: absolute;
+  z-index: 2;
+} 
+
+.z-under {
+  position: absolute;
+  z-index: -2;
+}
+
+.z-under-under {
+  position: absolute;
+  z-index: -4;
+}
+
+/**
+ * Layout of the main page elements 
+ */
+#wrapper {
+    margin: 0 auto;
+    margin-top: 25px;
+    padding: 0;
+    max-width: 960px;
+}
+
+#wrap-featured,
+#wrap-main,
+#wrap-triptych,
+#wrap-footer-col {
+    .clearfix();
+}
+
+
+/**
+ * Layout for header
+ */
+#header {
+  position: relative;
+}
+
+.sitetitle {
+  position: absolute;
+  top: @magicNumber / 3;
+  left: 130px;
+}
+
+.siteslogan {
+  position: absolute;
+  top: @magicNumber * 2;
+  left: 130px;
+  color: #666;
+}
+
+
+/**
+ * Layout for main
+ */
+#main {
+  min-height: 10em;
+}
+
+
+/**
+ * Layout for footer
+ */
+#footer {
+  margin-top: 40px;
+  border-top: 1px solid #ccc;
+  padding-top: 22px;
+}
+
+.sitefooter {
+  color: #666;
+}
+
+
+/**
+ * For articles
+ */
+.article1 {
+  
+  
+}
+
+.info {
+    border: 1px solid @grey;
+    padding: 7px;
+    border-radius: 5px;
+}
+
+.info2 {
+    padding: 7px;
+    border-radius: 3px;
+    background-color: @muteBlue;
+}
+
+.info2 a {
+  color: #FFF;
+  text-decoration: none;
+}
+
+
+
+.byline {
+  margin-top: @magicNumber * 2;
+  border-top: 1px dashed #ccc;
+  padding-top: @magicNumber;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.byline p {
+  margin-top: 0;
+}
+
+/**
+* Column layout
+*/
+
+#header,
+#navbar,
+#flash,
+#footer {
+    .column(@columns);
+    margin-bottom: @magicNumber;
+}
+ 
+#main {
+    .column(@columns / 3 * 2);
+    margin-bottom: @magicNumber;
+}
+ 
+#sidebar {
+    .column(@columns / 3);
+    margin-bottom: @magicNumber;
+}
+ 
+#featured-1,
+#featured-2,
+#featured-3,
+#triptych-1,
+#triptych-2,
+#triptych-3 {
+    .column(@columns / 3);
+    margin-bottom: @magicNumber;
+}
+
+ 
+#footer-col-1,
+#footer-col-2,
+#footer-col-3, 
+#footer-col-4 {
+    .column(@columns / 4);
+    margin-bottom: @magicNumber;
+}
