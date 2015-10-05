@@ -6,7 +6,7 @@ return [
     'username'        => "maje15",
     'password'        => 'vT1p4v"I',
     'driver_options'  => [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"],
-    'table_prefix'    => "test_",
+    'table_prefix'    => "wgtotw_",
 
     // Display details on what happens
     'verbose' => false,

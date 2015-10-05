@@ -33,14 +33,20 @@ $di->set('UsersController', function() use ($di) {
     return $controller;
 });
 
-$di->set('ContentBasicController', function() use ($di) {
-    $controller = new \Meax\Content\ContentBasicController();
+$di->set('IssuesController', function() use ($di) {
+    $controller = new \Meax\Content\IssuesController();
     $controller->setDI($di);
     return $controller;
 });
 
 $di->set('TagBasicController', function() use ($di) {
     $controller = new \Meax\Content\TagBasicController();
+    $controller->setDI($di);
+    return $controller;
+});
+
+$di->set('ContentTagController', function() use ($di) {
+    $controller = new \Meax\Content\ContentTagController();
     $controller->setDI($di);
     return $controller;
 });
@@ -121,7 +127,7 @@ $app->router->add('delete-comments', function() use ($app) {
 */
 $app->router->add('issues', function() use ($app) {
 		$app->dispatcher->forward([
-        'controller' => 'content-basic',
+        'controller' => 'issues',
         'action'     => 'list',
     ]);
 });
