@@ -24,6 +24,7 @@ public function initialize()
     
     $this->tags = new \Meax\Content\TagBasic();
     $this->tags->setDI($this->di);
+    
 }
 
 /**
@@ -82,6 +83,12 @@ public function idAction($id = null)
         'post' => $post,
         'tags' => $tags
     ], 'main');
+    
+    $this->di->dispatcher->forward([
+        'controller' => 'comments',
+        'action'     => 'view',
+        'params'     => [$id, 'show-form','comments'],
+    ]);
 
 }
 

@@ -12,14 +12,13 @@ require __DIR__.'/config_with_app.php';
 
 $app->theme->configure(ANAX_APP_PATH . 'config/theme-wgtotw.php');
 $app->navbar->configure(ANAX_APP_PATH . 'config/navbar_wgtotw.php');
-/*
 
 $di->set('CommentsController', function() use ($di) {
     $controller = new Phpmvc\Comment\CommentsController();
     $controller->setDI($di);
     return $controller;
 });
-*/
+
 $di->setShared('db', function() {
     $db = new \Mos\Database\CDatabaseBasic();
     $db->setOptions(require ANAX_APP_PATH . 'config/config_mysql.php');
