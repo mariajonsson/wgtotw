@@ -84,10 +84,12 @@ public function idAction($id = null)
         'tags' => $tags
     ], 'main');
     
+
+    
     $this->di->dispatcher->forward([
         'controller' => 'comments',
         'action'     => 'view',
-        'params'     => [$id, 'show-form','comments'],
+        'params'     => [$id, null,'comments'],
     ]);
 
 }

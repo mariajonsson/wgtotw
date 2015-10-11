@@ -1,4 +1,5 @@
 <h1><?=$title?></h1>
+
 <div class='content'>
 <?php if (is_array($content)) : ?>
 <?php foreach ($content as $id => $post) : ?>
@@ -6,7 +7,7 @@
 <?php $post = (is_object($post)) ? get_object_vars($post) : $post; ?> 
  
 <article class='content'>
-<h3><a href='id/<?=$id?>'><?=$post['title']?></a></h3>
+<p><a href='id/<?=$id?>'><?=$post['title']?></a></p>
 <p>Av <em><?=$post['acronym']?></em>, <?=$post['created']?></p>
 <p><?=$post['data']?></p>
 <p class='content-footer'>

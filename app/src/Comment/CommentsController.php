@@ -31,18 +31,16 @@ class CommentsController implements \Anax\DI\IInjectionAware
         $comments->setDI($this->di);
 
         $all = $comments->findAll($pagekey);
+        
+        $user = new \Anax\Users\User();
+        $user->setDI($this->di);
+        
+        $formvisibility = $user->isLoggedIn() == true ? 'show-form' : null;
                
         switch ($formvisibility) {
         
         case 'show-form':
-	    if (isset($_POST['form'])) {
-	      $url = 'comments/view/'.$pagekey.'/'.$formvisibility.'/'.$redirect;
-	      $this->response->redirect($url);
-	    }
-	    else {
-	      /*$this->di->theme->setTitle("Kommentarer");
-	      $this->di->views->add('comment/index');*/
-	    }
+	    
 	    $form = new \Anax\HTMLForm\CFormCommentAdd($pagekey, $redirect);
 	    $form->setDI($this->di);
 	    $form->check();
@@ -54,15 +52,10 @@ class CommentsController implements \Anax\DI\IInjectionAware
         break;
         	
         default:
-        	
-        	$this->views->add('comment/formhide', [
-        		'pagekey'   => $pagekey,
-        		'redirect'  => $redirect,
-        		
-        	]);
-        	
-
-        	break;
+        
+	  $this->di->views->addString('Logga in för att kommentera', 'main');
+         
+	break;
         }
 
         $this->views->add('comment/comments', [

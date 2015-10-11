@@ -1,4 +1,5 @@
 <h1><?=$title?></h1>
+<p><a href='issues/add'>Skriv fråga</a></p>
 <div class='content'>
 <?php if (is_array($content)) : ?>
 <?php foreach ($content as $id => $post) : ?>

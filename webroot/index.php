@@ -32,6 +32,12 @@ $di->set('UsersController', function() use ($di) {
     return $controller;
 });
 
+$di->set('UserLoginController', function() use ($di) {
+    $controller = new \Anax\Users\UserLoginController();
+    $controller->setDI($di);
+    return $controller;
+});
+
 $di->set('IssuesController', function() use ($di) {
     $controller = new \Meax\Content\IssuesController();
     $controller->setDI($di);
@@ -87,6 +93,14 @@ $app->router->add('users', function() use ($app) {
     $app->dispatcher->forward([
     'controller' => 'users',
     'action'     => 'list',
+    ]);
+});
+
+$app->router->add('login', function() use ($app) {
+
+    $app->dispatcher->forward([
+    'controller' => 'user-login',
+    'action'     => 'show-login',
     ]);
 });
 
