@@ -18,7 +18,7 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
      * Constructor
      *
      */
-    public function __construct($pagekey, $redirect)
+    public function __construct($pagekey, $redirect, $acronym)
     {
         parent::__construct([], [
         	
@@ -30,25 +30,13 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
             ],
             
             'name' => [
-                'type'        => 'text',
-                'label'       => 'Namn',
+                'type'        => 'hidden',
+                'value'       => $acronym,
                 'required'    => true,
                 'validation'  => ['not_empty'],
             ],
             
-            'mail' => [
-                'type'        => 'text',
-                'label'       => 'E-post',
-                'required'    => true,
-                'validation'  => ['not_empty', 'email_adress'],
-            ],
-            
-            'web' => [
-            	'type'        => 'text',
-            	'label'       => 'Hemsida',
-            	//'validation'  => ['web_adress'],
-            ],  
-            
+         
             'submit' => [
                 'type'      => 'submit',
                 'callback'  => [$this, 'callbackSubmit'],
@@ -92,7 +80,7 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
         
 	$this->newcomment = new \Anax\Comments\Comments();
         $this->newcomment->setDI($this->di);
-        $saved = $this->newcomment->save(array('content' => $this->Value('content'), 'mail' => $this->Value('mail'), 'name' => $this->Value('name'), 'pagekey' => $this->pagekey, 'timestamp' => $now, 'ip' => $this->di->request->getServer('REMOTE_ADDR'), 'web' => $this->Value('web'), 'gravatar' => 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Value('mail')))) . '.jpg'));
+        $saved = $this->newcomment->save(array('content' => $this->Value('content'), 'mail' => $this->Value('mail'), 'name' => $this->Value('name'), 'pagekey' => $this->pagekey, 'timestamp' => $now));
     
        // $this->saveInSession = true;
         

@@ -8,7 +8,8 @@
  
 <article class='content'>
 <p><a href='id/<?=$id?>'><?=$post['title']?></a></p>
-<p>Av <em><?=$post['acronym']?></em>, <?=$post['created']?></p>
+<?php $userid = $user->getIdForAcronym($post['acronym'])?>
+<p>Av <em><a href='<?=$this->url->create('users/id/'.$userid)?>'><?=$post['acronym']?></a></em>, <?=$post['created']?></p>
 <p><?=$post['data']?></p>
 <p class='content-footer'>
 <?php if (!empty($post['published'])) : ?>

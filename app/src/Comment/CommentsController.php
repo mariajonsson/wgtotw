@@ -19,6 +19,8 @@ class CommentsController implements \Anax\DI\IInjectionAware
      */
     public function viewAction($pagekey = null, $formvisibility = null, $redirect='')
     {
+    
+	$this->db->setVerbose(false);
     	$undourl = '<p><a href="'.$this->di->get('url')->create($redirect).'">Ångra</p>';
     	
     	$form1 = new \Anax\HTMLForm\CFormCommentUndo($redirect);
@@ -35,13 +37,15 @@ class CommentsController implements \Anax\DI\IInjectionAware
         $user = new \Anax\Users\User();
         $user->setDI($this->di);
         
+        $acronym = $user->getLoggedInUser();
+        
         $formvisibility = $user->isLoggedIn() == true ? 'show-form' : null;
                
         switch ($formvisibility) {
         
         case 'show-form':
 	    
-	    $form = new \Anax\HTMLForm\CFormCommentAdd($pagekey, $redirect);
+	    $form = new \Anax\HTMLForm\CFormCommentAdd($pagekey, $redirect, $acronym);
 	    $form->setDI($this->di);
 	    $form->check();
 	    
@@ -63,6 +67,7 @@ class CommentsController implements \Anax\DI\IInjectionAware
             'pagekey'   => $pagekey,
             'redirect'  => $redirect,
             'controller' => $controller,
+            'user' => $user,
         ]);
     }
         

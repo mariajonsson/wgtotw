@@ -27,6 +27,7 @@ för att återställa användaren eller för att radera användaren permanent.
 
 <h4><i class="<?=$faclass?>"></i> <?=$user->getProperties()['acronym']?> 
 (id <?=$user->getProperties()['id']?>)</h4>
+<p><img src='<?=$user->getProperties()['gravatar']?>?s=50'></p>
 <p><em>Namn: <?=$user->getProperties()['name']?></em>
 <br><?=$user->getProperties()['email']?></p>
 <p><?=$status?> <?=$date?>

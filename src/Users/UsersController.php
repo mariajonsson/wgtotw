@@ -18,6 +18,8 @@ public function initialize()
 {
     $this->users = new \Anax\Users\User();
     $this->users->setDI($this->di);
+    
+
 }
 
 /**
@@ -48,12 +50,21 @@ public function listAction()
 public function idAction($id = null)
 {
     $user = $this->users->find($id);
+    $acronym = $this->users->getAcronym($id);
+    
  
     $this->theme->setTitle("Användare");
     $this->views->add('users/view', [
         'user' => $user,
     ], 'main');
     $this->views->add('users/adminmenu', [], 'sidebar');
+    
+    
+    $this->dispatcher->forward([
+        'controller' => 'issues',
+        'action'     => 'list-by-user',
+        'params'     => [$acronym],
+    ]);
 }
 
 /**
@@ -309,12 +320,13 @@ public function resetUsersAction()
             'updated' => ['datetime'],
             'deleted' => ['datetime'],
             'active' => ['datetime'],
+            'gravatar' => ['varchar(255)'],
         ]
     )->execute();
     
     $this->db->insert(
         'user',
-        ['acronym', 'email', 'name', 'password', 'created', 'active']
+        ['acronym', 'email', 'name', 'password', 'created', 'active', 'gravatar']
     );
  
     $now = date('Y-m-d H:i:s');
@@ -325,7 +337,8 @@ public function resetUsersAction()
         'Administrator',
         password_hash('admin', PASSWORD_DEFAULT),
         $now,
-        $now
+        $now,
+        'http://www.gravatar.com/avatar/' . md5(strtolower(trim('admin@dbwebb.se'))) . '.jpg'
     ]);
  
     $this->db->execute([
@@ -334,7 +347,8 @@ public function resetUsersAction()
         'John/Jane Doe',
         password_hash('doe', PASSWORD_DEFAULT),
         $now,
-        $now
+        $now,
+        'http://www.gravatar.com/avatar/' . md5(strtolower(trim('doe@dbwebb.se'))) . '.jpg'
      ]);
      
          $this->db->execute([
@@ -343,7 +357,8 @@ public function resetUsersAction()
         'Maria',
         password_hash('maria', PASSWORD_DEFAULT),
         $now,
-        null
+        null,
+        'http://www.gravatar.com/avatar/' . md5(strtolower(trim('choklad@post.utfors.se'))) . '.jpg'
      ]);
      
      $this->dispatcher->forward([

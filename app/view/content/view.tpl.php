@@ -1,7 +1,8 @@
 <article>
 
 <h4><?=$post->getProperties()['title']?></h4>
-<p>Av <?=$post->getProperties()['acronym']?></p>
+<?php $userid = $user->getIdForAcronym($post['acronym'])?>
+<p>Av <a href='<?=$this->url->create('users/id/'.$userid)?>'><?=$post->getProperties()['acronym']?></a></p>
 <p><?=$post->getProperties()['data']?></p>
 
 <p>Skapad <?=$post->getProperties()['created']?>

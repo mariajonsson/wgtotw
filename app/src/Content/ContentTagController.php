@@ -300,7 +300,7 @@ public function discardedAction()
 public function setupContentAction()
 {
 
-    $this->db->setVerbose();
+    //$this->db->setVerbose();
  
     $this->db->dropTableIfExists('contenttag')->execute();
  

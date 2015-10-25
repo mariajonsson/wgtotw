@@ -10,10 +10,14 @@
  
 <div class='comment'>
 <div class='comment-id'>
-<a href='<?=$this->url->create($controller .'/edit/'.$pagekey.'/'.$id.'/'.$redirect)?>'>#<?=$id?></a> <img src='<?=$comment['gravatar']?>?s=40' alt='gravatar'>
+<a href='<?=$this->url->create($controller .'/edit/'.$pagekey.'/'.$id.'/'.$redirect)?>'>#<?=$id?></a>
+
+<?php $gravatar = $user->getGravatarForAcronym($comment['name'])?>
+<img src='<?=$gravatar?>?s=40' alt='gravatar'>
 </div>
 <div class='comment-content'>
-<p class='comment-header'><a href='mailto:<?=$comment['mail']?>' class='comment-name'><?=$comment['name']?></a> skrev för 
+<?php $userid = $user->getIdForAcronym($comment['name'])?>
+<p class='comment-header'><a href='<?=$this->url->create('users/id/'.$userid)?>' class='comment-name'><?=$comment['name']?></a> skrev för 
 <?php $elapsedsec = (time()-strtotime($comment['timestamp'])); ?>
 <?php if (($elapsedsec) < 60): ?>
 <?=round($elapsedsec)?> s sedan

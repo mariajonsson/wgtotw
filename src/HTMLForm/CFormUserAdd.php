@@ -3,13 +3,14 @@
 namespace Anax\HTMLForm;
 
 /**
- * Form to add comment
+ * Anax base class for wrapping sessions.
  *
  */
-class CFormLogin extends \Mos\HTMLForm\CForm
+class CFormUserAdd extends \Mos\HTMLForm\CForm
 {
     use \Anax\DI\TInjectionaware,
         \Anax\MVC\TRedirectHelpers;
+
 
 
     /**
@@ -19,21 +20,31 @@ class CFormLogin extends \Mos\HTMLForm\CForm
     public function __construct()
     {
         parent::__construct([], [
-         
             'acronym' => [
                 'type'        => 'text',
-                'label'       => 'Användarnam',
+                'label'       => 'Akronym',
                 'required'    => true,
                 'validation'  => ['not_empty'],
+            ],
+            'name' => [
+                'type'        => 'text',
+                'label'       => 'Namn',
+                'required'    => true,
+                'validation'  => ['not_empty'],
+            ],
+            'email' => [
+                'type'        => 'text',
+                'label'       => 'E-post',
+                'required'    => true,
+                'validation'  => ['not_empty', 'email_adress'],
             ],
             
-            'password' => [
-                'type'        => 'password',
-                'label'       => 'Lösenord',
-                'required'    => true,
-                'validation'  => ['not_empty'],
-            ],
-          
+            'active' => [
+            	'type'        => 'checkbox',
+            	'label'       => 'Aktivera',
+            	'checked'     => false,
+            ],  
+            
             'submit' => [
                 'type'      => 'submit',
                 'callback'  => [$this, 'callbackSubmit'],
@@ -41,9 +52,6 @@ class CFormLogin extends \Mos\HTMLForm\CForm
             ],
             
         ]);
-        
-        
-
     }
 
 
@@ -67,25 +75,21 @@ class CFormLogin extends \Mos\HTMLForm\CForm
      */
     public function callbackSubmit()
     {
-    
-    $this->users = new \Anax\Users\User();
-    $this->users->setDI($this->di);
-    
-    $acronym = $this->Value('acronym');
-    
-    $this->verified = $this->users->verify($acronym, $this->Value('password'));
-    $user = $this->verified[0];
-    
-       
-    if(null !== $user->getProperties('acronym')) {
-    
-      $userdata = array();
-      $userdata = $user->getProperties();
-      $this->di->session->set('user', $userdata);
+    	
+        $now = gmdate('Y-m-d H:i:s');
+        $active = !empty($_POST['active'])?$now:null;
 
-      return true;
-      }
-      else return false;
+	$this->newuser = new \Anax\Users\User();
+        $this->newuser->setDI($this->di);
+        $saved = $this->newuser->save(array('acronym' => $this->Value('acronym'), 'email' => $this->Value('email'), 'name' => $this->Value('name'), 'password' => password_hash($this->Value('acronym'), PASSWORD_DEFAULT), 'created' => $now, 'updated' => $now, 'deleted' => null, 'active' => $active), 'gravatar' => 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Value('email')))) . '.jpg'));
+    
+       // $this->saveInSession = true;
+        
+        if($saved) 
+        {
+        return true;
+        }
+        else return false;
     }
 
 
@@ -96,7 +100,7 @@ class CFormLogin extends \Mos\HTMLForm\CForm
      */
     public function callbackSubmitFail()
     {
-       $this->AddOutput("<p><i>DoSubmitFail(): Form was submitted but I failed to process/save/validate it</i></p>");
+        $this->AddOutput("<p><i>DoSubmitFail(): Form was submitted but I failed to process/save/validate it</i></p>");
         return false;
     }
 
@@ -108,8 +112,7 @@ class CFormLogin extends \Mos\HTMLForm\CForm
      */
     public function callbackSuccess()
     {
-    $this->AddOutput("<p><i>Du har loggats in.</i></p>");
-      $this->redirectTo('user-login/show-login');
+         $this->redirectTo('users/id/' . $this->newuser->getProperties()['id']);
     }
 
 
@@ -120,6 +123,6 @@ class CFormLogin extends \Mos\HTMLForm\CForm
     public function callbackFail()
     {
         $this->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
-        $this->redirectTo('user-login/show-login');
+        $this->redirectTo();
     }
 }

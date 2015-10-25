@@ -25,6 +25,9 @@ public function initialize()
     $this->tags = new \Meax\Content\TagBasic();
     $this->tags->setDI($this->di);
     
+    $this->user = new \Anax\Users\User();
+    $this->user->setDI($this->di);
+    
 }
 
 /**
@@ -40,6 +43,7 @@ public function listAction()
     $this->theme->setTitle("Content");
     $this->views->add('contenttags/list-all', [
         'content' => $all,
+        'user' => $this->user,
         'title' => "All content",
     ], 'main');
 
@@ -47,7 +51,7 @@ public function listAction()
 
 
 /**
- * List all content.
+ * List content by tag.
  *
  * @return void
  */
@@ -59,7 +63,29 @@ public function listByTagAction($tagid)
     $this->theme->setTitle("Content");
     $this->views->add('content/list-all', [
         'content' => $all,
+        'user' => $this->user,
         'title' => "All content",
+    ], 'main');
+
+}
+
+/**
+ * List content from a user.
+ *
+ * @return void
+ */
+public function listByUserAction($acronym)
+{
+ 
+    $all = $this->content->query()
+        ->where('acronym = ?')
+        ->execute([$acronym]);
+    
+    $this->theme->setTitle("Content");
+    $this->views->add('content/list-all', [
+        'content' => $all,
+        'user' => $this->user,
+        'title' => "Frågor",
     ], 'main');
 
 }
@@ -103,10 +129,12 @@ public function idAction($id = null)
 public function addAction()
 {
 
+    $acronym = $this->user->getLoggedInUser();
+
     $this->di->theme->setTitle("Add content");
     $this->di->views->add('content/add', [
         'title' => "Add content",
-             
+        'user' => $acronym,
         ], 'main');
 
 }
@@ -123,9 +151,10 @@ public function postFormAction()
     
     $now = date('Y-m-d H:i:s');
     $saved = false;
+    
     if (!empty($_POST['submit-add'])) {
-    $published = !empty($_POST['published'])?$now:null;
-    $saved = $this->content->save(array('title' => $_POST['title'], 'url' => $_POST['url'], 'slug' => $_POST['slug'], 'acronym' => $_POST['acronym'], 'created' => $now, 'data' => $_POST['data'], 'filter' => $_POST['filter'], 'type' => $_POST['type'], 'published' => $published));
+      $published = !empty($_POST['published'])?$now:null;
+      $saved = $this->content->save(array('title' => $_POST['title'], 'slug' => $_POST['slug'], 'acronym' => $_POST['acronym'], 'created' => $now, 'data' => $_POST['data'], 'published' => $published));
     }
     else if (!empty($_POST['submit-edit'])) {
         if ($_POST['publisheddate'] == null && !empty($_POST['published'])) {
@@ -139,7 +168,7 @@ public function postFormAction()
         $published = $_POST['publisheddate'];
         }
         
-    $saved = $this->content->save(array('id' => $_POST['id'], 'title' => $_POST['title'], 'url' => $_POST['url'], 'slug' => $_POST['slug'], 'acronym' => $_POST['acronym'], 'created' => $now, 'data' => $_POST['data'], 'filter' => $_POST['filter'], 'type' => $_POST['type'], 'published' => $published));
+    $saved = $this->content->save(array('id' => $_POST['id'], 'title' => $_POST['title'], 'slug' => $_POST['slug'], 'acronym' => $_POST['acronym'], 'created' => $now, 'data' => $_POST['data'],  'published' => $published));
     }
     
     if ($saved) {
@@ -340,7 +369,7 @@ public function discardedAction()
 public function setupContentAction()
 {
 
-    $this->db->setVerbose();
+    //$this->db->setVerbose();
  
     $this->db->dropTableIfExists('issues')->execute();
  
