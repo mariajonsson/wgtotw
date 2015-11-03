@@ -102,23 +102,37 @@ public function idAction($id = null)
 {
     $post = $this->content->find($id);
     $tags = $this->contenttags->findTagsByPost($id, 'tagbasic', 'issues');
- 
+    
+   
     $this->theme->setTitle("Content");
     $this->views->add('contenttags/view', [
         'controller' => 'issues',
         'post' => $post,
-        'tags' => $tags
+        'tags' => $tags,
+        'user' => $this->user,
     ], 'main');
     
-
     
     $this->di->dispatcher->forward([
         'controller' => 'comments',
         'action'     => 'view',
-        'params'     => [$id, null,'comments'],
+        'params'     => [$id, null,'issues/id/'.$id, 'issues'],
+    ]);
+    
+    $this->di->dispatcher->forward([
+        'controller' => 'answer',
+        'action'     => 'view',
+        'params'     => [$id, null,'issues/id/'.$id],
     ]);
 
 }
+
+    public function getFormId() 
+    {
+      $formid = $this->di->request->getPost('formid');
+      return $formid;
+    }
+
 
 /**
  * Add new content.

@@ -3,21 +3,19 @@
 namespace Anax\Comments;
  
 /**
- * Model for Comments.
+ * Model for Answers.
  *
  */
-class Comments extends \Anax\MVC\CDatabaseModel
+class Answer extends \Anax\MVC\CDatabaseModel
 {
 
-	
-	public function findAll($pagekey=null,$pagetype=null)
+  public function findAll($pagekey=null)
 	{
 	
-	if (isset($pagekey) && isset($pagetype)) {
+	if (isset($pagekey)) {
 		$all = $this->query()
         ->where('pagekey = ?')
-        ->andWhere('pagetype = ?')
-        ->execute([$pagekey, $pagetype]);
+        ->execute([$pagekey]);
         
         return $all;
 	}
@@ -27,7 +25,8 @@ class Comments extends \Anax\MVC\CDatabaseModel
     }
     }
 
-    public function findComment($pagekey=null, $id)
+
+    public function findAnswer($pagekey=null, $id)
     {
     if (isset($pagekey) && isset($id)) {
 		$all = $this->query()

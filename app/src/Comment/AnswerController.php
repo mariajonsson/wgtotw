@@ -6,7 +6,7 @@ namespace Phpmvc\Comment;
  * To attach comments-flow to a page or some content.
  *
  */
-class CommentsController implements \Anax\DI\IInjectionAware
+class AnswerController implements \Anax\DI\IInjectionAware
 {
     use \Anax\DI\TInjectable;
 
@@ -17,57 +17,76 @@ class CommentsController implements \Anax\DI\IInjectionAware
      *
      * @return void
      */
-    public function viewAction($pagekey = null, $formvisibility = null, $redirect='', $pagetype = null, $formid = null)
+    public function viewAction($pagekey = null, $formvisibility = null, $redirect='')
     {
-
-	$controller = 'comments';
+    
+    	
+        $answer = new \Anax\Comments\Answer();
+        $controller = 'answer';
+        $answer->setDI($this->di);
         
         $comments = new \Anax\Comments\Comments();
         $comments->setDI($this->di);
-        $all = $comments->findAll($pagekey, $pagetype);
+
+        $all = $answer->findAll($pagekey);
         
         $user = new \Anax\Users\User();
         $user->setDI($this->di);
+        
         $acronym = $user->getLoggedInUser();
-
+        
         /*
-        if ($formvisibility==null) {
-        $postformvisibility = $this->getFormVisibility();
-        $postformid = $this->getFormId();
-        }
-          */   
         if ($user->isLoggedIn()) {
         
-	  if ($formvisibility == 'show-form' && $formid == $this->getFormId()) {
-	  
-	    //$this->response->redirect($this->url->create('comments/add-comment')); 
-	    //$this->redirectTo('comments/add-comment/'.$pagekey.'/'.$redirect.'/'.$acronym.'/'.$pagetype.'/'.$formid);
-        
-	    $this->di->dispatcher->forward([
-	    'controller' => 'comments',
-	    'action'     => 'show-form',
-	    'params'     => [$pagekey, $redirect, $acronym, $pagetype, $formid],
-	    ]);
-	  }
+	 if ($this->getFormVisibility() == 'show-form' && $this->getFormId() == 'answer') {
+        */
+	    $this->showFormAction($pagekey, $redirect, $acronym);
+	 /* }
 	  
 	  else {
-	   $this->showHideForm($pagekey, $redirect, $formid);
+	   $this->showHideForm($pagekey, $redirect);
 	  }
         }
         
         else {
 	  $this->hideForm();
-        }
-
-        $this->views->add('comment/comments', [
-            'comments' => $all,
-            'pagekey'   => $pagekey,
-            'redirect'  => $redirect,
-            'controller' => $controller,
-            'user' => $user,
-        ]);
-    }
+        }*/
+        
+       	$postformid = $this->getFormId();
        
+
+ 
+        foreach ($all as $answer) {
+        
+	  $id = $answer->getProperties()['id'];
+	  $commentformvisibility = null;
+	  
+	  if ($postformid == $id) {
+	    $commentformvisibility = 'show-form';
+	  }
+
+
+	  $this->views->add('comment/answer', [
+	      'id' => $id,
+	      'answer' => $answer,
+	      'pagekey'   => $pagekey,
+	      'redirect'  => $redirect,
+	      'controller' => $controller,
+	      'user' => $user,
+	  ]);
+	  
+	  $this->di->dispatcher->forward([
+	  'controller' => 'comments',
+	  'action'     => 'view',
+	  'params'     => [$id, $commentformvisibility,'issues/id/'.$pagekey, 'answer', $id],
+	  ]);
+
+        
+        }
+        
+    }
+        
+        
     public function getFormVisibility() 
     {
 	$formvisibility = $this->di->request->getPost('form');
@@ -82,20 +101,17 @@ class CommentsController implements \Anax\DI\IInjectionAware
     }  
 
         
-    public function showFormAction($pagekey, $redirect, $acronym, $pagetype, $formid) 
+    public function showFormAction($pagekey, $redirect, $acronym) 
     {
-	$undourl = '<p><a href="'.$this->di->get('url')->create($redirect).'">Ångra</p>';    
-	$form = new \Anax\HTMLForm\CFormCommentAdd($pagekey, $redirect, $acronym, $pagetype, $formid);
-	$form->setDI($this->di);
-	$form->check();
-	
-	$this->di->views->add('wgtotw/plain', [
-	'content' => $form->getHTML().$undourl, 
-	], 'main');
+	$aform = new \Anax\HTMLForm\CFormAnswerAdd($pagekey, $redirect, $acronym);
+	    $aform->setDI($this->di);
+	    $aform->check();
+	    
+	    $this->di->views->add('wgtotw/plain', [
+	       'content' => $aform->getHTML(), 
+	    ], 'main');
         
     }
-    
-
     
     public function hideForm() 
     {
@@ -103,14 +119,15 @@ class CommentsController implements \Anax\DI\IInjectionAware
       $this->di->views->addString('Logga in för att kommentera', 'main');
     }
 
-    public function showHideForm($pagekey, $redirect, $formid) 
+    public function showHideForm($pagekey, $redirect, $formid = 'answer') 
     {
-	$this->di->views->add('comment/formhide', [
+	$this->di->views->add('comment/answerformhide', [
 	'redirect' => $redirect,
 	'pagekey' => $pagekey,
 	'formid' => $formid,
 	], 'main');
     }
+
     
     /**
     *
@@ -150,52 +167,52 @@ class CommentsController implements \Anax\DI\IInjectionAware
         
     }
     
-    public function setupCommentAction() 
+    public function setupAnswerAction() 
     {
       //$this->di->db->setVerbose();
  
-      $this->di->db->dropTableIfExists('comments')->execute();
+      $this->di->db->dropTableIfExists('answer')->execute();
   
       $this->di->db->createTable(
-	  'comments',
+	  'answer',
 	  [
 	      'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
 	      'content' => ['text', 'not null'],
 	      'name'    => ['varchar(80)'],
-	      'pagekey' => ['integer'],
-	      'pagetype' => ['varchar(80)'],
+	      'pagekey' => ['varchar(80)'],
 	      'timestamp' => ['datetime'],
 	      'updated' => ['datetime'],
-	      'ip'      => ['varchar(80)']
+	      'ip'      => ['varchar(80)'],
+	      'web'     => ['varchar(200)']
 	      
 	  ]
       )->execute();
       
       $this->di->db->insert(
-	  'comments',
-	  ['content', 'name', 'pagekey', 'pagetype', 'timestamp', 'updated', 'ip']
+	  'answer',
+	  ['content', 'name', 'pagekey', 'timestamp', 'updated', 'ip', 'web']
       );
   
       $now = date('Y-m-d H:i:s');
   
       $this->di->db->execute([
-	  'En första kommentar',
+	  'Jag har ett svar',
 	  'admin',
 	  '1',
-	  'issues',
 	  $now,
 	  null,
-	  $this->di->request->getServer('REMOTE_ADDR')
+	  $this->di->request->getServer('REMOTE_ADDR'),
+	  null
       ]);
       
 	  $this->di->db->execute([
-	  'Hej!',
+	  'Ett svar som inte är ett svar',
 	  'maria',
 	  '2',
-	  'answer',
 	  $now,
 	  null,
-	  $this->di->request->getServer('REMOTE_ADDR')
+	  $this->di->request->getServer('REMOTE_ADDR'),
+	  null
       ]);
       
 	  $this->di->theme->setTitle("Kommentarer");

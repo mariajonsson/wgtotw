@@ -290,6 +290,9 @@ mark {
   color: #333;
   background-color: #eee;
 }
+.subtitle {
+  margin-top: -12px;
+}
 em,
 i,
 dfn {
@@ -563,6 +566,10 @@ th {
 }
 .sitefooter {
   color: #666;
+}
+.article1 {
+  background-color: #EEE;
+  padding: 10px;
 }
 .info {
   border: 1px solid #ccc;
@@ -853,11 +860,20 @@ p.buttons {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+form#answer {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
 .comments {
   max-width: 600px;
+  margin-left: 20px;
+  margin-top: 15px;
 }
 .comment {
   font-size: 0.8em;
+}
+.comment p {
+  margin-bottom: 2px;
 }
 .comment a {
   font-weight: bold;
@@ -868,14 +884,14 @@ p.buttons {
   display: inline-block;
   vertical-align: top;
   float: left;
-  width: 70px;
+  width: 30px;
 }
 .comment-id a {
   vertical-align: top;
 }
 .comment-content {
   display: inline-block;
-  float: right;
+  float: left;
   width: 520px;
 }
 .comment-divider {
@@ -890,6 +906,53 @@ p.buttons {
   color: grey;
 }
 .comment-footer {
+  color: grey;
+}
+.comment-form {
+  color: grey;
+  font-size: 0.875em;
+  margin-left: 20px;
+  margin-top: 15px;
+}
+.answers {
+  max-width: 600px;
+  background-color: #EEE;
+  padding: 10px;
+}
+.answer {
+  font-size: 1em;
+}
+.answer a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #5491D4;
+}
+.answer-id {
+  display: inline-block;
+  vertical-align: top;
+  float: left;
+  width: 70px;
+}
+.answer-id a {
+  vertical-align: top;
+}
+.answer-content {
+  display: inline-block;
+  float: right;
+  width: 520px;
+}
+.answer-divider {
+  clear: both;
+  height: 10px;
+}
+.answer-header {
+  line-height: 1em;
+  margin-top: 2px;
+  padding-top: 0px;
+  font-weight: bold;
+  color: grey;
+}
+.answer-footer {
   color: grey;
 }
 .green {
@@ -912,6 +975,15 @@ p.buttons {
 }
 .dark-red {
   color: #A4002C;
+}
+.grey {
+  color: #ccc;
+}
+.light-grey {
+  color: #EEE;
+}
+.dark-grey {
+  color: #999;
 }
 .bright body {
   background-color: #FFF;

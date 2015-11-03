@@ -1,24 +1,24 @@
-<article>
+<?php $userid = $user->getIdForAcronym($post->getProperties()['acronym'])?>
+
+<article class='article1'>
 <div>
-<?php foreach ($tags as $id => $tag): ?>
-<a href='<?=$this->url->create($controller.'/update').'/'.$tag->getProperties()['tagid']?>'><?=$tag->getProperties()['tagname']?></a>
-<?php endforeach; ?>
+
 </div>
 <h4><?=$post->getProperties()['title']?></h4>
-<p>Av <?=$post->getProperties()['acronym']?></p>
 <p><?=$post->getProperties()['data']?></p>
 
-<p>Skapad <?=$post->getProperties()['created']?>
-<?=isset($post->getProperties()['updated'])?"<br>Redigerad 
-".$post->getProperties ( ) [ 'updated' ]:'';?>
-<?=isset($post->getProperties()['published'])?"<br>Publicerad  
-".$post->getProperties ( ) [ 'published' ]:'';?></p>
-<p>
-<?php if ($post->getProperties()['deleted'] == null) : ?>
+<p class='smaller dark-grey'>fråga ställd av <?php if (isset($userid)): ?><a href='<?=$this->url->create('users/id/'.$userid)?>' class='comment-name'><?php endif;?><?=$post->getProperties()['acronym']?> <?php if (isset($userid)): ?></a><?php endif;?> <?=$post->getProperties()['created']?>
+<?=isset($post->getProperties()['updated'])?", redigerades 
+".$post->getProperties ( ) [ 'updated' ]:'';?> <?php if ($post->getProperties()['deleted'] == null) : ?>
     <a 
 href="<?=$this->url->create($controller.'/update').'/'.$post->getProperties()['id']?>" 
-title='Edit'>Redigera innehåll
-</a>
+title='Edit'>redigera</a>
 <?php endif; ?>
+</p>
+<p>
+
+<?php foreach ($tags as $id => $tag): ?>
+<a href='<?=$this->url->create($controller.'/list-by-tag').'/'.$tag->getProperties()['tagid']?>'><?=$tag->getProperties()['tagname']?></a>
+<?php endforeach; ?>
 </p>
 </article>

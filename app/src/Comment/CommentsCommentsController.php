@@ -6,7 +6,7 @@ namespace Phpmvc\Comment;
  * To attach comments-flow to a page or some content.
  *
  */
-class CommentsController implements \Anax\DI\IInjectionAware
+class CommentsCommentsController implements \Anax\DI\IInjectionAware
 {
     use \Anax\DI\TInjectable;
 
@@ -17,46 +17,49 @@ class CommentsController implements \Anax\DI\IInjectionAware
      *
      * @return void
      */
-    public function viewAction($pagekey = null, $formvisibility = null, $redirect='', $pagetype = null, $formid = null)
+    public function viewAction($pagekey = null, $formvisibility = null, $redirect='')
     {
-
-	$controller = 'comments';
-        
+    
+	$this->db->setVerbose(false);
+    	$undourl = '<p><a href="'.$this->di->get('url')->create($redirect).'">Ångra</p>';
+    	
+    	$form1 = new \Anax\HTMLForm\CFormCommentUndo($redirect);
+	    $form1->setDI($this->di);
+	    $form1->check();
+	    $undourl = $form1->getHTML();
+    	
         $comments = new \Anax\Comments\Comments();
+        $controller = 'comments';
         $comments->setDI($this->di);
-        $all = $comments->findAll($pagekey, $pagetype);
+
+        $all = $comments->findAll($pagekey);
         
         $user = new \Anax\Users\User();
         $user->setDI($this->di);
+        
         $acronym = $user->getLoggedInUser();
-
-        /*
-        if ($formvisibility==null) {
-        $postformvisibility = $this->getFormVisibility();
-        $postformid = $this->getFormId();
-        }
-          */   
-        if ($user->isLoggedIn()) {
         
-	  if ($formvisibility == 'show-form' && $formid == $this->getFormId()) {
-	  
-	    //$this->response->redirect($this->url->create('comments/add-comment')); 
-	    //$this->redirectTo('comments/add-comment/'.$pagekey.'/'.$redirect.'/'.$acronym.'/'.$pagetype.'/'.$formid);
+        $formvisibility = $user->isLoggedIn() == true ? 'show-form' : null;
+               
+        switch ($formvisibility) {
         
-	    $this->di->dispatcher->forward([
-	    'controller' => 'comments',
-	    'action'     => 'show-form',
-	    'params'     => [$pagekey, $redirect, $acronym, $pagetype, $formid],
-	    ]);
-	  }
-	  
-	  else {
-	   $this->showHideForm($pagekey, $redirect, $formid);
-	  }
-        }
+        case 'show-form':
+	    
+	    $form = new \Anax\HTMLForm\CFormCommentAdd($pagekey, $redirect, $acronym);
+	    $form->setDI($this->di);
+	    $form->check();
+	    
+	    $this->di->views->add('default/page', [
+	    'title' => "Lägg till kommentar",
+	    'content' => $form->getHTML().$undourl, 
+	    ], 'main');
+        break;
+        	
+        default:
         
-        else {
-	  $this->hideForm();
+	  $this->di->views->addString('Logga in för att kommentera', 'main');
+         
+	break;
         }
 
         $this->views->add('comment/comments', [
@@ -67,50 +70,10 @@ class CommentsController implements \Anax\DI\IInjectionAware
             'user' => $user,
         ]);
     }
-       
-    public function getFormVisibility() 
-    {
-	$formvisibility = $this->di->request->getPost('form');
-	return $formvisibility;
-
-    }
-    
-    public function getFormId() 
-    {
-      $formid = $this->di->request->getPost('formid');
-      return $formid;
-    }  
-
         
-    public function showFormAction($pagekey, $redirect, $acronym, $pagetype, $formid) 
-    {
-	$undourl = '<p><a href="'.$this->di->get('url')->create($redirect).'">Ångra</p>';    
-	$form = new \Anax\HTMLForm\CFormCommentAdd($pagekey, $redirect, $acronym, $pagetype, $formid);
-	$form->setDI($this->di);
-	$form->check();
-	
-	$this->di->views->add('wgtotw/plain', [
-	'content' => $form->getHTML().$undourl, 
-	], 'main');
         
-    }
-    
 
-    
-    public function hideForm() 
-    {
-    
-      $this->di->views->addString('Logga in för att kommentera', 'main');
-    }
 
-    public function showHideForm($pagekey, $redirect, $formid) 
-    {
-	$this->di->views->add('comment/formhide', [
-	'redirect' => $redirect,
-	'pagekey' => $pagekey,
-	'formid' => $formid,
-	], 'main');
-    }
     
     /**
     *
@@ -154,48 +117,54 @@ class CommentsController implements \Anax\DI\IInjectionAware
     {
       //$this->di->db->setVerbose();
  
-      $this->di->db->dropTableIfExists('comments')->execute();
+      $this->di->db->dropTableIfExists('commentscomments')->execute();
   
       $this->di->db->createTable(
-	  'comments',
+	  'commentscomments',
 	  [
 	      'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
 	      'content' => ['text', 'not null'],
+	      'mail'   => ['varchar(80)'],
 	      'name'    => ['varchar(80)'],
-	      'pagekey' => ['integer'],
-	      'pagetype' => ['varchar(80)'],
+	      'pagekey' => ['varchar(80)'],
 	      'timestamp' => ['datetime'],
 	      'updated' => ['datetime'],
-	      'ip'      => ['varchar(80)']
+	      'ip'      => ['varchar(80)'],
+	      'web'     => ['varchar(200)'],
+	      'gravatar' => ['varchar(200)']
 	      
 	  ]
       )->execute();
       
       $this->di->db->insert(
-	  'comments',
-	  ['content', 'name', 'pagekey', 'pagetype', 'timestamp', 'updated', 'ip']
+	  'commentscomments',
+	  ['content', 'mail', 'name', 'pagekey', 'timestamp', 'updated', 'ip', 'web', 'gravatar']
       );
   
       $now = date('Y-m-d H:i:s');
   
       $this->di->db->execute([
 	  'En första kommentar',
-	  'admin',
-	  '1',
-	  'issues',
+	  'admin@dbwebb.se',
+	  'Administrator',
+	  'comment-page',
 	  $now,
 	  null,
-	  $this->di->request->getServer('REMOTE_ADDR')
+	  $this->di->request->getServer('REMOTE_ADDR'),
+	  null,
+	  'http://www.gravatar.com/avatar/' . md5(strtolower(trim('admin@dbwebb.se'))) . '.jpg'
       ]);
       
 	  $this->di->db->execute([
 	  'Hej!',
-	  'maria',
-	  '2',
-	  'answer',
+	  'admin@dbwebb.se',
+	  'Maria',
+	  'me-page',
 	  $now,
 	  null,
-	  $this->di->request->getServer('REMOTE_ADDR')
+	  $this->di->request->getServer('REMOTE_ADDR'),
+	  null,
+	  'http://www.gravatar.com/avatar/' . md5(strtolower(trim('admin@dbwebb.se'))) . '.jpg'
       ]);
       
 	  $this->di->theme->setTitle("Kommentarer");

@@ -17,7 +17,7 @@ class ContentTag extends \Meax\MVC\CDatabaseModel
  */
 public function findTagsByPost($contentid, $tagstable, $contenttable)
 {
-$this->db->setVerbose();
+
     $this->db->select('tagname, tagid')
              ->from($this->getSource())
              ->where('contentid = ' . $contentid)
@@ -36,7 +36,7 @@ $this->db->setVerbose();
  */
 public function findPostsByTag($tagid, $tagstable, $contenttable)
 {
-$this->db->setVerbose();
+
     $this->db->select()
              ->from($this->getSource())
              ->where('tagid = ' . $tagid)

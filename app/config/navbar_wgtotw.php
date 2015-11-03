@@ -101,6 +101,13 @@ return [
             'url'   => $this->di->get('url')->create('about'),
             'title' => 'Om oss'
         ],
+        
+        // This is a menu item
+        'login' => [
+            'text'  =>'Logga in',
+            'url'   => $this->di->get('url')->create('login'),
+            'title' => 'Logga in'
+        ],
     ],
  
 

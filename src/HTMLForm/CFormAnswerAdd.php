@@ -6,7 +6,7 @@ namespace Anax\HTMLForm;
  * Form to add comment
  *
  */
-class CFormCommentAdd extends \Mos\HTMLForm\CForm
+class CFormAnswerAdd extends \Mos\HTMLForm\CForm
 {
     use \Anax\DI\TInjectionaware,
         \Anax\MVC\TRedirectHelpers;
@@ -18,14 +18,13 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
      * Constructor
      *
      */
-    public function __construct($pagekey, $redirect, $acronym, $pagetype, $formid=null)
+    public function __construct($pagekey, $redirect, $acronym)
     {
-        parent::__construct([['id' => 'comment']], [
+        parent::__construct(['id' => 'answer'], [
         	
-            'content' => [
+            'answer' => [
                 'type'        => 'textarea',
-                'label'       => 'Kommentar',
-                'value'       => $pagekey.$pagetype,
+                'label'       => '<big><strong>Lämna ditt svar på frågan</strong></big>',
                 'required'    => true,
                 'validation'  => ['not_empty'],
             ],
@@ -37,20 +36,13 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
                 'validation'  => ['not_empty'],
             ],
             
-           'form' => [
-                'type'        => 'hidden',
-                'value'       => 'show-form',
-            ],
+
             
-            'formid' => [
-                'type'        => 'hidden',
-                'value'       => $pagekey,
-            ],
          
-            'submitcomment-'.$pagekey => [
+            'submitanswer' => [
                 'type'      => 'submit',
-                'callback'  => [$this, 'callbackSubmitComment'],
-                'value'     => 'Spara Kommentar',
+                'callback'  => [$this, 'callbackSubmit'],
+                'value'     => 'Spara',
             ],
             'reset' => [
                 'type'      => 'reset',
@@ -61,9 +53,7 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
         ]);
         
         $this->pagekey = $pagekey;
-        $this->pagetype = $pagetype;
         $this->redirect = $redirect;
-        $this->formid = $pagekey;
     }
 
 
@@ -85,25 +75,23 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
      * Callback for submit-button.
      *
      */
-    public function callbackSubmitComment()
+    public function callbackSubmit()
     {
-    
-    
     	
         $now = date('Y-m-d H:i:s');
-       if (!empty($_POST['submitcomment-'.$this->formid])) {
-	$this->newcomment = new \Anax\Comments\Comments();
-        $this->newcomment->setDI($this->di);
-        $saved = $this->newcomment->save(array('content' => $this->Value('content'), 'name' => $this->Value('name'), 'pagekey' => $this->pagekey, 'pagetype' => $this->pagetype, 'timestamp' => $now));
-	
+	if (!empty($_POST['submitanswer'])) {
+	$this->newanswer = new \Anax\Comments\Answer();
+        $this->newanswer->setDI($this->di);
+        $saved = $this->newanswer->save(array('content' => $this->Value('answer'), 'name' => $this->Value('name'), 'pagekey' => $this->pagekey, 'timestamp' => $now));
+    
        // $this->saveInSession = true;
         
         if($saved) 
         {
         return true;
         }
-       }
-    
+        }
+       
         else return false;
     }
 

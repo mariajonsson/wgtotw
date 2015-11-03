@@ -5,7 +5,7 @@
 <p>Av <a href='<?=$this->url->create('users/id/'.$userid)?>'><?=$post->getProperties()['acronym']?></a></p>
 <p><?=$post->getProperties()['data']?></p>
 
-<p>Skapad <?=$post->getProperties()['created']?>
+<p class='smaller'>Skapad <?=$post->getProperties()['created']?>
 <?=isset($post->getProperties()['updated'])?"<br>Redigerad 
 ".$post->getProperties ( ) [ 'updated' ]:'';?>
 <?=isset($post->getProperties()['published'])?"<br>Publicerad  

@@ -44,6 +44,12 @@ $di->set('IssuesController', function() use ($di) {
     return $controller;
 });
 
+$di->set('AnswerController', function() use ($di) {
+    $controller = new \Phpmvc\Comment\AnswerController();
+    $controller->setDI($di);
+    return $controller;
+});
+
 $di->set('TagBasicController', function() use ($di) {
     $controller = new \Meax\Content\TagBasicController();
     $controller->setDI($di);

@@ -79,11 +79,20 @@ class User extends \Anax\MVC\CDatabaseModel
     }
     
     public function getGravatarForAcronym($acronym) {
-      $gravatar = $this->query('gravatar')
+     
+     if($this->verifyAcronym($acronym))
+      {
+     $gravatar = $this->query('gravatar')
 	->where('acronym = ?')
         ->execute([$acronym]);
     
       return $gravatar[0]->gravatar;
+       }
+      
+      else {
+      	return null;
+      	
+      }
     
     }
     
