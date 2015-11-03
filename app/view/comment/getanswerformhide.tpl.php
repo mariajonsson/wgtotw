@@ -1,9 +1,7 @@
 <div class='answer-form'>
-<form method=get name='hide-form' id="hide-form-<?=$formid?>">
+<form method=get name='hide-form' id="answer">
 <fieldset>
-<legend><a href='<?=$this->url->create($redirect)?>?form=show-form&formid=<?=$formid?>'>Lämna ett svar</a></legend>
-<input type=hidden name="redirect" value="<?=$this->url->create($redirect)?>">
-<input type="hidden" name="pagekey" value="<?=$pagekey?>">
+<legend><a href='<?=$this->url->create($redirect)?>?form=show-form&formid=<?=$formid?>#<?=$formid?>'>Lämna ett svar</a></legend>
 </fieldset>
 </form>
 </div>

@@ -20,7 +20,7 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
      */
     public function __construct($pagekey, $redirect, $acronym, $pagetype, $formid=null)
     {
-        parent::__construct([['id' => 'comment']], [
+        parent::__construct(['id' => $formid], [
         	
             'content' => [
                 'type'        => 'textarea',
