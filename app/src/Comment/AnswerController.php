@@ -35,13 +35,14 @@ class AnswerController implements \Anax\DI\IInjectionAware
         
         $acronym = $user->getLoggedInUser();
         
-        /*
+        
         if ($user->isLoggedIn()) {
         
 	 if ($this->getFormVisibility() == 'show-form' && $this->getFormId() == 'answer') {
-        */
+        
 	    $this->showFormAction($pagekey, $redirect, $acronym);
-	 /* }
+	    
+	  }
 	  
 	  else {
 	   $this->showHideForm($pagekey, $redirect);
@@ -50,7 +51,7 @@ class AnswerController implements \Anax\DI\IInjectionAware
         
         else {
 	  $this->hideForm();
-        }*/
+        }
         
        	$postformid = $this->getFormId();
        
@@ -89,14 +90,14 @@ class AnswerController implements \Anax\DI\IInjectionAware
         
     public function getFormVisibility() 
     {
-	$formvisibility = $this->di->request->getPost('form');
+	$formvisibility = $this->di->request->getGet('form');
 	return $formvisibility;
 
     }
     
     public function getFormId() 
     {
-      $formid = $this->di->request->getPost('formid');
+      $formid = $this->di->request->getGet('formid');
       return $formid;
     }  
 
@@ -104,12 +105,12 @@ class AnswerController implements \Anax\DI\IInjectionAware
     public function showFormAction($pagekey, $redirect, $acronym) 
     {
 	$aform = new \Anax\HTMLForm\CFormAnswerAdd($pagekey, $redirect, $acronym);
-	    $aform->setDI($this->di);
-	    $aform->check();
+	$aform->setDI($this->di);
+	$aform->check();
 	    
-	    $this->di->views->add('wgtotw/plain', [
-	       'content' => $aform->getHTML(), 
-	    ], 'main');
+	$this->di->views->add('wgtotw/plain', [
+	   'content' => $aform->getHTML(), 
+	], 'main');
         
     }
     
@@ -121,7 +122,7 @@ class AnswerController implements \Anax\DI\IInjectionAware
 
     public function showHideForm($pagekey, $redirect, $formid = 'answer') 
     {
-	$this->di->views->add('comment/answerformhide', [
+	$this->di->views->add('comment/getanswerformhide', [
 	'redirect' => $redirect,
 	'pagekey' => $pagekey,
 	'formid' => $formid,

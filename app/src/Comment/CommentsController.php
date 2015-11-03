@@ -30,24 +30,13 @@ class CommentsController implements \Anax\DI\IInjectionAware
         $user->setDI($this->di);
         $acronym = $user->getLoggedInUser();
 
-        /*
-        if ($formvisibility==null) {
-        $postformvisibility = $this->getFormVisibility();
-        $postformid = $this->getFormId();
-        }
-          */   
+             
         if ($user->isLoggedIn()) {
         
-	  if ($formvisibility == 'show-form' && $formid == $this->getFormId()) {
+	  if ($this->getFormVisibility() == 'show-form' && $formid == $this->getFormId()) {
 	  
-	    //$this->response->redirect($this->url->create('comments/add-comment')); 
-	    //$this->redirectTo('comments/add-comment/'.$pagekey.'/'.$redirect.'/'.$acronym.'/'.$pagetype.'/'.$formid);
-        
-	    $this->di->dispatcher->forward([
-	    'controller' => 'comments',
-	    'action'     => 'show-form',
-	    'params'     => [$pagekey, $redirect, $acronym, $pagetype, $formid],
-	    ]);
+      
+	    $this->showFormAction($pagekey, $redirect, $acronym, $pagetype, $formid);
 	  }
 	  
 	  else {
@@ -70,16 +59,16 @@ class CommentsController implements \Anax\DI\IInjectionAware
        
     public function getFormVisibility() 
     {
-	$formvisibility = $this->di->request->getPost('form');
+	$formvisibility = $this->di->request->getGet('form');
 	return $formvisibility;
 
     }
     
     public function getFormId() 
     {
-      $formid = $this->di->request->getPost('formid');
+      $formid = $this->di->request->getGet('formid');
       return $formid;
-    }  
+    } 
 
         
     public function showFormAction($pagekey, $redirect, $acronym, $pagetype, $formid) 
@@ -105,7 +94,7 @@ class CommentsController implements \Anax\DI\IInjectionAware
 
     public function showHideForm($pagekey, $redirect, $formid) 
     {
-	$this->di->views->add('comment/formhide', [
+	$this->di->views->add('comment/getformhide', [
 	'redirect' => $redirect,
 	'pagekey' => $pagekey,
 	'formid' => $formid,

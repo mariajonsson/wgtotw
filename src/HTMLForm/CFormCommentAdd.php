@@ -25,7 +25,7 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
             'content' => [
                 'type'        => 'textarea',
                 'label'       => 'Kommentar',
-                'value'       => $pagekey.$pagetype,
+                'value'       => $pagekey.' pagetype:'.$pagetype.' formid:'.$formid.' redirect'.$redirect,
                 'required'    => true,
                 'validation'  => ['not_empty'],
             ],
@@ -37,17 +37,8 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
                 'validation'  => ['not_empty'],
             ],
             
-           'form' => [
-                'type'        => 'hidden',
-                'value'       => 'show-form',
-            ],
-            
-            'formid' => [
-                'type'        => 'hidden',
-                'value'       => $pagekey,
-            ],
-         
-            'submitcomment-'.$pagekey => [
+        
+            'submitcomment-'.$formid => [
                 'type'      => 'submit',
                 'callback'  => [$this, 'callbackSubmitComment'],
                 'value'     => 'Spara Kommentar',
@@ -63,7 +54,7 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
         $this->pagekey = $pagekey;
         $this->pagetype = $pagetype;
         $this->redirect = $redirect;
-        $this->formid = $pagekey;
+        $this->formid = $formid;
     }
 
 
@@ -87,9 +78,7 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
      */
     public function callbackSubmitComment()
     {
-    
-    
-    	
+	
         $now = date('Y-m-d H:i:s');
        if (!empty($_POST['submitcomment-'.$this->formid])) {
 	$this->newcomment = new \Anax\Comments\Comments();
@@ -135,7 +124,7 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
      */
     public function callbackSuccess()
     {
-         $this->redirectTo($this->redirect);
+        $this->redirectTo($this->redirect);
     }
 
 
@@ -146,6 +135,6 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
     public function callbackFail()
     {
         $this->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
-        //$this->redirectTo('comments/edit');
+        //$this->redirectTo($this->redirect);
     }
 }

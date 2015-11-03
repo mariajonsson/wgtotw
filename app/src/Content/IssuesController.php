@@ -113,12 +113,24 @@ public function idAction($id = null)
     ], 'main');
     
     
+    
     $this->di->dispatcher->forward([
         'controller' => 'comments',
         'action'     => 'view',
-        'params'     => [$id, null,'issues/id/'.$id, 'issues'],
+        'params'     => [$id, null,'issues/id/'.$id, 'issues', 'issues'],
     ]);
+    /*
+    $comments = new \Anax\Comments\Comments();
+    $comments->setDI($this->di);
     
+    $this->views->add('comment/comments', [
+            'comments' => $comments->findAll($id, 'issues'),
+            'pagekey'   => $id,
+            'redirect'  => 'issues/id/',
+            'controller' => 'issues',
+            'user' => $this->user,
+        ]);
+    */
     $this->di->dispatcher->forward([
         'controller' => 'answer',
         'action'     => 'view',
@@ -127,11 +139,7 @@ public function idAction($id = null)
 
 }
 
-    public function getFormId() 
-    {
-      $formid = $this->di->request->getPost('formid');
-      return $formid;
-    }
+
 
 
 /**
