@@ -3,12 +3,15 @@
  */
 .comments {
   max-width: 600px;
-  margin-left: 20px;
+  margin-left: 40px;
   margin-top: 15px;
+  border-bottom: 1px dashed @grey;
+  vertical-align: middle;
 }
  
 .comment {
   font-size: 0.8em;
+  
 } 
 
 .comment p {
@@ -16,29 +19,66 @@
 }
 
 .comment a {
-  font-weight: bold;
+  //font-weight: bold;
   text-decoration: none;
-  color: #5491D4;
+  //color: #5491D4;
 }
 
 
 .comment-id {
   display: inline-block;
-  vertical-align: top;
+  vertical-align: middle;
   float:left;
-  width: 30px;
+  width: 80px;
+  height: 2em;
 } 
 
 .comment-id a {
-  vertical-align: top;
+  //vertical-align: top;
 
+}
+
+.comment-rank {
+  display: inline-block;
+  vertical-align: middle;
+  float:left;
+  width: 1.2em;
+  line-height: 1em;
+  color: @darkGrey;
+  height: 2em;
+  }
+
+.comment-ranknum {
+  display: inline-block;
+  vertical-align: middle;
+  float:left;
+  width: 2.8em;
+  line-height: 1em;
+  color: @darkGrey;
+  height: 2em;
+  
+  p {
+  margin-top: 0.4em;
+  vertical-align: middle;
+  }
+}
+
+.comment-img {
+  display: inline-block;
+  vertical-align: middle;
+  width: 20px;
+  height: 2em;
+  
+  img {
+  vertical-align: middle;
+  }
 }
 
 
 .comment-content {
   display: inline-block;
-  float:left;
-  width: 520px;
+  float:right;
+  width: 500px;
 } 
 
 .comment-divider {
@@ -61,7 +101,11 @@
 .comment-form {
   color: grey;
   font-size: @fontSizeSmall;
-  margin-left: 20px;
+  margin-left: 30px;
   margin-top: 15px;
 } 
+
+.commenting {
+  color: black;
+}
 

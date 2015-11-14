@@ -43,7 +43,19 @@ class Answer extends \Anax\MVC\CDatabaseModel
     }
     }
     
-
+/**
+ * Delete rows.
+ *
+ * @param integer $id to delete.
+ *
+ * @return boolean true or false if deleting went okey.
+ */
+public function setAllAcceptNull($pagekey)
+{
+    $this->db->update($this->getSource(), ['accepted'], ['NULL'], 'pagekey = '.$pagekey);
+ 
+    return $this->db->execute([$pagekey]);
+}
     
 
 

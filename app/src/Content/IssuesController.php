@@ -25,6 +25,9 @@ public function initialize()
     $this->tags = new \Meax\Content\TagBasic();
     $this->tags->setDI($this->di);
     
+    $this->vote = new \Meax\Content\Vote();
+    $this->vote->setDI($this->di);
+    
     $this->user = new \Anax\Users\User();
     $this->user->setDI($this->di);
     
@@ -56,7 +59,7 @@ public function listAction()
    $this->views->add('contenttags/list-all-headers', [
         'content' => $all,
         'user' => $this->user,
-
+        'vote' => $this->vote,
         'subtitle' => "De senast ställda frågorna",
     ], 'main');
 
@@ -75,6 +78,7 @@ public function listLatestAction($num)
     
     $this->views->add('contenttags/list-all-headers', [
         'content' => $all,
+        'vote' => $this->vote,
         'user' => $this->user,
         'subtitle' => "De senast ställda frågorna",
         'link' => "<a href='".$this->url->create('issues/list')."'>Se alla frågor</a>",
@@ -98,6 +102,7 @@ public function listByTagAction($tagid)
     $this->theme->setTitle("Frågor i kategorin ".$tagname);
     $this->views->add('contenttags/list-all-headers', [
         'content' => $all,
+        'vote' => $this->vote,
         'user' => $this->user,
         'subtitle' => "Frågor i kategorin <em>".$tagname."</em>",
     ], 'main');
@@ -116,6 +121,7 @@ public function listByUserAction($acronym)
     
     $this->views->add('contenttags/list-all-headers', [
         'content' => $all,
+        'vote' => $this->vote,
         'user' => $this->user,
         'subtitle' => "Ställda frågor",
     ], 'main');
@@ -134,14 +140,13 @@ public function idAction($id = null)
 {
     $post = $this->content->find($id);
     $tags = $this->contenttags->findTagsByPost($id, 'tagbasic', 'issues');
-    
+    $issueposter = $post->getProperties()['acronym'];
    
     $this->theme->setTitle("Fråga: ". $post->getProperties()['title']);
     
-        if ($this->user->isLoggedIn()) {
+   if ($this->user->isLoggedIn()) {
 
-     $this->views->add('contenttags/new-issue', [
-    ], 'flash');
+     
     }
     else 
     {
@@ -149,10 +154,13 @@ public function idAction($id = null)
     ], 'flash');    
     }
     
+    $this->views->add('contenttags/issueslink', [
+    ], 'sidebar');
     $this->views->add('contenttags/view', [
         'controller' => 'issues',
         'post' => $post,
         'tags' => $tags,
+        'vote' => $this->vote,
         'user' => $this->user,
     ], 'main');
     
@@ -163,22 +171,12 @@ public function idAction($id = null)
         'action'     => 'view',
         'params'     => [$id, null,'issues/id/'.$id, 'issues', 'issues'],
     ]);
-    /*
-    $comments = new \Anax\Comments\Comments();
-    $comments->setDI($this->di);
-    
-    $this->views->add('comment/comments', [
-            'comments' => $comments->findAll($id, 'issues'),
-            'pagekey'   => $id,
-            'redirect'  => 'issues/id/',
-            'controller' => 'issues',
-            'user' => $this->user,
-        ]);
-    */
+
+
     $this->di->dispatcher->forward([
         'controller' => 'answer',
         'action'     => 'view',
-        'params'     => [$id, null,'issues/id/'.$id],
+        'params'     => [$id, null,'issues/id/'.$id, $issueposter],
     ]);
 
 }

@@ -29,6 +29,9 @@ class CommentsController implements \Anax\DI\IInjectionAware
         $user = new \Anax\Users\User();
         $user->setDI($this->di);
         $acronym = $user->getLoggedInUser();
+        
+        $vote = new \Meax\Content\Vote();
+        $vote->setDI($this->di);
 
              
         if ($user->isLoggedIn()) {
@@ -53,6 +56,7 @@ class CommentsController implements \Anax\DI\IInjectionAware
             'pagekey'   => $pagekey,
             'redirect'  => $redirect,
             'controller' => $controller,
+            'vote' => $vote,
             'user' => $user,
         ]);
     }

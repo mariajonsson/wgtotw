@@ -62,6 +62,12 @@ $di->set('ContentTagController', function() use ($di) {
     return $controller;
 });
 
+$di->set('VoteController', function() use ($di) {
+    $controller = new \Meax\Content\VoteController();
+    $controller->setDI($di);
+    return $controller;
+});
+
 
 $di->set('form', '\Mos\HTMLForm\CForm');
 
@@ -135,6 +141,7 @@ $app->router->add('tags', function() use ($app) {
 });
 
 
+
 $app->router->add('setup', function() use ($app) {
 		
 	$app->db->setVerbose();	
@@ -172,6 +179,11 @@ $app->router->add('setup', function() use ($app) {
     $app->dispatcher->forward([
         'controller' => 'comments',
         'action'     => 'setup-comment',
+    ]);
+    
+    $app->dispatcher->forward([
+        'controller' => 'vote',
+        'action'     => 'setup-vote',
     ]);
 });
 /*

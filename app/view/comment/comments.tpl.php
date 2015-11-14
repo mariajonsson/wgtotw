@@ -1,19 +1,32 @@
 <?php $controller = isset($controller) ? $controller : 'comment'; ?>
+
+
 <div class='comments'>
-<!--<pre><?php echo var_dump($comments); ?></pre>-->
+
 <?php if (is_array($comments)) : ?>
 <?php /*$comments = array_reverse($comments)*/ ?>
 <?php foreach ($comments as $id => $comment) : ?>
 <?php $id = (is_object($comment)) ? $comment->id : $id; ?>
 <?php $comment = (is_object($comment)) ? get_object_vars($comment) : $comment; ?> 
+<?php $isloggedin = ($user->getLoggedInUser()) ?>
+<?php $isloggedinposter = ($user->getLoggedInUser() == $comment['name']) ?>
+<?php $voteupicon = '<i class="fa fa-caret-up light-grey"></i>'; ?>
+<?php $votedownicon = '<i class="fa fa-caret-down light-grey"></i>'; ?>
+<?php if ($isloggedin) { 
+  $voteupicon = '<a href="'.$this->url->create("vote/vote").'/'.$user->getIdForAcronym($user->getLoggedInUser()).'/'.$id.'/comments/up/'.$pagekey.'" class="vote"><i class="fa fa-caret-up fa-lg"></i></a>';
+  $votedownicon = '<a href="'.$this->url->create("vote/vote").'/'.$user->getIdForAcronym($user->getLoggedInUser()).'/'.$id.'/comments/down/'.$pagekey.'" class="vote"><i class="fa fa-caret-down fa-lg"></i></a>';
+  
+}
+?>
  
 <div class='comment'>
 <div class='comment-id'>
-<a href='<?=$this->url->create($controller .'/edit/'.$pagekey.'/'.$id.'/'.$redirect)?>'>#<?=$id?></a>
+<?php $gravatar = $user->getGravatarForAcronym($comment['name'])?>
+<div class='comment-rank'><?=$voteupicon?> <?=$votedownicon?> </div><div class='comment-ranknum'> <p><?=$vote->getRank($id, 'comments') ?></p>  </div> <div class='comment-img'> <img src='<?=$gravatar?>?s=12'></div>
 </div>
 <div class='comment-content'>
 <?php $userid = $user->getIdForAcronym($comment['name'])?>
-<p><?=$comment['content']?> — <a href='<?=$this->url->create('users/id/'.$userid)?>' class='comment-name'><?=$comment['name']?></a> för 
+<p><?=$comment['content']?> — <a href='<?=$this->url->create('users/id/'.$userid)?>'><?=$comment['name']?></a> för 
 <?php $elapsedsec = (time()-strtotime($comment['timestamp'])); ?>
 <?php if (($elapsedsec) < 60): ?>
 <?=round($elapsedsec)?> s sedan
@@ -26,7 +39,10 @@
 <?php elseif (($elapsedsec/(60*60*24)) < 30) : ?>
 <?=round($elapsedsec/(60*60*24*7))?> veckor sedan
 <?php else : ?>
-<?=round($elapsedsec/(60*60*24*30))?> månader sedan
+<?=round($elapsedsec/(60*60*24*30))?> månader sedan 
+<?php endif; ?>
+<?php if($isloggedinposter): ?>
+<a href='<?=$this->url->create($controller .'/edit/'.$pagekey.'/'.$id.'/'.$redirect)?>' title='redigera'><i class="fa fa-pencil"></i></a> 
 <?php endif; ?>
 
 </div>

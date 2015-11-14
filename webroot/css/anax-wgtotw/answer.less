@@ -2,28 +2,28 @@
  * Style for comments
  */
 .answers {
-  max-width: 600px;
-  background-color: @lightGrey;
-  padding: 10px;
+    max-width: 600px;
+    background-color: transparent;
 }
  
 .answer {
   font-size: 1em;
-
+  background-color: transparent;
 } 
 
 .answer a {
-  font-weight: bold;
+  //font-weight: bold;
   text-decoration: none;
-  color: #5491D4;
+  //color: @cyan;
 }
 
 
 .answer-id {
   display: inline-block;
   vertical-align: top;
+  text-align: center;
   float:left;
-  width: 70px;
+  width: 30px;
 } 
 
 .answer-id a {
@@ -31,11 +31,24 @@
 
 }
 
+.answer-accept {
+  height: 30px;
+}
+
+.answer-rank {
+  font-size: @fontSizeSmall;
+  color: @darkGrey;
+}
 
 .answer-content {
   display: inline-block;
   float:right;
-  width: 520px;
+  width: 540px;
+
+  background-color: @lightGrey;
+  border-left: 3px solid @grey;
+  padding-left: 10px;
+  padding-right: 10px;
 } 
 
 .answer-divider {
@@ -66,3 +79,14 @@
 }
 
 
+.accept-selected {
+  color: @yellowGreen;
+}
+
+.accept-unselected {
+  color: @grey;
+}
+
+a .accept-unselected:hover {
+  color: @yellowGreen;
+}

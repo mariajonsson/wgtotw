@@ -223,7 +223,7 @@ h4,
 h5,
 h6 {
   font-family: 'note_thisregular';
-  color: #54A7EA;
+  color: black;
   margin-top: 0;
   margin-bottom: 22px;
 }
@@ -251,7 +251,6 @@ h2 {
   font-size: 1.875em;
   line-height: 1.4666666666667;
   font-weight: normal;
-  color: #54A7EA;
 }
 h2 ~ h3 {
   margin-top: 22px;
@@ -259,7 +258,6 @@ h2 ~ h3 {
 h3 {
   font-size: 1.375em;
   font-weight: normal;
-  color: #54A7EA;
 }
 h4 {
   font-size: 1.25em;
@@ -282,7 +280,7 @@ p {
 small,
 .small,
 .smaller {
-  font-size: 0.875em;
+  font-size: 0.8em;
 }
 blockquote {
   border-left: 2px solid #ccc;
@@ -582,12 +580,17 @@ th {
   color: #666;
 }
 .article1 {
-  padding: 10px;
+  background-color: #F6F6F6;
+  padding: 0;
 }
 .article1 h4 {
-  padding: 2px;
+  padding: 4px;
   color: black;
-  border-bottom: 3px solid black;
+  border-bottom: 3px solid grey;
+  background-color: white;
+}
+.article1 div {
+  padding: 0 0.5em 0.5em 0.5em;
 }
 .info {
   border: 1px solid #ccc;
@@ -914,8 +917,10 @@ form#answer {
 }
 .comments {
   max-width: 600px;
-  margin-left: 20px;
+  margin-left: 40px;
   margin-top: 15px;
+  border-bottom: 1px dashed #ccc;
+  vertical-align: middle;
 }
 .comment {
   font-size: 0.8em;
@@ -924,23 +929,50 @@ form#answer {
   margin-bottom: 2px;
 }
 .comment a {
-  font-weight: bold;
   text-decoration: none;
-  color: #5491D4;
 }
 .comment-id {
   display: inline-block;
-  vertical-align: top;
+  vertical-align: middle;
   float: left;
-  width: 30px;
+  width: 80px;
+  height: 2em;
 }
-.comment-id a {
-  vertical-align: top;
+.comment-rank {
+  display: inline-block;
+  vertical-align: middle;
+  float: left;
+  width: 1.2em;
+  line-height: 1em;
+  color: #999;
+  height: 2em;
+}
+.comment-ranknum {
+  display: inline-block;
+  vertical-align: middle;
+  float: left;
+  width: 2.8em;
+  line-height: 1em;
+  color: #999;
+  height: 2em;
+}
+.comment-ranknum p {
+  margin-top: 0.4em;
+  vertical-align: middle;
+}
+.comment-img {
+  display: inline-block;
+  vertical-align: middle;
+  width: 20px;
+  height: 2em;
+}
+.comment-img img {
+  vertical-align: middle;
 }
 .comment-content {
   display: inline-block;
-  float: left;
-  width: 520px;
+  float: right;
+  width: 500px;
 }
 .comment-divider {
   clear: both;
@@ -958,36 +990,49 @@ form#answer {
 }
 .comment-form {
   color: grey;
-  font-size: 0.875em;
-  margin-left: 20px;
+  font-size: 0.8em;
+  margin-left: 30px;
   margin-top: 15px;
+}
+.commenting {
+  color: black;
 }
 .answers {
   max-width: 600px;
-  background-color: #EEE;
-  padding: 10px;
+  background-color: transparent;
 }
 .answer {
   font-size: 1em;
+  background-color: transparent;
 }
 .answer a {
-  font-weight: bold;
   text-decoration: none;
-  color: #5491D4;
 }
 .answer-id {
   display: inline-block;
   vertical-align: top;
+  text-align: center;
   float: left;
-  width: 70px;
+  width: 30px;
 }
 .answer-id a {
   vertical-align: top;
 }
+.answer-accept {
+  height: 30px;
+}
+.answer-rank {
+  font-size: 0.8em;
+  color: #999;
+}
 .answer-content {
   display: inline-block;
   float: right;
-  width: 520px;
+  width: 540px;
+  background-color: #F6F6F6;
+  border-left: 3px solid #ccc;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .answer-divider {
   clear: both;
@@ -1011,11 +1056,23 @@ form#answer {
   text-align: center;
   margin-right: 1em;
 }
+.accept-selected {
+  color: #DDEA54;
+}
+.accept-unselected {
+  color: #ccc;
+}
+a .accept-unselected:hover {
+  color: #DDEA54;
+}
 .green {
   color: #80DC73;
 }
 .greener {
   color: #34B721;
+}
+.yellow-green {
+  color: #DDEA54;
 }
 .blue {
   color: #54A7EA;
@@ -1032,6 +1089,9 @@ form#answer {
 .dark-blue {
   color: #184A6F;
 }
+.red {
+  color: #EA5454;
+}
 .dark-red {
   color: #A4002C;
 }
@@ -1039,7 +1099,7 @@ form#answer {
   color: #ccc;
 }
 .light-grey {
-  color: #EEE;
+  color: #F6F6F6;
 }
 .dark-grey {
   color: #999;
@@ -1089,13 +1149,14 @@ form#answer {
   margin-right: 3px;
 }
 article .tags {
-  background-color: #EEE;
+  background-color: #F6F6F6;
   padding-top: 2px;
   padding-bottom: 2px;
   padding-right: 5px;
   padding-left: 5px;
   border-radius: 6px;
   margin-right: 2px;
+  border: 1px solid #80DC73;
 }
 @font-face {
   font-family: 'FontAwesome';

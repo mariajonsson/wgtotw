@@ -17,7 +17,7 @@ class AnswerController implements \Anax\DI\IInjectionAware
      *
      * @return void
      */
-    public function viewAction($pagekey = null, $formvisibility = null, $redirect='')
+    public function viewAction($pagekey = null, $formvisibility = null, $redirect='', $issueposter=null)
     {
     
     	
@@ -32,6 +32,9 @@ class AnswerController implements \Anax\DI\IInjectionAware
         
         $user = new \Anax\Users\User();
         $user->setDI($this->di);
+        
+        $vote = new \Meax\Content\Vote();
+        $vote->setDI($this->di);
         
         $acronym = $user->getLoggedInUser();
         
@@ -65,7 +68,7 @@ class AnswerController implements \Anax\DI\IInjectionAware
 	  if ($postformid == $id) {
 	    $commentformvisibility = 'show-form';
 	  }
-
+	  
 
 	  $this->views->add('comment/answer', [
 	      'id' => $id,
@@ -73,7 +76,9 @@ class AnswerController implements \Anax\DI\IInjectionAware
 	      'pagekey'   => $pagekey,
 	      'redirect'  => $redirect,
 	      'controller' => $controller,
+	      'issueposter' => $issueposter,
 	      'user' => $user,
+	      'vote' => $vote,
 	  ]);
 	  
 	  $this->di->dispatcher->forward([
@@ -127,6 +132,31 @@ class AnswerController implements \Anax\DI\IInjectionAware
 	'pagekey' => $pagekey,
 	'formid' => $formid,
 	], 'main');
+    }
+    
+    
+    public function acceptAction($answerid, $issueid)
+    {
+	$this->newanswer = new \Anax\Comments\Answer();
+        $this->newanswer->setDI($this->di);
+        
+        $this->newanswer->setAllAcceptNull($issueid);
+        $this->newanswer->save(array('accepted' => true, 'id' => $answerid));
+        
+        $redirect = $this->url->create("issues/id").'/'.$issueid;
+        $this->response->redirect($redirect);
+    
+    }
+    
+    public function unAcceptAction($answerid, $issueid)
+    {
+	$this->newanswer = new \Anax\Comments\Answer();
+        $this->newanswer->setDI($this->di);
+        $saved = $this->newanswer->save(array('accepted' => null, 'id' => $answerid));
+        
+        $redirect = $this->url->create("issues/id").'/'.$issueid;
+        $this->response->redirect($redirect);
+    
     }
 
     
@@ -184,30 +214,30 @@ class AnswerController implements \Anax\DI\IInjectionAware
 	      'timestamp' => ['datetime'],
 	      'updated' => ['datetime'],
 	      'ip'      => ['varchar(80)'],
-	      'web'     => ['varchar(200)']
+	      'accepted'     => ['boolean']
 	      
 	  ]
       )->execute();
       
       $this->di->db->insert(
 	  'answer',
-	  ['content', 'name', 'pagekey', 'timestamp', 'updated', 'ip', 'web']
+	  ['content', 'name', 'pagekey', 'timestamp', 'updated', 'ip', 'accepted']
       );
   
       $now = date('Y-m-d H:i:s');
   
       $this->di->db->execute([
-	  'Jag har ett svar',
+	  'Fabriano är absolut bäst',
 	  'admin',
 	  '1',
 	  $now,
 	  null,
 	  $this->di->request->getServer('REMOTE_ADDR'),
-	  null
+	  true
       ]);
       
 	  $this->di->db->execute([
-	  'Ett svar som inte är ett svar',
+	  'Googla!',
 	  'maria',
 	  '2',
 	  $now,
