@@ -3,11 +3,11 @@
 <div class='content'>
 <?php if (is_array($content)) : ?>
 <?php foreach ($content as $id => $post) : ?>
-<?php $id = (is_object($post)) ? $post->id : $id; ?>
+<?php $id = (is_object($post)) ? $post->tagid : $id; ?>
 <?php $post = (is_object($post)) ? get_object_vars($post) : $post; ?> 
  
 <div class='tags'>
-<a href='issues/list-by-tag/<?=$id?>'><?=$post['tagname']?></a>
+<a href='issues/list-by-tag/<?=$id?>'><?=$post['tagname']?></a> (<?=$post['total']?>)
 </div>
 
 <?php endforeach; ?>

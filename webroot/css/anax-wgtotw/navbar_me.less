@@ -9,26 +9,52 @@
 }
 
 .navbar {
-  background-color: #ededed;
+  background-color: #fff;
   border-radius: 2px;
+  
+    
+.issues {
+  background-color: @cyan;
+}
+.home {
+  background-color: @blue;
+}
+.tags {
+  background-color: #80DC73;
+}
+.users {
+  background-color: #DDEA54;
+}
+
+.about {
+  background-color: #EA5454;
+}
+.login {
+  background-color: @magenta;
+}
 }
  
 .navbar ul {
+  border-top: 3px solid black; 
+  border-bottom: 1px solid black;
   list-style: none; 
   margin: 0; 
   padding: 0;
+
 }
  
 .navbar li {
   display: inline-block;
-  border-top: 5px solid transparent; 
+
   color: #333; 
   position: relative; 
+  background-image: url('../../img/white.png');
+
 }
  
 .navbar a {
   display: block;
-  padding: 0.4em;
+  padding: 0.3em 0.4em;
   text-decoration: none;
   color: inherit;
   white-space: nowrap; 
@@ -36,8 +62,7 @@
 }
 
 .navbar li:hover {
-  color: #222; 
-  border-color: #6BB5FF;
+  background-image: url('../../img/stroke-2.png');
 
 } 
  
@@ -45,7 +70,8 @@
 .navbar li.is-parent, 
 .navbar li.selected {
   color: #222; 
-  border-color: #6BB5FF;
+  background-image: url('../../img/stroke-2.png');
+
 }
 
 .navbar ul ul {
@@ -60,7 +86,6 @@
 .navbar li li {
   width: 100%;
   border-top: none;  
-  border-left: 4px solid transparent;  
 }
 
 .navbar li:hover ul {
@@ -76,3 +101,5 @@
   color: #222; 
   border-color: #222;
 }
+
+

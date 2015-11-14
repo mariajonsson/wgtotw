@@ -1,11 +1,11 @@
-<h1>Användarinfo</h1>
-<p>
+<h2>Användare</h2>
+
 <?php if ($user->getProperties()['deleted'] != null) : ?>
-Den här användaren är borttagen och kan inte redigeras. Gå till <a 
+<p>Den här användaren är borttagen och kan inte redigeras. Gå till <a 
 href="<?=$this->di->get('url')->create('users/discarded')?>">papperskorgen</a> 
-för att återställa användaren eller för att radera användaren permanent.
+för att återställa användaren eller för att radera användaren permanent.</p>
 <?php endif; ?>
-</p>
+
 <?php 
     $class = "";
     if ($user->getProperties()['deleted'] != null) {
@@ -27,13 +27,16 @@ för att återställa användaren eller för att radera användaren permanent.
 
 <h4><i class="<?=$faclass?>"></i> <?=$user->getProperties()['acronym']?> 
 (id <?=$user->getProperties()['id']?>)</h4>
-<p><img src='<?=$user->getProperties()['gravatar']?>?s=50'></p>
-<p><em>Namn: <?=$user->getProperties()['name']?></em>
-<br><?=$user->getProperties()['email']?></p>
-<p><?=$status?> <?=$date?>
+<table>
+<tr><td>
+<img src='<?=$user->getProperties()['gravatar']?>?s=50'></td>
+<td><?=$user->getProperties()['name']?> 
+<br><?=$user->getProperties()['email']?>
+<br>Status: <?=$status?> <?=$date?>
 <br>Skapades <?=$user->getProperties()['created']?>
 <br><?=isset($user->getProperties()['updated'])?"Uppdaterad 
-".$user->getProperties ( ) [ 'updated' ]:'';?></p>
+".$user->getProperties ( ) [ 'updated' ]:'';?>
+</td></tr></table>
 <p>
 <?php if ($user->getProperties()['deleted'] == null) : ?>
     <a 

@@ -73,9 +73,26 @@ $app->router->add('', function() use ($app) {
     $app->theme->setTitle("Me");
  
    
-    $app->views->add('default/page', [
-	'title' => 'Hello',
-        'content' => 'Hello',
+    $app->views->add('wgtotw/plain', [
+        'content' => 'Allt om att skapa konst!',
+    ], 'flash');
+    
+    $app->dispatcher->forward([
+    'controller' => 'issues',
+    'action'     => 'list-latest',
+    'params'     => [10],
+    ]);
+    
+    $app->dispatcher->forward([
+    'controller' => 'content-tag',
+    'action'     => 'list-most-used',
+    'params'     => ['tagid', 15],
+    ]);
+    
+    $app->dispatcher->forward([
+    'controller' => 'users',
+    'action'     => 'list-most-active',
+
     ]);
     
 
@@ -117,16 +134,47 @@ $app->router->add('tags', function() use ($app) {
     ]);
 });
 
-/*
-$app->router->add('setup', function() use ($app) {
- 
-    $app->theme->setTitle("Återställ databasen");
-    $app->views->add('users/reset-users', [
-        'title' => "Återställ databas",
-    ], 'main');
-    $app->views->add('users/adminmenu', [], 'sidebar');
-});
 
+$app->router->add('setup', function() use ($app) {
+		
+	$app->db->setVerbose();	
+ 
+	$app->dispatcher->forward([
+        'controller' => 'users',
+        'action'     => 'reset-users',
+    ]);	
+		
+	$app->dispatcher->forward([
+        'controller' => 'issues',
+        'action'     => 'setup-populate',
+    ]);
+    
+    $app->dispatcher->forward([
+        'controller' => 'tag-basic',
+        'action'     => 'setup-content',
+    ]);
+    
+    $app->dispatcher->forward([
+        'controller' => 'tag-basic',
+        'action'     => 'auto-populate',
+    ]);
+    
+    $app->dispatcher->forward([
+        'controller' => 'content-tag',
+        'action'     => 'setup-content',
+    ]);
+    
+    $app->dispatcher->forward([
+        'controller' => 'answer',
+        'action'     => 'setup-answer',
+    ]);
+    
+    $app->dispatcher->forward([
+        'controller' => 'comments',
+        'action'     => 'setup-comment',
+    ]);
+});
+/*
 
 $app->router->add('setup-comments', function() use ($app) {
  

@@ -38,13 +38,46 @@ public function initialize()
 public function listAction()
 {
  
-    $all = $this->content->findAll();
+    $all = $this->content->findAllMatches('answer', 'id', 'pagekey');
     
-    $this->theme->setTitle("Content");
-    $this->views->add('contenttags/list-all', [
+    $this->theme->setTitle("Frågor");
+    
+    if ($this->user->isLoggedIn()) {
+
+     $this->views->add('contenttags/new-issue', [
+    ], 'flash');
+    }
+    else 
+    {
+    $this->views->add('users/login-message', [
+    ], 'flash');    
+    }
+    
+   $this->views->add('contenttags/list-all-headers', [
         'content' => $all,
         'user' => $this->user,
-        'title' => "All content",
+
+        'subtitle' => "De senast ställda frågorna",
+    ], 'main');
+
+}
+
+/**
+ * List latest content
+ * @param $num number of posts to show
+ *
+ * @return void
+ */
+public function listLatestAction($num)
+{
+ 
+    $all = $this->content->findAllMatchesLim('answer', 'id', 'pagekey', $num);
+    
+    $this->views->add('contenttags/list-all-headers', [
+        'content' => $all,
+        'user' => $this->user,
+        'subtitle' => "De senast ställda frågorna",
+        'link' => "<a href='".$this->url->create('issues/list')."'>Se alla frågor</a>",
     ], 'main');
 
 }
@@ -58,13 +91,15 @@ public function listAction()
 public function listByTagAction($tagid)
 {
  
-    $all = $this->contenttags->findPostsByTag($tagid, 'tagbasic', 'issues');
+    $all = $this->content->findAllMatchesByTag($tagid);
+    $tag = $this->tags->find($tagid);
+    $tagname = $this->tags->getProperties()['tagname'];
     
-    $this->theme->setTitle("Content");
-    $this->views->add('content/list-all', [
+    $this->theme->setTitle("Frågor i kategorin ".$tagname);
+    $this->views->add('contenttags/list-all-headers', [
         'content' => $all,
         'user' => $this->user,
-        'title' => "All content",
+        'subtitle' => "Frågor i kategorin <em>".$tagname."</em>",
     ], 'main');
 
 }
@@ -77,15 +112,12 @@ public function listByTagAction($tagid)
 public function listByUserAction($acronym)
 {
  
-    $all = $this->content->query()
-        ->where('acronym = ?')
-        ->execute([$acronym]);
+    $all = $this->content->findAllMatchesUser('answer', 'id', 'pagekey', $acronym);
     
-    $this->theme->setTitle("Content");
-    $this->views->add('content/list-all', [
+    $this->views->add('contenttags/list-all-headers', [
         'content' => $all,
         'user' => $this->user,
-        'title' => "Frågor",
+        'subtitle' => "Ställda frågor",
     ], 'main');
 
 }
@@ -104,7 +136,19 @@ public function idAction($id = null)
     $tags = $this->contenttags->findTagsByPost($id, 'tagbasic', 'issues');
     
    
-    $this->theme->setTitle("Content");
+    $this->theme->setTitle("Fråga: ". $post->getProperties()['title']);
+    
+        if ($this->user->isLoggedIn()) {
+
+     $this->views->add('contenttags/new-issue', [
+    ], 'flash');
+    }
+    else 
+    {
+    $this->views->add('users/login-message', [
+    ], 'flash');    
+    }
+    
     $this->views->add('contenttags/view', [
         'controller' => 'issues',
         'post' => $post,
@@ -150,16 +194,109 @@ public function idAction($id = null)
  */
 public function addAction()
 {
-
+	$tags = $this->tags->findAll();
     $acronym = $this->user->getLoggedInUser();
+    
+    $taglist = array();
+    
+    foreach ($tags as $tag) {
+    	$taglist[] = $tag->getProperties()['tagname'];
+    }
 
-    $this->di->theme->setTitle("Add content");
-    $this->di->views->add('content/add', [
-        'title' => "Add content",
-        'user' => $acronym,
+    $this->di->theme->setTitle("Ställ fråga");
+    
+     if ($this->user->isLoggedIn()) {
+    $this->showFormAction('', $acronym, $taglist);
+     }
+     else {
+     $this->di->views->add('wgtotw/plain', [
+        'content' => 'Du måste logga in för att posta frågor',
         ], 'main');
+     }
+    
+}
+
+
+/**
+ * Update content.
+ *
+ * @param $id of content to update.
+ *
+ * @return void
+ */
+public function updateAction($id = null)
+{
+
+    if (!isset($id)) {
+        die("Missing id");
+    }
+    
+    $content = $this->content->find($id);
+    $title = $content->getProperties()['title'];
+    $data = $content->getProperties()['data'];
+    $postacronym = $content->getProperties()['acronym'];
+
+        
+    $useracronym = $this->user->getLoggedInUser();
+    $tags = $this->tags->findAll();
+    $taglist = array();
+    
+    foreach ($tags as $tag) {
+    	$taglist[] = $tag->getProperties()['tagname'];
+    }
+    
+    $checktags = $this->contenttags->findTagsByPost($id);
+    $checked = array();
+    
+    foreach ($checktags as $tag) {
+    	$checked[] = $tag->getProperties()['tagname'];
+    }
+
+
+    $this->di->theme->setTitle("Ställ fråga");
+    
+     if ($this->user->isLoggedIn()) {
+     
+      if ($useracronym == $postacronym) {
+	$this->showFormEditAction($id, $title, $data, $acronym, $taglist, $checked, '');
+      }
+      else {
+      $this->views->add('users/loginedit-message', [
+    ], 'flash');  
+      }
+     }
+     else {
+     $this->views->add('users/login-message', [
+    ], 'flash');  
+     }
 
 }
+
+
+
+public function showFormAction($redirect, $acronym, $taglist) 
+    {
+	$form = new \Anax\HTMLForm\CFormIssueAdd($redirect, $acronym, $taglist);
+	$form->setDI($this->di);
+	$form->check();
+	    
+	$this->di->views->add('wgtotw/plain', [
+	   'content' => $form->getHTML(), 
+	], 'main');
+        
+    }
+    
+    public function showFormEditAction($id, $title, $data, $acronym, $taglist, $checked, $redirect) 
+    {
+	$form = new \Anax\HTMLForm\CFormIssueEdit($id, $title, $data, $acronym, $taglist, $checked, $redirect);
+	$form->setDI($this->di);
+	$form->check();
+	    
+	$this->di->views->add('wgtotw/plain', [
+	   'content' => $form->getHTML(), 
+	], 'main');
+        
+    }
 
 
 /**
@@ -209,48 +346,7 @@ public function postFormAction()
     }
 }
 
-/**
- * Update content.
- *
- * @param $id of content to update.
- *
- * @return void
- */
-public function updateAction($id = null)
-{
 
-    if (!isset($id)) {
-        die("Missing id");
-    }
-    
-    $content = $this->content->find($id);
-    $title = $content->getProperties()['title'];
-    $url = $content->getProperties()['url'];
-    $slug = $content->getProperties()['slug'];
-    $data = $content->getProperties()['data'];
-    $acronym = $content->getProperties()['acronym'];
-    $filter = $content->getProperties()['filter'];
-    $type = $content->getProperties()['type'];
-    $deleted = $content->getProperties()['deleted'];
-    $published = $content->getProperties()['published'];
-    
-    $this->di->theme->setTitle("Edit content");
-    $this->di->views->add('content/edit', [
-        'header' => "Edit content",
-        'title' => $title,
-        'url' => $url,
-        'slug' => $slug,
-        'data' => $data,
-        'acronym' => $acronym,
-        'filter' => $filter,
-        'type' => $type,
-        'deleted' => $deleted,
-        'published' => $published,
-        'id' => $id,
-        
-        ]);
-
-}
 
 
 /**
@@ -434,7 +530,7 @@ public function setupContentAction()
         'Vilket akvarellpapper är bäst?',
         'vilket-akvarellpapper-ar-bast',
         'Jag ska göra en målning i akvarell och undrar vilket papper som är bäst.',
-        'user',
+        'maria',
         $now,
         $now
     ]);
@@ -452,7 +548,34 @@ public function setupContentAction()
         'Saknar inspiration',
         'saknar-inspiration',
         'Hur gör man för att få inspiration? Jag känner mig kreativ men har inga idéer.',
-        'user',
+        'admin',
+        $now,
+        $now
+     ]);
+     
+     $this->db->execute([
+        'Skapa digital konst',
+        'skapa-digital-konst',
+        'Hur gör ni om ni ska göra digitala konstverk? Har ni några speciella verktyg, program...?',
+        'doe',
+        $now,
+        $now
+    ]);
+ 
+    $this->db->execute([
+        'Färgläggning',
+        'farglaggning',
+        'Tycker det är svårt att hitta bra färgkombinationer. Har ni några bra tips?',
+        'maria',
+        $now,
+        $now
+     ]);
+     
+     $this->db->execute([
+        'En bra butik med pennor?',
+        'en-bra-butik-med-pennor',
+        'Letar efter en butik med ett stort utbud av pennor. Bra kvalitet!',
+        'doe',
         $now,
         $now
      ]);
@@ -473,12 +596,7 @@ public function setupContentAction()
     $this->setupContentAction();
     $this->autoPopulateAction();
     
-    $this->dispatcher->forward([
-        'controller' => 'issues',
-        'action'     => 'list',
-
-    ]);
-    
+  
   
   }
 

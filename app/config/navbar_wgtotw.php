@@ -18,6 +18,7 @@ return [
             'url'   => $this->di->get('url')->create(''),
             'title' => 'Hem',
             'mark-if-parent-of' => 'home',
+            'class' => 'home'
         ],
  
         
@@ -27,6 +28,7 @@ return [
             'url'   => $this->di->get('url')->create('issues'),
             'title' => 'Frågor',
             'mark-if-parent-of' => 'issues',
+            'class' => 'issues'
             
         ],
 
@@ -34,7 +36,8 @@ return [
         'tags' => [
             'text'  =>'Taggar',
             'url'   => $this->di->get('url')->create('tags'),
-            'title' => 'Taggar'
+            'title' => 'Taggar',
+            'class' => 'tags'
         ],
         
         
@@ -44,6 +47,7 @@ return [
             'url'   => $this->di->get('url')->create('users'),
             'title' => 'Användare i databasen', 
             'mark-if-parent-of' => 'users',
+            'class' => 'users',
             
             // Here we add the submenu, with some menu items, as part of a existing menu item
             'submenu' => [
@@ -99,14 +103,16 @@ return [
         'about' => [
             'text'  =>'Om oss',
             'url'   => $this->di->get('url')->create('about'),
-            'title' => 'Om oss'
+            'title' => 'Om oss',
+            'class' => 'about',
         ],
         
         // This is a menu item
         'login' => [
             'text'  =>'Logga in',
             'url'   => $this->di->get('url')->create('login'),
-            'title' => 'Logga in'
+            'title' => 'Logga in',
+            'class' => 'login',
         ],
     ],
  

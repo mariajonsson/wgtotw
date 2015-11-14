@@ -9,6 +9,8 @@ namespace Anax\Comments;
 class Answer extends \Anax\MVC\CDatabaseModel
 {
 
+
+
   public function findAll($pagekey=null)
 	{
 	
@@ -40,6 +42,8 @@ class Answer extends \Anax\MVC\CDatabaseModel
     	parent::find($id);
     }
     }
+    
+
     
 
 

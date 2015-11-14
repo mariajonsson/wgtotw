@@ -20,6 +20,7 @@ body {
 .siteslogan {
   font-family: @fontFamilyHeadings;
   font-style: italic;
+  font-size: @magicNumber;
 }
 
 /** --------------------------------------------------------------
@@ -27,7 +28,7 @@ body {
  */
 h1, h2, h3, h4, h5, h6 {
   font-family: @fontFamilyHeadings;
-  color: @darkMagenta;
+  color: @blue;
   margin-top: 0;
   margin-bottom: @magicNumber;
   img {
@@ -46,7 +47,7 @@ h1 {
 h2 {
   .font-size(@fontSizeH2);
   font-weight: normal;
-  color: @darkBlue;
+  color: @blue;
   & ~ h3 {
     margin-top: @magicNumber;
   }
@@ -55,23 +56,24 @@ h2 {
 h3 {
   .font-size(@fontSizeH3);
   font-weight: normal;
-  color: @darkBlue;
+  color: @blue;
 }
+
 
 h4 {
   .font-size(@fontSizeH4);
   font-weight: normal;
-  color: @darkBlue;
+  color: @blue;
 }
 
 h5 {
   .font-size(@fontSizeH5);
-  color: @darkBlue;
+  color: @blue;
 }
 
 h6 {
   .font-size(@fontSizeH6);
-  color: @darkBlue;
+  color: @blue;
 }
 
 /*
@@ -221,6 +223,13 @@ article table,
 .table {
   margin-bottom: @magicNumber;
   width: 100%;
+}
+
+article table, 
+.active {
+  margin-bottom: @magicNumber;
+  margin-top: @magicNumber/2;
+  width: auto;
 }
 
 article caption,

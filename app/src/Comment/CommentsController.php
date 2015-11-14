@@ -45,7 +45,7 @@ class CommentsController implements \Anax\DI\IInjectionAware
         }
         
         else {
-	  $this->hideForm();
+	  //$this->hideForm();
         }
 
         $this->views->add('comment/comments', [

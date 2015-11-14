@@ -34,6 +34,43 @@ public function findAll()
     return $this->db->fetchAll();
 }
 
+
+/**
+ * Find and return all.
+ *
+ * @return array
+ */
+public function findLimited($num)
+{
+    $this->db->select()
+             ->from($this->getSource())
+             ->limit($num);
+ 
+    $this->db->execute();
+    $this->db->setFetchModeClass(__CLASS__);
+    return $this->db->fetchAll();
+}
+
+/**
+ * Find and return all.
+ *
+ * @return array
+ */
+public function findMostUsed($columnname, $limit=0)
+{
+    $this->db->select('*, COUNT('.$columnname.') AS total')
+             ->from($this->getSource())
+             ->groupBy($columnname)
+             ->orderBy('total DESC')
+             ->limit($limit);
+ 
+    $this->db->execute();
+    $this->db->setFetchModeClass(__CLASS__);
+    return $this->db->fetchAll();
+}
+
+
+
 /**
  * Get object properties.
  *
@@ -237,5 +274,11 @@ public function execute($params = [])
     $this->db->setFetchModeClass(__CLASS__);
  
     return $this->db->fetchAll();
+}
+
+public function findLast()
+{
+$id = $this->db->lastInsertId();
+return $id;
 }
 }

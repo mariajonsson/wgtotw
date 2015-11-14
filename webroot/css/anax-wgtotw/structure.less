@@ -10,7 +10,7 @@ body {
 
 
 a {
-  color: #088D00;
+  color: @greener;
   text-decoration: none;
 }
 
@@ -81,13 +81,13 @@ th {
 
 .sitetitle {
   position: absolute;
-  top: @magicNumber / 3;
+  top: @magicNumber;
   left: 130px;
 }
 
 .siteslogan {
   position: absolute;
-  top: @magicNumber * 2;
+  top: @magicNumber * 3;
   left: 130px;
   color: #666;
 }
@@ -120,9 +120,13 @@ th {
  */
 .article1 {
 
-  background-color: @lightGrey;
   padding: 10px;
-  
+
+  h4 {
+  padding: 2px;
+  color: black;
+  border-bottom: 3px solid black;
+  }
 }
 
 .info {
@@ -160,10 +164,16 @@ th {
 * Column layout
 */
 
-#header,
+
 #navbar,
 #flash,
 #footer {
+    .column(@columns);
+    margin-bottom: @magicNumber;
+}
+
+#header
+{
     .column(@columns);
     margin-bottom: @magicNumber;
 }
@@ -195,4 +205,9 @@ th {
 #footer-col-4 {
     .column(@columns / 4);
     margin-bottom: @magicNumber;
+}
+
+
+.content-divider {
+  margin-bottom: @magicNumber*2;
 }

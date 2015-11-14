@@ -50,7 +50,7 @@ class AnswerController implements \Anax\DI\IInjectionAware
         }
         
         else {
-	  $this->hideForm();
+	  //$this->hideForm();
         }
         
        	$postformid = $this->getFormId();
@@ -117,7 +117,7 @@ class AnswerController implements \Anax\DI\IInjectionAware
     public function hideForm() 
     {
     
-      $this->di->views->addString('Logga in för att kommentera', 'main');
+      $this->di->views->addString('', 'main');
     }
 
     public function showHideForm($pagekey, $redirect, $formid = 'answer') 
@@ -216,14 +216,7 @@ class AnswerController implements \Anax\DI\IInjectionAware
 	  null
       ]);
       
-	  $this->di->theme->setTitle("Kommentarer");
-	  $this->di->views->add('comment/index');
-	  $formvisibility = $this->di->request->getPost('form');
-	  $this->di->dispatcher->forward([
-        'controller' => 'comments',
-        'action'     => 'view',
-        'params'     => ['comment-page', $formvisibility,'comment'],
-    ]);
+	  
     
     }
 

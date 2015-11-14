@@ -6,7 +6,7 @@ namespace Meax\Content;
  * Model for Content.
  *
  */
-class ContentTag extends \Meax\MVC\CDatabaseModel
+class ContentTag extends \Anax\MVC\CDatabaseModel
 {
 
 	
@@ -15,7 +15,7 @@ class ContentTag extends \Meax\MVC\CDatabaseModel
  *
  * @return array
  */
-public function findTagsByPost($contentid, $tagstable, $contenttable)
+public function findTagsByPost($contentid, $tagstable='tagbasic', $contenttable='issues')
 {
 
     $this->db->select('tagname, tagid')
@@ -49,4 +49,34 @@ public function findPostsByTag($tagid, $tagstable, $contenttable)
 }
 
 
+
+public function findMostUsedTags() {
+    
+    $matches = $this->db->select('*, tagname, COUNT(tagid) AS total')
+             ->from($this->getSource())
+             ->join('tagbasic', 'id = tagid')
+             ->groupBy('tagid')
+             ->orderBy('total DESC')
+             ->executeFetchAll();
+             
+    return $matches;
+
+    }
+    
+/**
+ * Delete row.
+ *
+ * @param integer $id to delete.
+ *
+ * @return boolean true or false if deleting went okey.
+ */
+public function deleteByPost($postid)
+{
+    $this->db->delete(
+        $this->getSource(),
+        'contentid = ?'
+    );
+ 
+    return $this->db->execute([$postid]);
+}
 }

@@ -39,6 +39,17 @@ public function listAction()
 
 }
 
+public function listMostUsedAction($val, $num)
+{
+    $all = $this->content->findMostUsedTags();
+    $this->views->add('tags/list-most-used', [
+        'content' => $all,
+        'subtitle' => "Mest använda taggar",
+
+    ], 'main');
+
+}
+
 
 /**
  * List content with id.
@@ -315,6 +326,97 @@ public function setupContentAction()
        
     }
     
+    public function autoPopulateAction()
+    {
+    
 
+    $this->db->insert(
+        'contenttag',
+        ['tagid', 'contentid']
+    );
+ 
+
+    $this->db->execute([
+        1,
+        6
+    ]);
+ 
+    $this->db->execute([
+        2,
+        1
+     ]);
+     
+     $this->db->execute([
+        2,
+        2
+     ]);
+     
+      $this->db->execute([
+        3,
+        4
+    ]);
+ 
+    $this->db->execute([
+        3,
+        6
+     ]);
+     
+     $this->db->execute([
+        7,
+        1
+     ]);
+     
+      $this->db->execute([
+        8,
+        6
+    ]);
+ 
+    $this->db->execute([
+        10,
+        1
+     ]);
+     
+     $this->db->execute([
+        14,
+        4
+     ]);
+     
+     $this->db->execute([
+        17,
+        3
+     ]);
+     
+     $this->db->execute([
+        18,
+        3
+     ]);
+     
+      $this->db->execute([
+        19,
+        3
+    ]);
+ 
+    $this->db->execute([
+        20,
+        1
+     ]);
+     
+     $this->db->execute([
+        20,
+        2
+     ]);
+     
+    
+    
+}
+    
+  public function setupPopulateAction() 
+  {
+  
+    $this->setupContentAction();
+    $this->autoPopulateAction();
+    
+  
+  }
 
 }

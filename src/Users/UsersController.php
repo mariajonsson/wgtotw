@@ -41,6 +41,52 @@ public function listAction()
 }
 
 /**
+ * List most active users.
+ *
+ * @return void
+ */
+public function listMostActiveAction()
+{
+    //$this->db->setVerbose();
+    $answers = $this->users->findMostAnswers();
+    $issues = $this->users->findMostIssues();
+    $comments = $this->users->findMostComments();
+    $users = $this->users->findMostActive();
+    
+    $this->di->views->add('wgtotw/plain', [
+        'content' => '<h3>Användare med mest aktivitet</h3>', 
+        
+    ], 'sidebar');
+    
+    $this->views->add('users/list-most-active', [
+       'title' => "Mest aktiva totalt",
+       'users'  => $users,
+       'activity' => 'totalt',
+    ], 'sidebar');
+    
+    $this->views->add('users/list-most-active', [
+       'title' => "Flest frågor",
+       'users'  => $issues,
+       'activity' => 'frågor',
+    ], 'sidebar');
+    
+    $this->views->add('users/list-most-active', [
+       'title' => "Flest svar",
+       'users'  => $answers,
+       'activity' => 'svar',
+    ], 'sidebar');
+    
+    $this->views->add('users/list-most-active', [
+       'title' => "Flest kommentarer",
+       'users'  => $comments,
+       'activity' => 'kommentarer',
+    ], 'sidebar');
+    
+    
+
+}
+
+/**
  * List user with id.
  *
  * @param int $id of user to display
