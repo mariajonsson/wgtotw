@@ -61,7 +61,7 @@ class CFormIssueEdit extends \Mos\HTMLForm\CForm
             'submit-issue' => [
                 'type'      => 'submit',
                 'callback'  => [$this, 'callbackSubmit'],
-                'value'     => 'Posta',
+                'value'     => 'Uppdatera',
             ],
             'reset' => [
                 'type'      => 'reset',
@@ -137,7 +137,7 @@ class CFormIssueEdit extends \Mos\HTMLForm\CForm
      */
     public function callbackReset()
     {
-         $this->redirectTo($this->redirect);
+         $this->redirectTo();
     }
 
 
@@ -159,7 +159,7 @@ class CFormIssueEdit extends \Mos\HTMLForm\CForm
      */
     public function callbackSuccess()
     {
-        $this->redirectTo('issues');
+        $this->redirectTo($this->redirect);
     }
 
 

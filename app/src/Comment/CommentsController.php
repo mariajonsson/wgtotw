@@ -130,7 +130,7 @@ class CommentsController implements \Anax\DI\IInjectionAware
         $comment = $comments->findComment($pagekey, $id);
         $comment = (is_object($comment[0])) ? get_object_vars($comment[0]) : $comment;
 
-        $form = new \Anax\HTMLForm\CFormCommentEdit($id, $comment['content'], $comment['name'], $comment['web'], $comment['mail'], $pagekey, $redirect);
+        $form = new \Anax\HTMLForm\CFormCommentEdit($id, $comment['content'], $comment['name'], $pagekey, 'issues/id/'.$pagekey);
 	$form->setDI($this->di);
 	$form->check();
         

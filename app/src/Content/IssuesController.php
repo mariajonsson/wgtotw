@@ -229,9 +229,7 @@ public function updateAction($id = null)
         die("Missing id");
     }
     
-    $content = $this->content->find($id);
-    $title = $content->getProperties()['title'];
-    $data = $content->getProperties()['data'];
+   
     $postacronym = $content->getProperties()['acronym'];
 
         
@@ -256,7 +254,7 @@ public function updateAction($id = null)
      if ($this->user->isLoggedIn()) {
      
       if ($useracronym == $postacronym) {
-	$this->showFormEditAction($id, $title, $data, $acronym, $taglist, $checked, '');
+	$this->showFormEditAction($id, $title, $data, $postacronym, $taglist, $checked, 'issues/id/'.$id);
       }
       else {
       $this->views->add('users/loginedit-message', [

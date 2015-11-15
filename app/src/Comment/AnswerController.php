@@ -172,28 +172,39 @@ class AnswerController implements \Anax\DI\IInjectionAware
     {
  
     	//$undourl = '<p><a href="'.$this->di->get('url')->create($redirect).'">Ångra</p>';
-    	
+    	/*
     	$form1 = new \Anax\HTMLForm\CFormCommentUndo($redirect);
 	$form1->setDI($this->di);
 	$form1->check();
-	$undourl = $form1->getHTML();
+	$undourl = $form1->getHTML();*/
 	    
-        $comments = new \Anax\Comments\Comments();
-        $controller = 'comments';
-        $comments->setDI($this->di);
+        $answers = new \Anax\Comments\Answer();
+        $controller = 'answer';
+        $answers->setDI($this->di);
         
-        $comment = $comments->findComment($pagekey, $id);
-        $comment = (is_object($comment[0])) ? get_object_vars($comment[0]) : $comment;
+        $answer = $answers->findAnswer($pagekey, $id);
 
-        $form = new \Anax\HTMLForm\CFormCommentEdit($id, $comment['content'], $comment['name'], $comment['web'], $comment['mail'], $pagekey, $redirect);
+        $form = new \Anax\HTMLForm\CFormAnswerEdit($pagekey, 'issues/id/'.$pagekey, $answer[0]->name, $id, $answer[0]->content);
 	$form->setDI($this->di);
 	$form->check();
         
-        $this->theme->setTitle("Redigera kommentar");
+        $this->theme->setTitle("Redigera svar");
         
         $this->di->views->add('default/page', [
-	    'title' => "Redigera kommentar",
-	    'content' => '<h4>Kommentarid #'.$id.'</h4>'.$form->getHTML().$undourl, 
+	    'title' => "Redigera svar",
+	    'content' => '<h4>Svarsid #'.$id.'</h4>'.$form->getHTML(), 
+	    ], 'main');
+	
+	$issue = new \Meax\Content\Issues();
+        $issue->setDI($this->di);
+	
+	$content = $issue->find($pagekey);
+        $title = $content->getProperties()['title'];
+        $data = $content->getProperties()['data'];
+        
+        $this->di->views->add('contenttags/reply-issue', [
+	    'title' => $title, 
+	    'data'  => $data,
 	    ], 'main');
         
     }

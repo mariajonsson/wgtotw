@@ -3,15 +3,14 @@
 namespace Anax\HTMLForm;
 
 /**
- * Form to edit comment
+ * Form to add comment
  *
  */
-class CFormCommentEdit extends \Mos\HTMLForm\CForm
+class CFormAnswerEdit extends \Mos\HTMLForm\CForm
 {
     use \Anax\DI\TInjectionaware,
         \Anax\MVC\TRedirectHelpers;
 
-    private $id; 
     private $pagekey;
     private $redirect;
 
@@ -19,45 +18,45 @@ class CFormCommentEdit extends \Mos\HTMLForm\CForm
      * Constructor
      *
      */
-    public function __construct($id, $content, $name, $pagekey, $redirect)
+    public function __construct($pagekey, $redirect, $acronym, $id, $answer)
     {
-        parent::__construct([], [
+        parent::__construct(['id' => 'answer'], [
         	
-        	'content' => [
+            'answer' => [
                 'type'        => 'textarea',
-                'label'       => 'Kommentar',
-                'value'       =>  $content,
+                'label'       => '<big><strong>Uppdatera ditt svar</strong></big>',
                 'required'    => true,
+                'value'       => $answer,
                 'validation'  => ['not_empty'],
             ],
             
             'name' => [
                 'type'        => 'hidden',
-                'value'       =>  $name,
+                'value'       => $acronym,
                 'required'    => true,
                 'validation'  => ['not_empty'],
             ],
             
-                       
-            'submit' => [
+            'answerid' => [
+                'type'        => 'hidden',
+                'value'       => $id,
+                'validation'  => ['not_empty'],
+            ],
+        
+         
+            'submitanswer' => [
                 'type'      => 'submit',
                 'callback'  => [$this, 'callbackSubmit'],
-                'value'     => 'Spara',
+                'value'     => 'Uppdatera',
             ],
             'reset' => [
                 'type'      => 'reset',
+                //'callback'  => [$this, 'callbackReset'],
                 'value'     => 'Återställ',
-            ],
-            
-            'delete' => [
-                'type'      => 'submit',
-                'callback'  => [$this, 'callbackDelete'],
-                'value'     => 'Radera',
             ],
             
         ]);
         
-        $this->id = $id;
         $this->pagekey = $pagekey;
         $this->redirect = $redirect;
     }
@@ -83,35 +82,42 @@ class CFormCommentEdit extends \Mos\HTMLForm\CForm
      */
     public function callbackSubmit()
     {
-
+    	
         $now = date('Y-m-d H:i:s');
-        
-        $this->comment = new \Anax\Comments\Comments();
-        $this->comment->setDI($this->di);
-        $saved = $this->comment->save(array('id' => $this->id, 'content' => $this->Value('content'),  'name' => $this->Value('name'), 'pagekey' => $this->pagekey, 'updated' => $now, 'ip' => $this->di->request->getServer('REMOTE_ADDR')));
+	if (!empty($_POST['submitanswer'])) {
+	$this->newanswer = new \Anax\Comments\Answer();
+        $this->newanswer->setDI($this->di);
+        $saved = $this->newanswer->save(array('id' => $this->Value('answerid'), 'content' => $this->Value('answer'), 'name' => $this->Value('name'), 'pagekey' => $this->pagekey, 'updated' => $now));
     
-	//$this->saveInSession = true;
+       // $this->saveInSession = true;
         
         if($saved) 
         {
         return true;
         }
+        }
+       
         else return false;
     }
-    
-    public function callbackDelete()
+
+     /**
+     * Callback reset
+     *
+     */
+    public function callbackReset()
     {
-    	$this->comment = new \Anax\Comments\Comments();
-        $this->comment->setDI($this->di);
-        
-        $deleted = $this->comment->delete($this->id);
-        
-        if($deleted) 
-        {
-        return true;
-        }
-        else return false;
-    	
+         $this->redirectTo($this->redirect);
+    }
+
+
+    /**
+     * Callback for submit-button.
+     *
+     */
+    public function callbackSubmitFail()
+    {
+        $this->AddOutput("<p><i>DoSubmitFail(): Form was submitted but I failed to process/save/validate it</i></p>");
+        return false;
     }
 
 
@@ -133,6 +139,6 @@ class CFormCommentEdit extends \Mos\HTMLForm\CForm
     public function callbackFail()
     {
         $this->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
-        
+        //$this->redirectTo('comments/edit');
     }
 }
