@@ -118,6 +118,8 @@ class CommentsController implements \Anax\DI\IInjectionAware
  
     	//$undourl = '<p><a href="'.$this->di->get('url')->create($redirect).'">Ångra</p>';
     	
+    	
+    	
     	$form1 = new \Anax\HTMLForm\CFormCommentUndo($redirect);
 	$form1->setDI($this->di);
 	$form1->check();
@@ -129,6 +131,9 @@ class CommentsController implements \Anax\DI\IInjectionAware
         
         $comment = $comments->findComment($pagekey, $id);
         $comment = (is_object($comment[0])) ? get_object_vars($comment[0]) : $comment;
+        
+        $user = new \Anax\Users\User();
+        $user->setDI($this->di);
 
         $form = new \Anax\HTMLForm\CFormCommentEdit($id, $comment['content'], $comment['name'], $pagekey, 'issues/id/'.$pagekey);
 	$form->setDI($this->di);
@@ -136,10 +141,26 @@ class CommentsController implements \Anax\DI\IInjectionAware
         
         $this->theme->setTitle("Redigera kommentar");
         
+        if ($user->isLoggedIn()) {
+	  if ($user->getLoggedInUser() == $comment['name']) {
+        
         $this->di->views->add('default/page', [
 	    'title' => "Redigera kommentar",
 	    'content' => '<h4>Kommentarid #'.$id.'</h4>'.$form->getHTML().$undourl, 
 	    ], 'main');
+	    
+	  }
+	  
+	   else {
+	 $this->views->add('users/loginedit-message', [
+	  ], 'flash'); 
+	 
+	 }
+	}
+	else {
+	 $this->views->add('users/login-message', [
+	  ], 'flash'); 
+	 }
         
     }
     

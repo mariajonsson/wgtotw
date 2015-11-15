@@ -424,4 +424,15 @@ public function resetUsersAction()
     
 }
 
+  public function noSuchUserAction()
+  {
+  
+  $this->theme->setTitle("Fel");
+    $this->views->add('default/error', [
+	'title' => "Fel",
+	'content' => "Användaren finns inte",
+    ], 'main');
+    $this->views->add('users/usermenu', [], 'sidebar');
+  }
+
 }

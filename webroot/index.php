@@ -110,10 +110,13 @@ $app->router->add('', function() use ($app) {
 $app->router->add('about', function() use ($app) {
   
     $app->theme->setTitle("Om oss");
+    
+    $content = $app->fileContent->get('about.md');
+    $content = $app->textFilter->doFilter($content, 'shortcode, markdown');
   
     $app->views->add('default/page', [
 	'title' => 'Om oss',
-        'content' => 'Hello',
+        'content' => $content,
     ]);
     
 

@@ -37,7 +37,7 @@ class CFormLogin extends \Mos\HTMLForm\CForm
             'submit' => [
                 'type'      => 'submit',
                 'callback'  => [$this, 'callbackSubmit'],
-                'value'     => 'Spara',
+                'value'     => 'Logga in',
             ],
             
         ]);
