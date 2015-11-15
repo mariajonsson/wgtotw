@@ -36,8 +36,12 @@ public function listAction()
     $this->views->add('users/list-all', [
         'users' => $all,
         'title' => "Alla användare",
+        'userinfo' => $this->users
     ], 'main');
-    $this->views->add('users/adminmenu', [], 'sidebar');
+    
+
+    $this->views->add('users/usermenu', [], 'sidebar');
+   
 }
 
 /**
@@ -103,7 +107,7 @@ public function idAction($id = null)
     $this->views->add('users/view', [
         'user' => $user,
     ], 'main');
-    $this->views->add('users/adminmenu', [], 'sidebar');
+    $this->views->add('users/usermenu', [], 'sidebar');
     
     
     $this->dispatcher->forward([
@@ -137,7 +141,7 @@ public function addAction($acronym = null)
         'content' => $form->getHTML(), 
         
         ], 'main');
-    $this->views->add('theme/info', [
+    $this->views->add('wgtotw/info', [
 	'content' => $info,
 	'class'   => 'user-instructions',
 	'links'   => array(
@@ -184,7 +188,7 @@ public function updateAction($id = null)
         'content' => "<h4>".$user->getProperties()['acronym']." 
 (id ".$user->getProperties()['id'].")</h4>".$form->getHTML()
         ]);
-    $this->views->add('theme/info', [
+    $this->views->add('wgtotw/info', [
 	'content' => $info,
 	'class'   => 'user-instructions',
 	'links'   => array(
@@ -312,6 +316,7 @@ public function activeAction()
     $this->views->add('users/list-all', [
         'users' => $all,
         'title' => "Aktiva användare",
+         'userinfo' => $this->users
     ], 'main');
     $this->views->add('users/adminmenu', [], 'sidebar');
 
@@ -329,6 +334,7 @@ public function inactiveAction()
     $this->views->add('users/list-all', [
         'users' => $all,
         'title' => "Inaktiva användare",
+         'userinfo' => $this->users
     ], 'main');
     $this->views->add('users/adminmenu', [], 'sidebar');
 }

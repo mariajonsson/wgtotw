@@ -21,16 +21,24 @@ public function initialize()
 }
   
   
-  public function ShowLoginAction() {
+  public function ShowLoginAction($message=null) {
   
     $this->loggedin = $this->users->isLoggedIn();
+    
+    $message = $this->getMessage($message);
   
     if(!$this->loggedin) {
+    
+    $this->views->add('wgtotw/plain', [
+        'content' => $message,
+      ], 'flash');
     
      $form = new \Anax\HTMLForm\CFormLogin();
      $form->setDI($this->di);
      $form->check();
       $this->theme->setTitle("Logga in");
+      
+      
 
       $this->views->add('default/page', [
         'content' => $form->getHTML(),
@@ -40,12 +48,48 @@ public function initialize()
     if($this->loggedin){
     
     $this->theme->setTitle("Logga ut");
+    
+    $this->views->add('wgtotw/plain', [
+        'content' => $message,
+      ], 'flash');
 
       $this->views->add('default/page', [
         'content' => '<a href="'.$this->di->get('url')->create('user-login/logout').'">Logga ut</a>',
-        'title' => "Logga in",
+        'title' => "Logga ut",
       ], 'main');
     }
+  
+  }
+  
+  public function getMessage($message=null) {
+  
+  switch ($message) {
+  
+  case 'success':
+  
+  $message = "Du loggades in";
+  
+  break;
+  
+  case 'fail':
+  
+  $message = "Du loggades inte in";
+  
+  break;
+  
+  case 'out':
+  
+  $message = "Du loggades ut";
+  
+  break;
+  
+  default: 
+  
+  $message = null;
+  
+  }
+  
+  return $message;
   
   }
   
@@ -62,7 +106,10 @@ public function initialize()
     $_SESSION['user']->id = $verified->id;
     $this->loggedin = true;
     
+
   }
+  
+  
   
   }
   
@@ -72,6 +119,9 @@ public function initialize()
   public function LogoutAction() {
     unset($_SESSION['user']);
     $this->loggedin = false;
+    
+    $url = $this->url->create('user-login/show-login/out');
+    $this->response->redirect($url);
 
     
   }

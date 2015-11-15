@@ -77,10 +77,12 @@ $app->router->add('', function() use ($app) {
  
     
     $app->theme->setTitle("Me");
- 
-   
+    
+    $content = $app->fileContent->get('welcome.md');
+    $content = $app->textFilter->doFilter($content, 'shortcode, markdown');
+    
     $app->views->add('wgtotw/plain', [
-        'content' => 'Allt om att skapa konst!',
+        'content' => $content,
     ], 'flash');
     
     $app->dispatcher->forward([
@@ -92,7 +94,7 @@ $app->router->add('', function() use ($app) {
     $app->dispatcher->forward([
     'controller' => 'content-tag',
     'action'     => 'list-most-used',
-    'params'     => ['tagid', 15],
+    'params'     => ['tagid', 15, 'main'],
     ]);
     
     $app->dispatcher->forward([
@@ -137,6 +139,12 @@ $app->router->add('tags', function() use ($app) {
     $app->dispatcher->forward([
     'controller' => 'tag-basic',
     'action'     => 'list',
+    ]);
+    
+    $app->dispatcher->forward([
+    'controller' => 'content-tag',
+    'action'     => 'list-most-used',
+    'params'     => ['tagid', 5, 'sidebar'],
     ]);
 });
 

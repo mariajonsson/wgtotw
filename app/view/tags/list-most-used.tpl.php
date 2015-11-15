@@ -7,7 +7,7 @@
 <?php $post = (is_object($post)) ? get_object_vars($post) : $post; ?> 
  
 <div class='tags'>
-<a href='issues/list-by-tag/<?=$id?>'><?=$post['tagname']?></a> (<?=$post['total']?>)
+<a href='issues/list-by-tag/<?=$id?>'><?=$post['tagname']?></a> <span class='smaller'>(<?=$post['total']?>)</span>
 </div>
 
 <?php endforeach; ?>

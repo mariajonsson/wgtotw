@@ -40,7 +40,7 @@
   list-style: none; 
   margin: 0; 
   padding: 0;
-
+  
 }
  
 .navbar li {
@@ -75,12 +75,15 @@
 }
 
 .navbar ul ul {
+  border-top: 1px solid black; 
+  border-bottom: 1px solid black;
   background-color: #fff; 
   padding: 2px 6px 2px 0; 
   position: absolute; 
   left: -9999px; 
   z-index: 2;
   background-color: #eee;
+  font-size: @fontSizeSmall;
 }
  
 .navbar li li {
@@ -94,12 +97,13 @@
  
 .navbar li li:hover {
   color: #666; 
-  border-color: #666;
+  //border-color: #666;
+
 }
 
 .navbar li li.selected {
   color: #222; 
-  border-color: #222;
+  //border-color: #222;
 }
 
 

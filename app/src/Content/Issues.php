@@ -15,6 +15,7 @@ class Issues extends \Anax\MVC\CDatabaseModel
              ->from($this->getSource(). ' AS t0')
              ->leftJoin($table.' AS t1', 't0.'.$match1.' = t1.'.$match2)
              ->groupBy('t0.'.$match1)
+             ->orderBy('created DESC')
              ->executeFetchAll();
              
     return $matches;

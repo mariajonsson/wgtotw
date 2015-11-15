@@ -9,6 +9,9 @@ namespace Meax\Content;
 class ContentTag extends \Anax\MVC\CDatabaseModel
 {
 
+
+
+
 	
 /**
  * Find and return all tags for a particular post.
@@ -50,13 +53,14 @@ public function findPostsByTag($tagid, $tagstable, $contenttable)
 
 
 
-public function findMostUsedTags() {
+public function findMostUsedTags($lim=0) {
     
     $matches = $this->db->select('*, tagname, COUNT(tagid) AS total')
              ->from($this->getSource())
              ->join('tagbasic', 'id = tagid')
              ->groupBy('tagid')
              ->orderBy('total DESC')
+             ->limit($lim)
              ->executeFetchAll();
              
     return $matches;

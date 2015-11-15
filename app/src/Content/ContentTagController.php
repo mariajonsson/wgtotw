@@ -39,14 +39,14 @@ public function listAction()
 
 }
 
-public function listMostUsedAction($val, $num)
+public function listMostUsedAction($val, $num, $placement)
 {
-    $all = $this->content->findMostUsedTags();
+    $all = $this->content->findMostUsedTags($num);
     $this->views->add('tags/list-most-used', [
         'content' => $all,
-        'subtitle' => "Mest använda taggar",
+        'subtitle' => "Populäraste taggarna",
 
-    ], 'main');
+    ], $placement);
 
 }
 

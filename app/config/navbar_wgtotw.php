@@ -28,7 +28,21 @@ return [
             'url'   => $this->di->get('url')->create('issues'),
             'title' => 'Frågor',
             'mark-if-parent-of' => 'issues',
-            'class' => 'issues'
+            'class' => 'issues',
+            
+            'submenu' => [
+
+                'items' => [
+
+                    // This is a menu item of the submenu
+                    'issue-add'  => [
+                        'text'  => 'Lägg till fråga',
+                        'url'   => $this->di->get('url')->create('issues/add'),
+                        'title' => 'Lägg till fråga',
+                        'class' => 'issues'
+                    ],
+                  ],
+                ],
             
         ],
 
@@ -58,42 +72,40 @@ return [
                     'all'  => [
                         'text'  => 'Alla användare',
                         'url'   => $this->di->get('url')->create('users/list'),
-                        'title' => 'Visa alla användare'
+                        'title' => 'Visa alla användare',
+                        'class' => 'users',
                     ],                    
                     // This is a menu item of the submenu
                     'active'  => [
                         'text'  => 'Aktiva användare',
                         'url'   => $this->di->get('url')->create('users/active'),
-                        'title' => 'Visa aktiva användare'
+                        'title' => 'Visa aktiva användare',
+                        'class' => 'users',
                     ],
                     
                     // This is a menu item of the submenu
                     'inactive'  => [
                         'text'  => 'Inaktiva användare',
                         'url'   => $this->di->get('url')->create('users/inactive'),
-                        'title' => 'Visa inaktiva användare'
+                        'title' => 'Visa inaktiva användare',
+                        'class' => 'users',
                     ],
                     
                     // This is a menu item of the submenu
                     'add'  => [
                         'text'  => 'Lägg till användare',
                         'url'   => $this->di->get('url')->create('users/add'),
-                        'title' => 'Lägg till användare'
+                        'title' => 'Lägg till användare',
+                        'class' => 'users',
                     ],
-                     // This is a menu item of the submenu
+                     /* This is a menu item of the submenu
                     'discarded'  => [
                         'text'  => 'Papperskorgen',
                         'url'   => $this->di->get('url')->create('users/discarded'),
                         'title' => 'Visa papperskorgen'
-                    ],
+                    ],*/
 
-                    // This is a menu item of the submenu
-                    'setup'  => [
-                        'text'  => 'Återställ databasen',
-                        'url'   => $this->di->get('url')->create('setup'),
-                        'title' => 'Återställ databasen till sitt ursprungliga skick',
-                    ],
-                ],
+                  ],
             ],
         ],
         
@@ -109,9 +121,9 @@ return [
         
         // This is a menu item
         'login' => [
-            'text'  =>'Logga in',
+            'text'  =>'Logga in/ut',
             'url'   => $this->di->get('url')->create('login'),
-            'title' => 'Logga in',
+            'title' => 'Logga in/ut',
             'class' => 'login',
         ],
     ],

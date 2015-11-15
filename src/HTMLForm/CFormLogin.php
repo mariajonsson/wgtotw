@@ -108,8 +108,8 @@ class CFormLogin extends \Mos\HTMLForm\CForm
      */
     public function callbackSuccess()
     {
-    $this->AddOutput("<p><i>Du har loggats in.</i></p>");
-      $this->redirectTo('user-login/show-login');
+    //$this->AddOutput("<p><i>Du har loggats in.</i></p>");
+      $this->redirectTo('user-login/show-login/success');
     }
 
 
@@ -119,7 +119,7 @@ class CFormLogin extends \Mos\HTMLForm\CForm
      */
     public function callbackFail()
     {
-        $this->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
-        $this->redirectTo('user-login/show-login');
+        //$this->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
+        $this->redirectTo('user-login/show-login/fail');
     }
 }

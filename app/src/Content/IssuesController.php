@@ -81,7 +81,7 @@ public function listLatestAction($num)
         'vote' => $this->vote,
         'user' => $this->user,
         'subtitle' => "De senast ställda frågorna",
-        'link' => "<a href='".$this->url->create('issues/list')."'>Se alla frågor</a>",
+        'link' => "<a href='".$this->url->create('issues/list')."'>Se alla frågor <i class='fa fa-long-arrow-right'></i></a>",
     ], 'main');
 
 }
@@ -207,9 +207,8 @@ public function addAction()
     $this->showFormAction('', $acronym, $taglist);
      }
      else {
-     $this->di->views->add('wgtotw/plain', [
-        'content' => 'Du måste logga in för att posta frågor',
-        ], 'main');
+     $this->views->add('users/login-message', [
+    ], 'flash'); 
      }
     
 }
@@ -276,7 +275,8 @@ public function showFormAction($redirect, $acronym, $taglist)
 	$form->setDI($this->di);
 	$form->check();
 	    
-	$this->di->views->add('wgtotw/plain', [
+	$this->di->views->add('default/page', [
+	   'title' => 'Ställ en fråga',
 	   'content' => $form->getHTML(), 
 	], 'main');
         
