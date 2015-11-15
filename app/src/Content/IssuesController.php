@@ -105,7 +105,9 @@ public function listByTagAction($tagid)
         'vote' => $this->vote,
         'user' => $this->user,
         'subtitle' => "Frågor i kategorin <em>".$tagname."</em>",
+        'link' => "<p><a href='".$this->url->create('issues/list')."'>Se alla frågor <i class='fa fa-long-arrow-right'></i></a></p>",
     ], 'main');
+    
 
 }
 
@@ -139,6 +141,14 @@ public function listByUserAction($acronym)
 public function idAction($id = null)
 {
     $post = $this->content->find($id);
+    
+    if(empty($post)) {
+	
+	$url = $this->url->create('issues/invalid-dbresult');
+	$this->response->redirect($url);
+     }
+	  
+    
     $tags = $this->contenttags->findTagsByPost($id, 'tagbasic', 'issues');
     $issueposter = $post->getProperties()['acronym'];
    
@@ -224,12 +234,17 @@ public function addAction()
 public function updateAction($id = null)
 {
 
-    if (!isset($id)) {
-        die("Missing id");
-    }
+    $content = $this->content->find($id);
     
-   
+    if(empty($content)) {
+	
+	$url = $this->url->create('issues/invalid-dbresult');
+	$this->response->redirect($url);
+     }
+    
     $postacronym = $content->getProperties()['acronym'];
+    $title = $content->getProperties()['title'];
+    $data = $content->getProperties()['data'];
 
         
     $useracronym = $this->user->getLoggedInUser();
@@ -295,53 +310,6 @@ public function showFormAction($redirect, $acronym, $taglist)
     }
 
 
-/**
- * 
- * Checks if a form has been posted to add or edit content
- * 
- */
-
-public function postFormAction() 
-{
-    
-    $now = date('Y-m-d H:i:s');
-    $saved = false;
-    
-    if (!empty($_POST['submit-add'])) {
-      $published = !empty($_POST['published'])?$now:null;
-      $saved = $this->content->save(array('title' => $_POST['title'], 'slug' => $_POST['slug'], 'acronym' => $_POST['acronym'], 'created' => $now, 'data' => $_POST['data'], 'published' => $published));
-    }
-    else if (!empty($_POST['submit-edit'])) {
-        if ($_POST['publisheddate'] == null && !empty($_POST['published'])) {
-	    $published = $now;
-        }
-        else if ($_POST['publisheddate'] != null && empty($_POST['published'])) {
-	    $published = null;
-        }
-        else 
-        {
-        $published = $_POST['publisheddate'];
-        }
-        
-    $saved = $this->content->save(array('id' => $_POST['id'], 'title' => $_POST['title'], 'slug' => $_POST['slug'], 'acronym' => $_POST['acronym'], 'created' => $now, 'data' => $_POST['data'],  'published' => $published));
-    }
-    
-    if ($saved) {
-      $this->dispatcher->forward([
-        'controller' => 'issues',
-        'action'     => 'list',
-
-      ]);
-    }
-    else {
-    $this->di->theme->setTitle("Error");
-    $this->di->views->add('default/page', [
-        'title' => "Something went wrong",
-        'content' => "The data wasn't saved"     
-        ], 'main');
-    }
-}
-
 
 
 
@@ -354,9 +322,11 @@ public function postFormAction()
  */
 public function deleteAction($id = null)
 {
-    if (!isset($id)) {
-        die("Missing id");
-    }
+     if(empty($id)) {
+	
+	$url = $this->url->create('issues/invalid-dbresult');
+	$this->response->redirect($url);
+     }
  
     $this->content->delete($id);
  
@@ -594,6 +564,26 @@ public function setupContentAction()
     
   
   
+  }
+  
+    public function invalidInputAction()
+  {
+  
+  $this->theme->setTitle("Fel");
+    $this->views->add('default/error', [
+	'title' => "Något blev fel",
+	'content' => "Information saknas för att kunna visa sidan:<br>".$this->di->request->getGet('url'),
+    ], 'main');
+  }
+    
+     public function invalidDbresultAction()
+  {
+  
+  $this->theme->setTitle("Fel");
+    $this->views->add('default/error', [
+	'title' => "Något blev fel",
+	'content' => "En sökning i databasen gav inga resultat",
+    ], 'main');
   }
 
 }

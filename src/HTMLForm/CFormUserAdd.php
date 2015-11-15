@@ -32,6 +32,13 @@ class CFormUserAdd extends \Mos\HTMLForm\CForm
                 'required'    => true,
                 'validation'  => ['not_empty'],
             ],
+            
+            'password' => [
+                'type'        => 'text',
+                'label'       => 'Lösenord',
+                'required'    => true,
+                'validation'  => ['not_empty'],
+            ],
             'email' => [
                 'type'        => 'text',
                 'label'       => 'E-post',
@@ -81,7 +88,7 @@ class CFormUserAdd extends \Mos\HTMLForm\CForm
 
 	$this->newuser = new \Anax\Users\User();
         $this->newuser->setDI($this->di);
-        $saved = $this->newuser->save(array('acronym' => $this->Value('acronym'), 'email' => $this->Value('email'), 'name' => $this->Value('name'), 'password' => password_hash($this->Value('acronym'), PASSWORD_DEFAULT), 'created' => $now, 'updated' => $now, 'deleted' => null, 'active' => $active, 'gravatar' => 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Value('email')))) . '.jpg'));
+        $saved = $this->newuser->save(array('acronym' => $this->Value('acronym'), 'email' => $this->Value('email'), 'name' => $this->Value('name'), 'password' => password_hash($this->Value('password'), PASSWORD_DEFAULT), 'created' => $now, 'updated' => $now, 'deleted' => null, 'active' => $active, 'gravatar' => 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Value('email')))) . '.jpg'));
     
        // $this->saveInSession = true;
         

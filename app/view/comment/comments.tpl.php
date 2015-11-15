@@ -10,12 +10,15 @@
 <?php $comment = (is_object($comment)) ? get_object_vars($comment) : $comment; ?> 
 <?php $isloggedin = ($user->getLoggedInUser()) ?>
 <?php $isloggedinposter = ($user->getLoggedInUser() == $comment['name']) ?>
-<?php $voteupicon = '<i class="fa fa-caret-up light-grey"></i>'; ?>
-<?php $votedownicon = '<i class="fa fa-caret-down light-grey"></i>'; ?>
+<?php $voteupicon = '<i class="fa fa-caret-up grey"></i>'; ?>
+<?php $votedownicon = '<i class="fa fa-caret-down grey"></i>'; ?>
 <?php if ($isloggedin) { 
+  if($vote->notAlreadyVotedUp($user->getIdForAcronym($isloggedin), $id, 'comments')) {
   $voteupicon = '<a href="'.$this->url->create("vote/vote").'/'.$user->getIdForAcronym($user->getLoggedInUser()).'/'.$id.'/comments/up/'.$pagekey.'" class="vote"><i class="fa fa-caret-up fa-lg"></i></a>';
+  }
+  if($vote->notAlreadyVotedDown($user->getIdForAcronym($isloggedin), $id, 'comments')) {
   $votedownicon = '<a href="'.$this->url->create("vote/vote").'/'.$user->getIdForAcronym($user->getLoggedInUser()).'/'.$id.'/comments/down/'.$pagekey.'" class="vote"><i class="fa fa-caret-down fa-lg"></i></a>';
-  
+  }
 }
 ?>
  
@@ -26,7 +29,9 @@
 </div>
 <div class='comment-content'>
 <?php $userid = $user->getIdForAcronym($comment['name'])?>
-<p><?=$comment['content']?> — <a href='<?=$this->url->create('users/id/'.$userid)?>'><?=$comment['name']?></a> för 
+<?php $content = $this->di->textFilter->doFilter($comment['content'], 'shortcode, markdown');?>
+<p><?=$content?></p>
+ — <a href='<?=$this->url->create('users/id/'.$userid)?>'><?=$comment['name']?></a> för 
 <?php $elapsedsec = (time()-strtotime($comment['timestamp'])); ?>
 <?php if (($elapsedsec) < 60): ?>
 <?=round($elapsedsec)?> s sedan
@@ -57,3 +62,4 @@
 
 <?php endif; ?>
 </div>
+<div class='comment-divider'></div>

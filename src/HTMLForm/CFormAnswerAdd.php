@@ -27,6 +27,7 @@ class CFormAnswerAdd extends \Mos\HTMLForm\CForm
                 'label'       => '<big><strong>Lämna ditt svar på frågan</strong></big>',
                 'required'    => true,
                 'validation'  => ['not_empty'],
+                'description' => 'Du kan använda <a href="http://daringfireball.net/projects/markdown/basics">markdown</a> för att formatera texten'
             ],
             
             'name' => [

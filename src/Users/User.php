@@ -11,23 +11,26 @@ class User extends \Anax\MVC\CDatabaseModel
 
   public function verify($acronym, $password) {
   
-  
+  $verified = null;
   $user = $this->verifyAcronym($acronym);
   
-  $verified = $this->verifyPassword($acronym, $password);  
+  if ($user != null) {
   
-  if ($verified) {
+    $verified = $this->verifyPassword($acronym, $password);  
+    if ($verified) {
   
-  return $user;
+      return $user;
   
-  }
+    }
+  }	
  
+ else return null;
   
   }
   
   public function verifyAcronym($acronym) {
   
-  $this->db->setVerbose();
+  
   $verified = $this->query()
       ->where('acronym = ?')
         ->execute([$acronym]);
@@ -37,13 +40,12 @@ class User extends \Anax\MVC\CDatabaseModel
   
   public function verifyPassword($acronym, $password) {
   
-  $this->db->setVerbose();
+ 
   
   $user = $this->query()
       ->where('acronym = ?')
         ->execute([$acronym]);
         
-  var_dump($user);
   
   $password2 = $user[0]->password;      
         

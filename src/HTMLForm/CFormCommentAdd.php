@@ -25,9 +25,9 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
             'content' => [
                 'type'        => 'textarea',
                 'label'       => 'Kommentar',
-                'value'       => $pagekey.' pagetype:'.$pagetype.' formid:'.$formid.' redirect'.$redirect,
                 'required'    => true,
                 'validation'  => ['not_empty'],
+                'description' => 'Du kan använda <a href="http://daringfireball.net/projects/markdown/basics">markdown</a> för att formatera texten'
             ],
             
             'name' => [
@@ -41,7 +41,7 @@ class CFormCommentAdd extends \Mos\HTMLForm\CForm
             'submitcomment-'.$formid => [
                 'type'      => 'submit',
                 'callback'  => [$this, 'callbackSubmitComment'],
-                'value'     => 'Spara Kommentar',
+                'value'     => 'Posta',
             ],
             'reset' => [
                 'type'      => 'reset',

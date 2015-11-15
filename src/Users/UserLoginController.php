@@ -29,16 +29,16 @@ public function initialize()
   
     if(!$this->loggedin) {
     
-    $this->views->add('wgtotw/plain', [
-        'content' => $message,
-      ], 'flash');
+    
     
      $form = new \Anax\HTMLForm\CFormLogin();
      $form->setDI($this->di);
      $form->check();
       $this->theme->setTitle("Logga in");
       
-      
+      $this->views->add('wgtotw/plain', [
+        'content' => $message,
+      ], 'flash');
 
       $this->views->add('default/page', [
         'content' => $form->getHTML(),

@@ -29,6 +29,7 @@ class CFormCommentEdit extends \Mos\HTMLForm\CForm
                 'value'       =>  $content,
                 'required'    => true,
                 'validation'  => ['not_empty'],
+                'description' => 'Du kan använda <a href="http://daringfireball.net/projects/markdown/basics">markdown</a> för att formatera texten'
             ],
             
             'name' => [
@@ -42,7 +43,7 @@ class CFormCommentEdit extends \Mos\HTMLForm\CForm
             'submit' => [
                 'type'      => 'submit',
                 'callback'  => [$this, 'callbackSubmit'],
-                'value'     => 'Spara',
+                'value'     => 'Uppdatera',
             ],
             'reset' => [
                 'type'      => 'reset',

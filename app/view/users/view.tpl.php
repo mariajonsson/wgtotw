@@ -1,5 +1,5 @@
 <h2>Användare</h2>
-
+<?php $userisloggedin = ($user->getProperties()['acronym'] == $userinfo->getLoggedInUser()) ?>
 <?php if ($user->getProperties()['deleted'] != null) : ?>
 <p>Den här användaren är borttagen och kan inte redigeras. Gå till <a 
 href="<?=$this->di->get('url')->create('users/discarded')?>">papperskorgen</a> 
@@ -38,11 +38,13 @@ för att återställa användaren eller för att radera användaren permanent.</
 ".$user->getProperties ( ) [ 'updated' ]:'';?>
 </td></tr></table>
 <p>
+<?php if ($userisloggedin || $userinfo->getLoggedInUser() == 'admin') : ?>
 <?php if ($user->getProperties()['deleted'] == null) : ?>
     <a 
 href="<?=$this->url->create('users/update').'/'.$user->getProperties()['id']?>" 
 title='Ändra'><i class="fa fa-pencil"></i> Redigera användare
 </a>
+<?php endif; ?>
 <?php endif; ?>
 </p>
 

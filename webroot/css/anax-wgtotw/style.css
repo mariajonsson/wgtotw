@@ -903,6 +903,11 @@ fieldset div p {
 label {
   font-size: 0.8em;
 }
+.cf-desc {
+  font-style: italic;
+  color: #999;
+  font-size: 0.8em;
+}
 input[type=text],
 input[type=password] {
   font-size: 1em;
@@ -926,7 +931,7 @@ form#answer {
   margin-bottom: 40px;
 }
 .comments {
-  max-width: 600px;
+  max-width: 100%;
   margin-left: 40px;
   margin-top: 15px;
   border-bottom: 1px dashed #ccc;
@@ -945,14 +950,14 @@ form#answer {
   display: inline-block;
   vertical-align: middle;
   float: left;
-  width: 80px;
+  width: 15%;
   height: 2em;
 }
 .comment-rank {
   display: inline-block;
   vertical-align: middle;
   float: left;
-  width: 1.2em;
+  width: 1.3em;
   line-height: 1em;
   color: #999;
   height: 2em;
@@ -961,7 +966,7 @@ form#answer {
   display: inline-block;
   vertical-align: middle;
   float: left;
-  width: 2.8em;
+  width: 2em;
   line-height: 1em;
   color: #999;
   height: 2em;
@@ -982,7 +987,7 @@ form#answer {
 .comment-content {
   display: inline-block;
   float: right;
-  width: 500px;
+  width: 85%;
 }
 .comment-divider {
   clear: both;
@@ -1008,7 +1013,7 @@ form#answer {
   color: black;
 }
 .answers {
-  max-width: 600px;
+  max-width: 100%;
   background-color: transparent;
 }
 .answer {
@@ -1023,7 +1028,7 @@ form#answer {
   vertical-align: top;
   text-align: center;
   float: left;
-  width: 30px;
+  width: 10%;
 }
 .answer-id a {
   vertical-align: top;
@@ -1038,7 +1043,7 @@ form#answer {
 .answer-content {
   display: inline-block;
   float: right;
-  width: 540px;
+  width: 85%;
   background-color: #F6F6F6;
   border-left: 3px solid #ccc;
   padding-left: 10px;
@@ -1176,6 +1181,27 @@ div.tags a {
   border-radius: 7px;
   line-height: 2em;
   border: 1px solid #80DC73;
+}
+.issue {
+  max-width: 100%;
+  background-color: transparent;
+}
+.issue article {
+  display: inline-block;
+  float: right;
+  width: 93%;
+}
+.issue-rank {
+  color: #999;
+  display: inline-block;
+  vertical-align: middle;
+  float: left;
+  width: 7%;
+  height: 2em;
+}
+.issue-divider {
+  clear: both;
+  height: 10px;
 }
 @font-face {
   font-family: 'FontAwesome';

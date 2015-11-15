@@ -71,13 +71,20 @@ class CFormLogin extends \Mos\HTMLForm\CForm
     $this->users = new \Anax\Users\User();
     $this->users->setDI($this->di);
     
+    $user = null;
     $acronym = $this->Value('acronym');
     
-    $this->verified = $this->users->verify($acronym, $this->Value('password'));
-    $user = $this->verified[0];
+    $this->verifyacronym = $this->users->verifyAcronym($acronym);
     
-       
-    if(null !== $user->getProperties('acronym')) {
+    if ($this->verifyacronym != null) {
+    
+    $this->verified = $this->users->verifyPassword($acronym, $this->Value('password'));
+    
+    if ($this->verified) {
+    
+     $user = $this->verifyacronym[0];
+    
+     if(null !== $user->getProperties('acronym')) {
     
       $userdata = array();
       $userdata = $user->getProperties();
@@ -87,6 +94,21 @@ class CFormLogin extends \Mos\HTMLForm\CForm
       }
       else return false;
     }
+    
+    else {
+    $this->AddOutput("<p><i>Felaktigt lösenord</i></p>");
+    return false;
+    }
+    
+    }
+    
+    else {
+    $this->AddOutput("<p><i>Felaktigt användarnamn</i></p>");
+    return false;
+    }
+    }
+       
+    
 
 
 

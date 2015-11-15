@@ -27,11 +27,19 @@ public function initialize()
   $rank = ($vote == 'up') ? 1 : null;
   $rank = ($vote == 'down') ? -1 : $rank;
   
-  //check if vote exists
-  //  $this->vote->voteExists($userid, $contentid, $contenttype, $vote);
-    
-    $this->vote->save(['userid' => $userid, 'contentid' => $contentid, 'contenttype' => $contenttype, 'vote' => $rank]);
-    
+  $voteexists = $this->vote->getVote($userid, $contentid, $contenttype);
+  $voteid = $this->vote->getVoteId($userid, $contentid, $contenttype);
+  
+  
+    if ($voteexists) {
+      $this->vote->save(['id' => $voteid, 'userid' => $userid, 'contentid' => $contentid, 'contenttype' => $contenttype, 'vote' => $rank]);
+    }
+    else {
+      $this->vote->save(['userid' => $userid, 'contentid' => $contentid, 'contenttype' => $contenttype, 'vote' => $rank]);
+    }
+  
+  
+
     $redirect = $this->url->create("issues/id").'/'.$pagekey;
         $this->response->redirect($redirect);
     

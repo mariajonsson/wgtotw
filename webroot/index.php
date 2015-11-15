@@ -176,7 +176,7 @@ $app->router->add('setup', function() use ($app) {
     
     $app->dispatcher->forward([
         'controller' => 'content-tag',
-        'action'     => 'setup-content',
+        'action'     => 'setup-populate',
     ]);
     
     $app->dispatcher->forward([

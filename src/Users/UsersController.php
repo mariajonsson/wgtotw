@@ -106,6 +106,7 @@ public function idAction($id = null)
     $this->theme->setTitle("Användare");
     $this->views->add('users/view', [
         'user' => $user,
+        'userinfo'   => $this->users,
     ], 'main');
     $this->views->add('users/usermenu', [], 'sidebar');
     
@@ -114,6 +115,7 @@ public function idAction($id = null)
         'controller' => 'issues',
         'action'     => 'list-by-user',
         'params'     => [$acronym],
+
     ]);
 }
 
@@ -318,7 +320,7 @@ public function activeAction()
         'title' => "Aktiva användare",
          'userinfo' => $this->users
     ], 'main');
-    $this->views->add('users/adminmenu', [], 'sidebar');
+    $this->views->add('users/usermenu', [], 'sidebar');
 
 }
 
@@ -336,7 +338,7 @@ public function inactiveAction()
         'title' => "Inaktiva användare",
          'userinfo' => $this->users
     ], 'main');
-    $this->views->add('users/adminmenu', [], 'sidebar');
+    $this->views->add('users/usermenu', [], 'sidebar');
 }
 
 public function discardedAction()

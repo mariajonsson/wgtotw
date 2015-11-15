@@ -19,8 +19,7 @@ class AnswerController implements \Anax\DI\IInjectionAware
      */
     public function viewAction($pagekey = null, $formvisibility = null, $redirect='', $issueposter=null)
     {
-    
-    	
+	
         $answer = new \Anax\Comments\Answer();
         $controller = 'answer';
         $answer->setDI($this->di);
@@ -107,8 +106,10 @@ class AnswerController implements \Anax\DI\IInjectionAware
     }  
 
         
-    public function showFormAction($pagekey, $redirect, $acronym) 
+    public function showFormAction($pagekey, $redirect, $acronym)
     {
+    
+    
 	$aform = new \Anax\HTMLForm\CFormAnswerAdd($pagekey, $redirect, $acronym);
 	$aform->setDI($this->di);
 	$aform->check();
@@ -177,12 +178,29 @@ class AnswerController implements \Anax\DI\IInjectionAware
 	$form1->setDI($this->di);
 	$form1->check();
 	$undourl = $form1->getHTML();*/
+	
+	if(!is_numeric($pagekey) || !is_numeric($id)) {
+	
+	$url = $this->url->create('answer/invalid-input?url='.$this->di->request->getCurrentUrl());
+	$this->response->redirect($url);
+	
+	}
 	    
         $answers = new \Anax\Comments\Answer();
-        $controller = 'answer';
         $answers->setDI($this->di);
         
         $answer = $answers->findAnswer($pagekey, $id);
+        
+        if(empty($answer)) {
+	
+	$url = $this->url->create('answer/invalid-dbresult');
+	$this->response->redirect($url);
+	
+	}
+        
+        $user = new \Anax\Users\User();
+        $user->setDI($this->di);
+       
 
         $form = new \Anax\HTMLForm\CFormAnswerEdit($pagekey, 'issues/id/'.$pagekey, $answer[0]->name, $id, $answer[0]->content);
 	$form->setDI($this->di);
@@ -190,22 +208,47 @@ class AnswerController implements \Anax\DI\IInjectionAware
         
         $this->theme->setTitle("Redigera svar");
         
-        $this->di->views->add('default/page', [
-	    'title' => "Redigera svar",
-	    'content' => '<h4>Svarsid #'.$id.'</h4>'.$form->getHTML(), 
-	    ], 'main');
+        if ($user->isLoggedIn()) {
+	  if ($user->getLoggedInUser() == $answer[0]->name) {
+	  
+	  $this->di->views->add('default/page', [
+	      'title' => "Redigera svar",
+	      'content' => '<h4>Svarsid #'.$id.'</h4>'.$form->getHTML(), 
+	      ], 'main');
+	  
+	  $issue = new \Meax\Content\Issues();
+	  $issue->setDI($this->di);
+	  
+	  $content = $issue->find($pagekey);
+	  
+	  if(empty($content)) {
 	
-	$issue = new \Meax\Content\Issues();
-        $issue->setDI($this->di);
+	  $url = $this->url->create('answer/invalid-dbresult');
+	  $this->response->redirect($url);
 	
-	$content = $issue->find($pagekey);
-        $title = $content->getProperties()['title'];
-        $data = $content->getProperties()['data'];
-        
-        $this->di->views->add('contenttags/reply-issue', [
-	    'title' => $title, 
-	    'data'  => $data,
-	    ], 'main');
+	  }
+	  
+	  $title = $content->getProperties()['title'];
+	  $data = $content->getProperties()['data'];
+	  
+	  $this->di->views->add('contenttags/reply-issue', [
+	      'title' => $title, 
+	      'data'  => $data,
+	      ], 'main');
+	      
+	  }
+	 
+	 else {
+	 $this->views->add('users/loginedit-message', [
+	  ], 'flash'); 
+	 
+	 }
+	 }
+	 
+	 else {
+	 $this->views->add('users/login-message', [
+	  ], 'flash'); 
+	 }
         
     }
     
@@ -285,5 +328,24 @@ class AnswerController implements \Anax\DI\IInjectionAware
         
     }
     
+  public function invalidInputAction()
+  {
+  
+  $this->theme->setTitle("Fel");
+    $this->views->add('default/error', [
+	'title' => "Något blev fel",
+	'content' => "Information saknas för att kunna visa sidan:<br>".$this->di->request->getGet('url'),
+    ], 'main');
+  }
+    
+     public function invalidDbresultAction()
+  {
+  
+  $this->theme->setTitle("Fel");
+    $this->views->add('default/error', [
+	'title' => "Något blev fel",
+	'content' => "En sökning i databasen gav inga resultat",
+    ], 'main');
+  }
 
 }

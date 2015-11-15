@@ -6,30 +6,36 @@ namespace Anax\HTMLForm;
  * Form to add comment
  *
  */
-class CFormAnswerEdit extends \Mos\HTMLForm\CForm
+class CFormTagAdd extends \Mos\HTMLForm\CForm
 {
     use \Anax\DI\TInjectionaware,
         \Anax\MVC\TRedirectHelpers;
 
-    private $pagekey;
-    private $redirect;
+      private $redirect;
 
     /**
      * Constructor
      *
      */
-    public function __construct($pagekey, $redirect, $acronym, $id, $answer)
+    public function __construct($redirect)
     {
-        parent::__construct(['id' => 'answer'], [
+    	
+        parent::__construct(['id' => 'tag'], [
         	
-            'answer' => [
-                'type'        => 'textarea',
-                'label'       => '<big><strong>Uppdatera ditt svar</strong></big>',
+            'tagname' => [
+                'type'        => 'text',
+                'label'       => 'Rubrik',
                 'required'    => true,
-                'value'       => $answer,
                 'validation'  => ['not_empty'],
-                'description' => 'Du kan använda <a href="http://daringfireball.net/projects/markdown/basics">markdown</a> för att formatera texten'
             ],
+        	
+            'data' => [
+                'type'        => 'textarea',
+                'label'       => 'Ställ fråga',
+                'required'    => true,
+                'validation'  => ['not_empty'],
+            ],
+           
             
             'name' => [
                 'type'        => 'hidden',
@@ -38,17 +44,17 @@ class CFormAnswerEdit extends \Mos\HTMLForm\CForm
                 'validation'  => ['not_empty'],
             ],
             
-            'answerid' => [
-                'type'        => 'hidden',
-                'value'       => $id,
-                'validation'  => ['not_empty'],
+
+            'taglist' => [
+            	'type'        => 'checkbox-multiple',
+            	'values'       => $tags,
+            	'checked'     => [],
             ],
-        
          
-            'submitanswer' => [
+            'submit-issue' => [
                 'type'      => 'submit',
                 'callback'  => [$this, 'callbackSubmit'],
-                'value'     => 'Uppdatera',
+                'value'     => 'Posta',
             ],
             'reset' => [
                 'type'      => 'reset',
@@ -58,8 +64,7 @@ class CFormAnswerEdit extends \Mos\HTMLForm\CForm
             
         ]);
         
-        $this->pagekey = $pagekey;
-        $this->redirect = $redirect;
+         $this->redirect = $redirect;
     }
 
 
@@ -85,18 +90,34 @@ class CFormAnswerEdit extends \Mos\HTMLForm\CForm
     {
     	
         $now = date('Y-m-d H:i:s');
-	if (!empty($_POST['submitanswer'])) {
-	$this->newanswer = new \Anax\Comments\Answer();
-        $this->newanswer->setDI($this->di);
-        $saved = $this->newanswer->save(array('id' => $this->Value('answerid'), 'content' => $this->Value('answer'), 'name' => $this->Value('name'), 'pagekey' => $this->pagekey, 'updated' => $now));
+	
+	$this->newissue = new \Meax\Content\Issues();
+        $this->newissue->setDI($this->di);
+        $saved = $this->newissue->save(array('title' => $this->Value('title'), 'acronym' => $this->Value('name'), 'created' => $now, 'data' => $this->Value('data'), 'published' => $now));
     
+        $id = $this->newissue->findLast();
        // $this->saveInSession = true;
-        
+       
+       $this->contenttag = new \Meax\Content\ContentTag();
+       $this->contenttag->setDI($this->di);
+       
+       $this->tag = new \Meax\Content\TagBasic();
+       $this->tag->setDI($this->di);
+       
+       foreach($_POST['taglist'] as $key => $tagname)
+       {
+       	   if ($id !=null) {
+       	   $tagid = $this->tag->getIdForName($tagname);
+       	   $this->contenttag->create(array('tagid' => $tagid, 'contentid' => $id));
+       	   }
+       }
+       
+       
         if($saved) 
         {
         return true;
         }
-        }
+        
        
         else return false;
     }
@@ -129,7 +150,7 @@ class CFormAnswerEdit extends \Mos\HTMLForm\CForm
      */
     public function callbackSuccess()
     {
-         $this->redirectTo($this->redirect);
+        $this->redirectTo('issues');
     }
 
 

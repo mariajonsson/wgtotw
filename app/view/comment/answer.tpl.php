@@ -7,8 +7,8 @@
 <?php $isloggedinposter = ($user->getLoggedInUser() == $issueposter) ?>
 <?php $accepted = $answer->getProperties()['accepted'] ?>
 <?php $accepticon = null; ?>
-<?php $voteupicon = '<i class="fa fa-caret-up fa-lg light-grey"></i>'; ?>
-<?php $votedownicon = '<i class="fa fa-caret-down fa-lg light-grey"></i>'; ?>
+<?php $voteupicon = '<i class="fa fa-caret-up fa-lg grey"></i>'; ?>
+<?php $votedownicon = '<i class="fa fa-caret-down fa-lg grey"></i>'; ?>
 <?php if ($isloggedinposter) { 
   
   if ($accepted) {
@@ -25,8 +25,14 @@ $accepticon = '<i class="fa fa-star fa-lg accept-selected" title="accepterat sva
 
 if($user->getLoggedInUser()) {
 
-$voteupicon = '<a href="'.$this->url->create("vote/vote").'/'.$user->getIdForAcronym($user->getLoggedInUser()).'/'.$id.'/answer/up/'.$pagekey.'" class="vote"><i class="fa fa-caret-up fa-lg"></i></a>';
-$votedownicon = '<a href="'.$this->url->create("vote/vote").'/'.$user->getIdForAcronym($user->getLoggedInUser()).'/'.$id.'/answer/down/'.$pagekey.'" class="vote"><i class="fa fa-caret-down fa-lg"></i></a>';
+if($vote->notAlreadyVotedUp($user->getIdForAcronym($user->getLoggedInUser()), $id, 'answer')) {
+
+  $voteupicon = '<a href="'.$this->url->create("vote/vote").'/'.$user->getIdForAcronym($user->getLoggedInUser()).'/'.$id.'/answer/up/'.$pagekey.'" class="vote"><i class="fa fa-caret-up fa-lg"></i></a>';
+}
+
+if($vote->notAlreadyVotedDown($user->getIdForAcronym($user->getLoggedInUser()), $id, 'answer')) {
+  $votedownicon = '<a href="'.$this->url->create("vote/vote").'/'.$user->getIdForAcronym($user->getLoggedInUser()).'/'.$id.'/answer/down/'.$pagekey.'" class="vote"><i class="fa fa-caret-down fa-lg"></i></a>';
+}
 }
 
 ?>
@@ -38,8 +44,8 @@ $votedownicon = '<a href="'.$this->url->create("vote/vote").'/'.$user->getIdForA
 <div class='answer-content'>
 <?php $gravatar = $user->getGravatarForAcronym($answer->getProperties()['name'])?>
 
-<p><?=$answer->getProperties()['content']?></p>
-
+<?php $content = $this->di->textFilter->doFilter($answer->getProperties()['content'], 'shortcode, markdown');?>
+<p><?=$content?></p>
 
 
 <p class='smaller dark-grey'>— <a href='<?=$this->url->create('users/id/'.$userid)?>'><?=$answer->getProperties()['name']?></a> för 
