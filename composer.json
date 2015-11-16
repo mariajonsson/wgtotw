@@ -14,12 +14,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
-        "meax/chtmltable": "dev-master",
-        "meax/ccontent": "dev-master",
-        "meax/ctags": "dev-master",
-        "mos/cdatabase": "dev-master",
-        "mos/cform": "2.*@dev"
+        "php": ">=5.4"
     },
     "autoload": {
         "psr-4": { "Anax\\": "src/" }

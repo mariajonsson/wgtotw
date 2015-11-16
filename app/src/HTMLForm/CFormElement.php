@@ -419,7 +419,7 @@ EOD;
         } elseif ($this['type'] == 'checkbox-multiple') {
 
             // custom for checkbox-multiple
-            $type = "type='checkbox'";
+            $type = " type='checkbox'";
             $name = " name='{$this['name']}[]'";
             $ret = null;
           
@@ -504,43 +504,34 @@ EOD;
             ],
 
             'not_empty' => [
-                'message' => 'Får inte lämnas tomt.',
+                'message' => 'Can not be empty.',
                 'test' => 'return $value != "";'
             ],
 
             'not_equal' => [
-                'message' => 'Ej giligt värde.',
+                'message' => 'Value not valid.',
                 'test' => 'return $value != $arg;'
             ],
 
             'numeric' => [
-                'message' => 'Får bara innehålla siffror.',
+                'message' => 'Must be numeric.',
                 'test' => 'return is_numeric($value);'
             ],
 
             'email_adress' => [
-                'message' => 'Måste innehålla en epostadress.',
+                'message' => 'Must be an email adress.',
                 'test' => function ($value) {
                     return preg_match('/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i', $value) === 1;
                 }
             ],
-            
-            'web_adress' => [
-                'message' => 'Måste lämnas tomt eller bestå av en url. Inled med http://, https:// eller ftp://',
-                'test' => function ($value) {
-		    if (!empty($value)) {
-                    return preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $value) === 1; }
-                    else return true;
-                }
-            ],
 
             'match' => [
-                'message' => 'Fälten matchar ej.',
+                'message' => 'The field does not match.',
                 'test' => 'return $value == $form[$arg]["value"] ;'
             ],
               
             'must_accept' => [
-                'message' => 'Du måste acceptera.',
+                'message' => 'You must accept this.',
                 'test' => 'return $checked;'
             ],
 
