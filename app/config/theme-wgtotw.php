@@ -23,7 +23,7 @@ return [
     'views' => [
         ['region' => 'header', 'template' => 'wgtotw/header', 'data' => [
 	    'siteTitle' => "Allt om att skapa konst",
-            'siteTagline' => "kreativitet",], 'sort' => -1],
+            'siteTagline' => "kreativitet & konst",], 'sort' => -1],
         ['region' => 'footer', 'template' => 'wgtotw/footer', 'data' => [], 'sort' => -1],
 		    [
         'region' => 'navbar', 

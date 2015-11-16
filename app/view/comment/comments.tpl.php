@@ -25,12 +25,12 @@
 <div class='comment'>
 <div class='comment-id'>
 <?php $gravatar = $user->getGravatarForAcronym($comment['name'])?>
-<div class='comment-rank'><?=$voteupicon?> <?=$votedownicon?> </div><div class='comment-ranknum'> <p><?=$vote->getRank($id, 'comments') ?></p>  </div> <div class='comment-img'> <img src='<?=$gravatar?>?s=12'></div>
+<div class='comment-rank'><?=$voteupicon?> <?=$votedownicon?> </div><div class='comment-ranknum'> <p><?=$vote->getRank($id, 'comments') ?></p>  </div> <div class='comment-img'> <img src='<?=$gravatar?>?s=12' alt='<?=$comment['name']?>' title='<?=$comment['name']?>'></div>
 </div>
 <div class='comment-content'>
 <?php $userid = $user->getIdForAcronym($comment['name'])?>
 <?php $content = $this->di->textFilter->doFilter($comment['content'], 'shortcode, markdown');?>
-<p><?=$content?></p>
+<div><?=$content?></div>
  — <a href='<?=$this->url->create('users/id/'.$userid)?>'><?=$comment['name']?></a> för 
 <?php $elapsedsec = (time()-strtotime($comment['timestamp'])); ?>
 <?php if (($elapsedsec) < 60): ?>

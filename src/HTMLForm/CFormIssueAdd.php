@@ -105,6 +105,8 @@ class CFormIssueAdd extends \Mos\HTMLForm\CForm
        $this->tag = new \Meax\Content\TagBasic();
        $this->tag->setDI($this->di);
        
+       if(!empty($_POST['taglist'])) {
+       
        foreach($_POST['taglist'] as $key => $tagname)
        {
        	   if ($id !=null) {
@@ -113,7 +115,7 @@ class CFormIssueAdd extends \Mos\HTMLForm\CForm
        	   }
        }
        
-       
+       }
         if($saved) 
         {
         return true;

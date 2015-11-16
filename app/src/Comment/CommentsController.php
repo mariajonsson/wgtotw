@@ -130,6 +130,14 @@ class CommentsController implements \Anax\DI\IInjectionAware
         $comments->setDI($this->di);
         
         $comment = $comments->findComment($pagekey, $id);
+        
+        if(empty($comment)) {
+	
+	$url = $this->url->create('comments/invalid-dbresult');
+	$this->response->redirect($url);
+	
+	}
+        
         $comment = (is_object($comment[0])) ? get_object_vars($comment[0]) : $comment;
         
         $user = new \Anax\Users\User();
@@ -246,6 +254,26 @@ class CommentsController implements \Anax\DI\IInjectionAware
         
         
     }
+    
+      public function invalidInputAction()
+  {
+  
+  $this->theme->setTitle("Fel");
+    $this->views->add('default/error', [
+	'title' => "Något blev fel",
+	'content' => "Information saknas för att kunna visa sidan:<br>".$this->di->request->getGet('url'),
+    ], 'main');
+  }
+    
+     public function invalidDbresultAction()
+  {
+  
+  $this->theme->setTitle("Fel");
+    $this->views->add('default/error', [
+	'title' => "Något blev fel",
+	'content' => "En sökning i databasen gav inga resultat",
+    ], 'main');
+  }
     
 
 }

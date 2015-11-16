@@ -113,6 +113,8 @@ class CFormIssueEdit extends \Mos\HTMLForm\CForm
        
        $this->contenttag->deleteByPost($id);
        
+       if(!empty($_POST['taglist'])) {
+       
        foreach($_POST['taglist'] as $key => $tagname)
        {
        	   if ($id !=null) {
@@ -120,7 +122,7 @@ class CFormIssueEdit extends \Mos\HTMLForm\CForm
        	   $this->contenttag->create(array('tagid' => $tagid, 'contentid' => $id));
        	   }
        }
-       
+       }
        
         if($saved) 
         {

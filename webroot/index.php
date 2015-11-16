@@ -76,7 +76,7 @@ $app->session();
 $app->router->add('', function() use ($app) {
  
     
-    $app->theme->setTitle("Me");
+    $app->theme->setTitle("Allt om att skapa konst!");
     
     $content = $app->fileContent->get('welcome.md');
     $content = $app->textFilter->doFilter($content, 'shortcode, markdown');

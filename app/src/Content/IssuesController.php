@@ -43,6 +43,13 @@ public function listAction()
  
     $all = $this->content->findAllMatches('answer', 'id', 'pagekey');
     
+    if(empty($all)) {
+	
+	$url = $this->url->create('issues/invalid-dbresult');
+	$this->response->redirect($url);
+	
+	}
+    
     $this->theme->setTitle("Frågor");
     
     if ($this->user->isLoggedIn()) {
@@ -98,6 +105,13 @@ public function listByTagAction($tagid)
     $all = $this->content->findAllMatchesByTag($tagid);
     $tag = $this->tags->find($tagid);
     $tagname = $this->tags->getProperties()['tagname'];
+    
+    if(empty($all)) {
+	
+	$url = $this->url->create('issues/invalid-dbresult');
+	$this->response->redirect($url);
+	
+	}
     
     $this->theme->setTitle("Frågor i kategorin ".$tagname);
     $this->views->add('contenttags/list-all-headers', [
@@ -263,12 +277,13 @@ public function updateAction($id = null)
     }
 
 
-    $this->di->theme->setTitle("Ställ fråga");
+    $this->di->theme->setTitle("Redigera fråga");
     
      if ($this->user->isLoggedIn()) {
      
       if ($useracronym == $postacronym) {
 	$this->showFormEditAction($id, $title, $data, $postacronym, $taglist, $checked, 'issues/id/'.$id);
+	
       }
       else {
       $this->views->add('users/loginedit-message', [
@@ -294,6 +309,9 @@ public function showFormAction($redirect, $acronym, $taglist)
 	   'title' => 'Ställ en fråga',
 	   'content' => $form->getHTML(), 
 	], 'main');
+	
+	$this->views->add('tags/missing-tag', [
+    ], 'sidebar'); 
         
     }
     

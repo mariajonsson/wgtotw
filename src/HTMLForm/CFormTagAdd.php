@@ -22,36 +22,22 @@ class CFormTagAdd extends \Mos\HTMLForm\CForm
     	
         parent::__construct(['id' => 'tag'], [
         	
-            'tagname' => [
+        	'tagname' => [
                 'type'        => 'text',
-                'label'       => 'Rubrik',
+                'label'       => 'Tagg',
+                'required'    => true,
+                'validation'  => ['not_empty'],
+            ],
+            
+            'tagslug' => [
+                'type'        => 'text',
+                'label'       => 'Slug',
                 'required'    => true,
                 'validation'  => ['not_empty'],
             ],
         	
-            'data' => [
-                'type'        => 'textarea',
-                'label'       => 'Ställ fråga',
-                'required'    => true,
-                'validation'  => ['not_empty'],
-            ],
-           
             
-            'name' => [
-                'type'        => 'hidden',
-                'value'       => $acronym,
-                'required'    => true,
-                'validation'  => ['not_empty'],
-            ],
-            
-
-            'taglist' => [
-            	'type'        => 'checkbox-multiple',
-            	'values'       => $tags,
-            	'checked'     => [],
-            ],
-         
-            'submit-issue' => [
+            'submit-tag' => [
                 'type'      => 'submit',
                 'callback'  => [$this, 'callbackSubmit'],
                 'value'     => 'Posta',
@@ -91,27 +77,22 @@ class CFormTagAdd extends \Mos\HTMLForm\CForm
     	
         $now = date('Y-m-d H:i:s');
 	
-	$this->newissue = new \Meax\Content\Issues();
-        $this->newissue->setDI($this->di);
-        $saved = $this->newissue->save(array('title' => $this->Value('title'), 'acronym' => $this->Value('name'), 'created' => $now, 'data' => $this->Value('data'), 'published' => $now));
-    
-        $id = $this->newissue->findLast();
+	$this->newtag = new \Meax\Content\TagBasic();
+        $this->newtag->setDI($this->di);
+        
+        $exists = $this->newtag->findTag($this->Value('tagname'));  
+        
+        if ($exists) {
+        $this->AddOutput("<p><i>En tagg med detta namn finns redan.</i></p>");
+        return false;
+        }
+        else {
+        $saved = $this->newtag->save(array('tagname' => $this->Value('tagname'), 'tagslug' => $this->Value('tagslug')));
+        
+        $id = $this->newtag->findLast();
        // $this->saveInSession = true;
-       
-       $this->contenttag = new \Meax\Content\ContentTag();
-       $this->contenttag->setDI($this->di);
-       
-       $this->tag = new \Meax\Content\TagBasic();
-       $this->tag->setDI($this->di);
-       
-       foreach($_POST['taglist'] as $key => $tagname)
-       {
-       	   if ($id !=null) {
-       	   $tagid = $this->tag->getIdForName($tagname);
-       	   $this->contenttag->create(array('tagid' => $tagid, 'contentid' => $id));
-       	   }
-       }
-       
+        }
+             
        
         if($saved) 
         {
@@ -150,7 +131,7 @@ class CFormTagAdd extends \Mos\HTMLForm\CForm
      */
     public function callbackSuccess()
     {
-        $this->redirectTo('issues');
+        $this->redirectTo('tags');
     }
 
 
@@ -160,7 +141,7 @@ class CFormTagAdd extends \Mos\HTMLForm\CForm
      */
     public function callbackFail()
     {
-        $this->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
-        //$this->redirectTo('comments/edit');
+        //$this->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
+        $this->redirectTo();
     }
 }

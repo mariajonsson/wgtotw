@@ -836,7 +836,7 @@ th {
   border-bottom: 1px solid black;
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 1px;
 }
 .navbar li {
   display: inline-block;

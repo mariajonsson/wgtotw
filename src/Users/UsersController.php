@@ -100,7 +100,15 @@ public function listMostActiveAction()
 public function idAction($id = null)
 {
     $user = $this->users->find($id);
+    
+    if(empty($user)) {
+	
+	$url = $this->url->create('users/no-such-user');
+	$this->response->redirect($url);
+	
+	}
     $acronym = $this->users->getAcronym($id);
+    
     
  
     $this->theme->setTitle("Användare");
@@ -165,11 +173,14 @@ public function addAction($acronym = null)
 public function updateAction($id = null)
 {
 
-    if (!isset($id)) {
-        die("Missing id");
-    }
-    
     $user = $this->users->find($id);
+     if(empty($user)) {
+	
+	$url = $this->url->create('users/no-such-user');
+	$this->response->redirect($url);
+	
+	}
+    
     $name = $user->getProperties()['name'];
     $acronym = $user->getProperties()['acronym'];
     $email = $user->getProperties()['email'];

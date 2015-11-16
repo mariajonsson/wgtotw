@@ -45,7 +45,7 @@ if($vote->notAlreadyVotedDown($user->getIdForAcronym($user->getLoggedInUser()), 
 <?php $gravatar = $user->getGravatarForAcronym($answer->getProperties()['name'])?>
 
 <?php $content = $this->di->textFilter->doFilter($answer->getProperties()['content'], 'shortcode, markdown');?>
-<p><?=$content?></p>
+<div><?=$content?></div>
 
 
 <p class='smaller dark-grey'>— <a href='<?=$this->url->create('users/id/'.$userid)?>'><?=$answer->getProperties()['name']?></a> för 

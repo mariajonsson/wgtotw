@@ -51,7 +51,21 @@ return [
             'text'  =>'Taggar',
             'url'   => $this->di->get('url')->create('tags'),
             'title' => 'Taggar',
-            'class' => 'tags'
+            'class' => 'tags',
+            
+            'submenu' => [
+
+                'items' => [
+
+                    // This is a menu item of the submenu
+                    'tags-add'  => [
+                        'text'  => 'Lägg till tagg',
+                        'url'   => $this->di->get('url')->create('tag-basic/add'),
+                        'title' => 'Lägg till tagg',
+                        'class' => 'tags'
+                    ],
+                  ],
+                ],
         ],
         
         
@@ -77,7 +91,7 @@ return [
                     ],                    
                     // This is a menu item of the submenu
                     'active'  => [
-                        'text'  => 'Aktiva användare',
+                        'text'  => 'Aktiva',
                         'url'   => $this->di->get('url')->create('users/active'),
                         'title' => 'Visa aktiva användare',
                         'class' => 'users',
@@ -85,7 +99,7 @@ return [
                     
                     // This is a menu item of the submenu
                     'inactive'  => [
-                        'text'  => 'Inaktiva användare',
+                        'text'  => 'Inaktiva',
                         'url'   => $this->di->get('url')->create('users/inactive'),
                         'title' => 'Visa inaktiva användare',
                         'class' => 'users',
@@ -93,7 +107,7 @@ return [
                     
                     // This is a menu item of the submenu
                     'add'  => [
-                        'text'  => 'Lägg till användare',
+                        'text'  => 'Lägg till',
                         'url'   => $this->di->get('url')->create('users/add'),
                         'title' => 'Lägg till användare',
                         'class' => 'users',
