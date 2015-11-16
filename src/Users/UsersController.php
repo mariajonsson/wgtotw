@@ -369,8 +369,7 @@ public function discardedAction()
 public function resetUsersAction()
 {
 
-    //$this->db->setVerbose();
- 
+
     $this->db->dropTableIfExists('user')->execute();
  
     $this->db->createTable(
@@ -426,11 +425,6 @@ public function resetUsersAction()
         'http://www.gravatar.com/avatar/' . md5(strtolower(trim('choklad@post.utfors.se'))) . '.jpg'
      ]);
      
-     $this->dispatcher->forward([
-        'controller' => 'users',
-        'action'     => 'list',
-        //'params'     => [],
-    ]);
     
     
 }

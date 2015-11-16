@@ -53,7 +53,7 @@ class User extends \Anax\MVC\CDatabaseModel
   return $verify;
   }
   
-//->andWhere('password = ' . $password)
+
 
   public function isLoggedIn() {
 

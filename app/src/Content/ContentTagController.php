@@ -89,43 +89,6 @@ public function addAction()
 }
 
 
-public function postFormAction() 
-{
-    
-    $now = date('Y-m-d H:i:s');
-    $published = null;
-    
-    if (!empty($_POST['submit-add'])) {
-    $published = !empty($_POST['published'])?$now:null;
-    $saved = $this->content->save(array('title' => $_POST['title'], 'url' => $_POST['url'], 'slug' => $_POST['slug'], 'acronym' => $_POST['acronym'], 'created' => $now, 'data' => $_POST['data'], 'filter' => $_POST['filter'], 'type' => $_POST['type'], 'published' => $published));
-    }
-    else if (!empty($_POST['submit-edit'])) {
-        if ($_POST['publisheddate'] == null && !empty($_POST['published'])) {
-	    $published = $now;
-        }
-        else if ($_POST['publisheddate'] != null && empty($_POST['published'])) {
-	    $published = null;
-        }
-        else $published = $_POST['publisheddate'];
-   
-    $saved = $this->content->save(array('id' => $_POST['id'], 'title' => $_POST['title'], 'url' => $_POST['url'], 'slug' => $_POST['slug'], 'acronym' => $_POST['acronym'], 'created' => $now, 'data' => $_POST['data'], 'filter' => $_POST['filter'], 'type' => $_POST['type'], 'published' => $published));
-    }
-    
-    if ($saved) {
-      $this->dispatcher->forward([
-        'controller' => 'tag-basic',
-        'action'     => 'list',
-        //'params'     => [],
-      ]);
-    }
-    else {
-    $this->di->theme->setTitle("Error");
-    $this->di->views->add('default/page', [
-        'title' => "Something went wrong",
-        'content' => "The data wasn't saved"     
-        ], 'main');
-    }
-}
 
 /**
  * Update content.
@@ -137,36 +100,7 @@ public function postFormAction()
 public function updateAction($id = null)
 {
 
-    if (!isset($id)) {
-        die("Missing id");
-    }
-    
-    $content = $this->content->find($id);
-    $title = $content->getProperties()['title'];
-    $url = $content->getProperties()['url'];
-    $slug = $content->getProperties()['slug'];
-    $data = $content->getProperties()['data'];
-    $acronym = $content->getProperties()['acronym'];
-    $filter = $content->getProperties()['filter'];
-    $type = $content->getProperties()['type'];
-    $deleted = $content->getProperties()['deleted'];
-    $published = $content->getProperties()['published'];
-    
-    $this->di->theme->setTitle("Edit content");
-    $this->di->views->add('tags/edit', [
-        'header' => "Edit content",
-        'title' => $title,
-        'url' => $url,
-        'slug' => $slug,
-        'data' => $data,
-        'acronym' => $acronym,
-        'filter' => $filter,
-        'type' => $type,
-        'deleted' => $deleted,
-        'published' => $published,
-        'id' => $id,
-        
-        ]);
+
 
 }
 
@@ -191,114 +125,7 @@ public function deleteAction($id = null)
 }
 
 
-/**
- * Undo soft delete.
- *
- * @param integer $id of content to undo delete.
- *
- * @return void
- */
- 
 
-public function undoDeleteAction($id = null)
-{
-    if (!isset($id)) {
-        die("Missing id");
-    }
- 
-    $content = $this->content->find($id);
-    
-    $content->deleted = null;
-    $content->save();
- 
-    $url = $this->url->create('tag-basic/id/' . $id);
-    $this->response->redirect($url);
-}
-
-
-/**
- * Delete (soft) content.
- *
- * @param integer $id of content to delete.
- *
- * @return void
- */
-public function softDeleteAction($id = null)
-{
-    if (!isset($id)) {
-        die("Missing id");
-    }
- 
-    $now = gmdate('Y-m-d H:i:s');
- 
-    $content = $this->content->find($id);
- 
-    $content->deleted = $now;
-    $content->save();
- 
-    $url = $this->url->create('tag-basic/id/' . $id);
-    $this->response->redirect($url);
-}
-
-/**
- * List all published and not deleted content.
- *
- * @return void
- */
-public function publishedAction()
-{
-    $all = $this->content->query()
-        ->where('published IS NOT NULL')
-        ->andWhere('deleted is NULL')
-        ->execute();
- 
-    $this->theme->setTitle("Published content");
-    $this->views->add('tags/list-all', [
-        'content' => $all,
-        'title' => "Published content",
-    ], 'main');
-
-}
-
-/**
- * List all unpublished and not deleted content.
- *
- * @return void
- */
-public function unpublishedAction()
-{
-    $all = $this->content->query()
-        ->where('published IS NULL')
-        ->andWhere('deleted is NULL')
-        ->execute();
- 
-    $this->theme->setTitle("Unpublished content");
-    $this->views->add('tags/list-all', [
-        'content' => $all,
-        'title' => "Unpublished content",
-    ], 'main');
-
-}
-
-/**
- * List all soft-deleted content.
- *
- * @return void
- */
-
-public function discardedAction()
-{
-    $all = $this->content->query()
-        ->where('deleted is NOT NULL')
-        ->execute();
- 
-    $this->theme->setTitle("Trash");
-    $this->views->add('tags/list-deleted', [
-        'users' => $all,
-        'title' => "Trash",
-    ], 'main');
-
-}
 
 
 

@@ -96,7 +96,7 @@ class CFormIssueAdd extends \Mos\HTMLForm\CForm
         $this->newissue->setDI($this->di);
         $saved = $this->newissue->save(array('title' => $this->Value('title'), 'acronym' => $this->Value('name'), 'created' => $now, 'data' => $this->Value('data'), 'published' => $now));
     
-        $id = $this->newissue->findLast();
+        $this->id = $this->newissue->findLast();
        // $this->saveInSession = true;
        
        $this->contenttag = new \Meax\Content\ContentTag();
@@ -109,9 +109,9 @@ class CFormIssueAdd extends \Mos\HTMLForm\CForm
        
        foreach($_POST['taglist'] as $key => $tagname)
        {
-       	   if ($id !=null) {
+       	   if ($this->id !=null) {
        	   $tagid = $this->tag->getIdForName($tagname);
-       	   $this->contenttag->create(array('tagid' => $tagid, 'contentid' => $id));
+       	   $this->contenttag->create(array('tagid' => $tagid, 'contentid' => $this->id));
        	   }
        }
        
@@ -153,7 +153,8 @@ class CFormIssueAdd extends \Mos\HTMLForm\CForm
      */
     public function callbackSuccess()
     {
-        $this->redirectTo('issues');
+  
+        $this->redirectTo('issues/id/'.$this->id);
     }
 
 

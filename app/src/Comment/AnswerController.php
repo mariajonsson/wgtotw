@@ -172,13 +172,6 @@ class AnswerController implements \Anax\DI\IInjectionAware
     public function editAction($pagekey, $id, $redirect='')
     {
  
-    	//$undourl = '<p><a href="'.$this->di->get('url')->create($redirect).'">Ångra</p>';
-    	/*
-    	$form1 = new \Anax\HTMLForm\CFormCommentUndo($redirect);
-	$form1->setDI($this->di);
-	$form1->check();
-	$undourl = $form1->getHTML();*/
-	
 	if(!is_numeric($pagekey) || !is_numeric($id)) {
 	
 	$url = $this->url->create('answer/invalid-input?url='.$this->di->request->getCurrentUrl());
@@ -254,7 +247,6 @@ class AnswerController implements \Anax\DI\IInjectionAware
     
     public function setupAnswerAction() 
     {
-      //$this->di->db->setVerbose();
  
       $this->di->db->dropTableIfExists('answer')->execute();
   

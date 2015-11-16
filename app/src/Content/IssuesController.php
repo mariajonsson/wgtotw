@@ -298,7 +298,14 @@ public function updateAction($id = null)
 }
 
 
-
+/**
+ * Shows an add form.
+ *
+ * @param $acronym of the original poster.
+ * @param array $taglist all tags to choose from.
+ *
+ * @return void
+ */
 public function showFormAction($redirect, $acronym, $taglist) 
     {
 	$form = new \Anax\HTMLForm\CFormIssueAdd($redirect, $acronym, $taglist);
@@ -314,6 +321,18 @@ public function showFormAction($redirect, $acronym, $taglist)
     ], 'sidebar'); 
         
     }
+    
+    /**
+ * Shows an edit form.
+ *
+ * @param $acronym of the original poster.
+ * @param array $taglist all tags to choose from.
+ * @param $title of the original post.
+ * @param array $checked all checked tags.
+ * @param $id of the original post.
+ *
+ * @return void
+ */
     
     public function showFormEditAction($id, $title, $data, $acronym, $taglist, $checked, $redirect) 
     {

@@ -48,18 +48,6 @@ public function listAction()
 
 }
 
-/*
-public function listMostUsedAction($val, $num)
-{
-  $all = $this->content->findMostUsed($val, $num);
-    echo var_dump($all);
-    $this->views->add('tags/list-most-used', [
-        'content' => $all,
-        'subtitle' => "Populäraste taggarna",
-
-    ], 'sidebar');
-
-}*/
 
 /**
  * List content with id.
@@ -131,36 +119,7 @@ public function addAction()
 public function updateAction($id = null)
 {
 
-    if (!isset($id)) {
-        die("Missing id");
-    }
-    
-    $content = $this->content->find($id);
-    $title = $content->getProperties()['title'];
-    $url = $content->getProperties()['url'];
-    $slug = $content->getProperties()['slug'];
-    $data = $content->getProperties()['data'];
-    $acronym = $content->getProperties()['acronym'];
-    $filter = $content->getProperties()['filter'];
-    $type = $content->getProperties()['type'];
-    $deleted = $content->getProperties()['deleted'];
-    $published = $content->getProperties()['published'];
-    
-    $this->di->theme->setTitle("Edit content");
-    $this->di->views->add('tags/edit', [
-        'header' => "Edit content",
-        'title' => $title,
-        'url' => $url,
-        'slug' => $slug,
-        'data' => $data,
-        'acronym' => $acronym,
-        'filter' => $filter,
-        'type' => $type,
-        'deleted' => $deleted,
-        'published' => $published,
-        'id' => $id,
-        
-        ]);
+
 
 }
 
@@ -184,115 +143,6 @@ public function deleteAction($id = null)
     $this->response->redirect($url);
 }
 
-
-/**
- * Undo soft delete.
- *
- * @param integer $id of content to undo delete.
- *
- * @return void
- */
- 
-
-public function undoDeleteAction($id = null)
-{
-    if (!isset($id)) {
-        die("Missing id");
-    }
- 
-    $content = $this->content->find($id);
-    
-    $content->deleted = null;
-    $content->save();
- 
-    $url = $this->url->create('tag-basic/id/' . $id);
-    $this->response->redirect($url);
-}
-
-
-/**
- * Delete (soft) content.
- *
- * @param integer $id of content to delete.
- *
- * @return void
- */
-public function softDeleteAction($id = null)
-{
-    if (!isset($id)) {
-        die("Missing id");
-    }
- 
-    $now = gmdate('Y-m-d H:i:s');
- 
-    $content = $this->content->find($id);
- 
-    $content->deleted = $now;
-    $content->save();
- 
-    $url = $this->url->create('tag-basic/id/' . $id);
-    $this->response->redirect($url);
-}
-
-/**
- * List all published and not deleted content.
- *
- * @return void
- */
-public function publishedAction()
-{
-    $all = $this->content->query()
-        ->where('published IS NOT NULL')
-        ->andWhere('deleted is NULL')
-        ->execute();
- 
-    $this->theme->setTitle("Published content");
-    $this->views->add('tags/list-all', [
-        'content' => $all,
-        'title' => "Published content",
-    ], 'main');
-
-}
-
-/**
- * List all unpublished and not deleted content.
- *
- * @return void
- */
-public function unpublishedAction()
-{
-    $all = $this->content->query()
-        ->where('published IS NULL')
-        ->andWhere('deleted is NULL')
-        ->execute();
- 
-    $this->theme->setTitle("Unpublished content");
-    $this->views->add('tags/list-all', [
-        'content' => $all,
-        'title' => "Unpublished content",
-    ], 'main');
-
-}
-
-/**
- * List all soft-deleted content.
- *
- * @return void
- */
-
-public function discardedAction()
-{
-    $all = $this->content->query()
-        ->where('deleted is NOT NULL')
-        ->execute();
- 
-    $this->theme->setTitle("Trash");
-    $this->views->add('tags/list-deleted', [
-        'users' => $all,
-        'title' => "Trash",
-    ], 'main');
-
-}
 
 
 

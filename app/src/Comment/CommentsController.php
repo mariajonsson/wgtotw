@@ -116,10 +116,7 @@ class CommentsController implements \Anax\DI\IInjectionAware
     public function editAction($pagekey, $id, $redirect='')
     {
  
-    	//$undourl = '<p><a href="'.$this->di->get('url')->create($redirect).'">Ångra</p>';
-    	
-    	
-    	
+   	
     	$form1 = new \Anax\HTMLForm\CFormCommentUndo($redirect);
 	$form1->setDI($this->di);
 	$form1->check();
@@ -174,7 +171,6 @@ class CommentsController implements \Anax\DI\IInjectionAware
     
     public function setupCommentAction() 
     {
-      //$this->di->db->setVerbose();
  
       $this->di->db->dropTableIfExists('comments')->execute();
   
