@@ -41,9 +41,9 @@ Using the site
 
 It is possible for a site visitor to create and activate their own user account.
 
-A user can add and edit their own content (questions, answers, comments, user profile). (Except for editing tags). 
+A user can add and edit their own content (questions, answers, comments, user profile). (Except they can only add a tag, not edit or delete it). 
 
-An administrator can edit all content (except currently for editing tags). Currently there is only one possible admin: a user with the username "admin". 
+An administrator can edit all content. Currently there is only one possible admin - a user with the username "admin". 
 
 Users can vote (+1 or -1) for questions, answers and comments that they approve of or disapprove of. 
 
