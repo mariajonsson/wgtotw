@@ -20,9 +20,9 @@ The webroot folder is the web page's root folder.
 
 Some files need to be modified in order for the website to work.
 
-* webroot/.htaccess 
+* webroot/.htaccess  
   Settings for clean URLs. #Rewrite module must be on for clean urls to work. Change base url in #Rewrite base if necessary.
-* app/config/config_mysql.php
+* app/config/config_mysql.php  
   Change the settings for MySQL. This file is referred to from webroot/index.php
 
 ### Setup
