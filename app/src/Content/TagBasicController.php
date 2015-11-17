@@ -32,6 +32,7 @@ public function listAction()
 {
  
     $all = $this->content->findAll();
+    $acronym = $this->user->getLoggedInUser();
     
     $this->theme->setTitle("Taggar");
     
@@ -44,6 +45,7 @@ public function listAction()
     $this->views->add('tags/list-all', [
         'content' => $all,
         'title' => "Taggar",
+        'loggedinuser' => $acronym,
     ], 'main');
 
 }
@@ -119,6 +121,44 @@ public function addAction()
 public function updateAction($id = null)
 {
 
+     $acronym = $this->user->getLoggedInUser();
+     
+     if ($acronym == 'admin') {
+
+	if(empty($id)) {
+	$url = $this->url->create('issues/invalid-input').'?url='.$this->di->request->getCurrentUrl();
+	$this->response->redirect($url);
+	
+	}
+    
+     $tag = $this->content->find($id);
+     
+      if(empty($tag)) {
+	
+	$url = $this->url->create('issues/invalid-dbresult');
+	$this->response->redirect($url);
+	
+	}
+     
+     $name = $tag->getProperties()['tagname'];
+      $slug = $tag->getProperties()['tagslug'];
+    
+
+    $this->di->theme->setTitle("Redigera tagg");
+    
+        $form = new \Anax\HTMLForm\CFormTagEdit($id, $name, $slug);
+	$form->setDI($this->di);
+	$form->check();
+	    
+	$this->di->views->add('default/page', [
+	   'title' => 'Redigera tagg',
+	   'content' => $form->getHTML(), 
+	], 'main');
+     }
+     else {
+     $this->views->add('users/login-admin-message', [
+    ], 'flash'); 
+     }
 
 
 }
@@ -133,9 +173,11 @@ public function updateAction($id = null)
  */
 public function deleteAction($id = null)
 {
-    if (!isset($id)) {
-        die("Missing id");
-    }
+    if(empty($id)) {
+	$url = $this->url->create('issues/invalid-input').'?url='.$this->di->request->getCurrentUrl();
+	$this->response->redirect($url);
+	
+	}
  
     $res = $this->content->delete($id);
  

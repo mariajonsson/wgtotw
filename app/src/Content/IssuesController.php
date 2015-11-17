@@ -125,7 +125,7 @@ public function listByTagAction($tagid)
         'content' => $all,
         'vote' => $this->vote,
         'user' => $this->user,
-        'subtitle' => "Frågor i kategorin <em>".$tagname."</em>",
+        'subtitle' => "Frågor i kategorin <em class='red'>".$tagname."</em>",
         'link' => "<p><a href='".$this->url->create('issues/list')."'>Se alla frågor <i class='fa fa-long-arrow-right'></i></a></p>",
     ], 'main');
     

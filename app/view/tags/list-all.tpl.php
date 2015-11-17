@@ -8,6 +8,9 @@
  
 <div class='tags'>
 <a href='issues/list-by-tag/<?=$id?>'><?=$post['tagname']?></a>
+<?php if ('admin' == $loggedinuser):?>
+<a href="<?=$this->url->create('tag-basic/update').'/'.$id?>" title='Ändra' class='no-tag'><i class="fa fa-pencil"></i></a>
+<?php endif;?>
 </div>
 
 <?php endforeach; ?>
