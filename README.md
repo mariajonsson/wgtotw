@@ -13,6 +13,19 @@ Anax-MVC by Mikael Roos, me@mikaelroos.se.
 Install and setup
 -------------------
 
+Clone repository from GitHub.
+The webroot folder is the web page's root folder.
+
+### Settings
+
+Some files need to be modified in order for the website to work.
+
+* webroot/.htaccess 
+  Settings for clean URLs. #Rewrite module must be on for clean urls to work. Change base url in #Rewrite base if necessary.
+* app/config/config_mysql.php
+  Change the settings for MySQL. This file is referred to from webroot/index.php
+
+### Setup
 
 
 
