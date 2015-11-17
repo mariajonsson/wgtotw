@@ -101,17 +101,24 @@ public function listLatestAction($num)
  */
 public function listByTagAction($tagid)
 {
+    if(empty($tagid)) {
+	
+	$url = $this->url->create('issues/invalid-input').'?url='.$this->di->request->getCurrentUrl();
+	$this->response->redirect($url);
+	
+    }
  
     $all = $this->content->findAllMatchesByTag($tagid);
     $tag = $this->tags->find($tagid);
-    $tagname = $this->tags->getProperties()['tagname'];
     
-    if(empty($all)) {
+    
+    if(empty($tag)) {
 	
 	$url = $this->url->create('issues/invalid-dbresult');
 	$this->response->redirect($url);
 	
 	}
+    $tagname = $tag->getProperties()['tagname'];
     
     $this->theme->setTitle("Frågor i kategorin ".$tagname);
     $this->views->add('contenttags/list-all-headers', [
