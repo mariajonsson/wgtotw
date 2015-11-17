@@ -24,10 +24,19 @@ Some files need to be modified in order for the website to work.
   Settings for clean URLs. #Rewrite module must be on for clean urls to work. Change base url in #Rewrite base if necessary.
 * app/config/config_mysql.php  
   Change the settings for MySQL. This file is referred to from webroot/index.php
+* webroot/css/anax-wgtotw  
+  This folder must be writable (chmod 777) for style.php and .less styles to work.
 
 ### Setup
 
+You need to set up the database before you can use the website (ie content and user management). 
 
+Go to: `[installation path]/webroot/setup`  
+The script will create tables and some example content (users, questions, answers, comments, tags). You should see the database output.
+
+### Important
+
+Currently there is only one admin user: "admin". 
 
 License
 ------------------
