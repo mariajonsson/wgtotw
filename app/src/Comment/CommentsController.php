@@ -188,7 +188,10 @@ class CommentsController implements \Anax\DI\IInjectionAware
 	      
 	  ]
       )->execute();
-      
+    }
+    
+    public function autoPopulateAction() 
+    {
       $this->di->db->insert(
 	  'comments',
 	  ['content', 'name', 'pagekey', 'pagetype', 'timestamp', 'updated', 'ip']
@@ -216,18 +219,18 @@ class CommentsController implements \Anax\DI\IInjectionAware
 	  $this->di->request->getServer('REMOTE_ADDR')
       ]);
       
-	  $this->di->theme->setTitle("Kommentarer");
-	  $this->di->views->add('comment/index');
-	  $formvisibility = $this->di->request->getPost('form');
-	  $this->di->dispatcher->forward([
-        'controller' => 'comments',
-        'action'     => 'view',
-        'params'     => ['comment-page', $formvisibility,'comment'],
-    ]);
+
     
     }
 
-
+  public function setupPopulateAction() 
+  {
+  
+    $this->setupCommentAction();
+    $this->autoPopulateAction();
+    
+  
+  }
 
     /**
      * Remove all comments.

@@ -57,6 +57,8 @@ public function listMostActiveAction()
     $comments = $this->users->findMostComments();
     $users = $this->users->findMostActive();
     
+
+    
     $this->di->views->add('wgtotw/plain', [
         'content' => '<h3>Användare med mest aktivitet</h3>', 
         
@@ -92,14 +94,21 @@ public function listMostActiveAction()
 public function listUserScoresAction($id) 
 {
 
-	$user = $this->users->find($id);
-	$answers = $this->users->findNumAnswers($user->acronym);
+    $user = $this->users->find($id);
+    $answers = $this->users->findNumAnswers($user->acronym);
     $issues = $this->users->findNumIssues($user->acronym);
     $comments = $this->users->findNumComments($user->acronym);
     
     $arank = $this->users->getUserRank($id, 'answer', 'answer', 'name');
     $irank = $this->users->getUserRank($id, 'issues', 'issues', 'acronym');
     $crank = $this->users->getUserRank($id, 'comments', 'comments', 'name');
+    
+    $this->vote = new \Meax\Content\Vote();
+    $this->vote->setDI($this->di);
+    
+    $avote = $this->vote->getNumVotes($id, 'answer');
+    $ivote = $this->vote->getNumVotes($id, 'issues');
+    $cvote = $this->vote->getNumVotes($id, 'comments');
     
     $this->views->add('users/list-user-scores', [
        'title' => "Ranking",
@@ -110,6 +119,9 @@ public function listUserScoresAction($id)
        'arank' => $arank,
        'irank' => $irank,
        'crank' => $crank,
+       'ivote' => $ivote,
+       'avote' => $avote,
+       'cvote' => $cvote,
     ], 'main');
 
 
@@ -418,6 +430,11 @@ public function resetUsersAction()
         ]
     )->execute();
     
+    }
+    
+    public function autoPopulateAction() 
+    {
+    
     $this->db->insert(
         'user',
         ['acronym', 'email', 'name', 'password', 'created', 'active', 'gravatar']
@@ -458,6 +475,15 @@ public function resetUsersAction()
     
     
 }
+
+  public function setupPopulateAction() 
+  {
+  
+    $this->resetUsersAction();
+    $this->autoPopulateAction();
+    
+  
+  }
 
   public function noSuchUserAction()
   {

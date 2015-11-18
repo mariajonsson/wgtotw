@@ -159,7 +159,7 @@ $app->router->add('setup', function() use ($app) {
  
 	$app->dispatcher->forward([
         'controller' => 'users',
-        'action'     => 'reset-users',
+        'action'     => 'setup-populate',
     ]);	
 		
 	$app->dispatcher->forward([
@@ -169,17 +169,54 @@ $app->router->add('setup', function() use ($app) {
     
     $app->dispatcher->forward([
         'controller' => 'tag-basic',
+        'action'     => 'setup-populate',
+    ]);
+    
+    
+    $app->dispatcher->forward([
+        'controller' => 'content-tag',
+        'action'     => 'setup-populate',
+    ]);
+    
+    $app->dispatcher->forward([
+        'controller' => 'answer',
+        'action'     => 'setup-populate',
+    ]);
+    
+    $app->dispatcher->forward([
+        'controller' => 'comments',
+        'action'     => 'setup-populate',
+    ]);
+    
+    $app->dispatcher->forward([
+        'controller' => 'vote',
+        'action'     => 'setup-populate',
+    ]);
+});
+
+$app->router->add('setup-clean', function() use ($app) {
+		
+	$app->db->setVerbose();	
+ 
+	$app->dispatcher->forward([
+        'controller' => 'users',
+        'action'     => 'reset-users',
+    ]);	
+		
+	$app->dispatcher->forward([
+        'controller' => 'issues',
         'action'     => 'setup-content',
     ]);
     
     $app->dispatcher->forward([
         'controller' => 'tag-basic',
-        'action'     => 'auto-populate',
+        'action'     => 'setup-content',
     ]);
+    
     
     $app->dispatcher->forward([
         'controller' => 'content-tag',
-        'action'     => 'setup-populate',
+        'action'     => 'setup-content',
     ]);
     
     $app->dispatcher->forward([
@@ -197,24 +234,8 @@ $app->router->add('setup', function() use ($app) {
         'action'     => 'setup-vote',
     ]);
 });
-/*
 
-$app->router->add('setup-comments', function() use ($app) {
- 
-    $app->theme->setTitle("Återställ kommentarer");
-    $app->views->add('comment/setup');
-    
-  
-});
 
-$app->router->add('delete-comments', function() use ($app) {
- 
-    $app->theme->setTitle("Radera kommentarer");
-    $app->views->add('comment/delete');
-    
-  
-});
-*/
 $app->router->add('issues', function() use ($app) {
 		$app->dispatcher->forward([
         'controller' => 'issues',
@@ -222,16 +243,6 @@ $app->router->add('issues', function() use ($app) {
     ]);
 });
 
-
-$app->router->add('setup-content', function() use ($app) {
- 
-    $app->theme->setTitle("Återställ innehåll");
-    $app->views->add('content/setup', [
-        'controller' => 'content',
-        'title' => "Återställ databas",
-    ], 'main');
-
-});
 
 
  

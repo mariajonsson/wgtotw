@@ -264,7 +264,10 @@ class AnswerController implements \Anax\DI\IInjectionAware
 	      
 	  ]
       )->execute();
-      
+          }
+    
+    public function autoPopulateAction() 
+    {
       $this->di->db->insert(
 	  'answer',
 	  ['content', 'name', 'pagekey', 'timestamp', 'updated', 'ip', 'accepted']
@@ -295,6 +298,15 @@ class AnswerController implements \Anax\DI\IInjectionAware
 	  
     
     }
+    
+      public function setupPopulateAction() 
+  {
+  
+    $this->setupAnswerAction();
+    $this->autoPopulateAction();
+    
+  
+  }
 
 
 

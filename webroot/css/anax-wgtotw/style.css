@@ -773,6 +773,16 @@ th {
 .td-active {
   max-width: 40px;
 }
+table.userinfo {
+  font-size: 0.8em;
+  display: inline;
+  width: 49%;
+  margin-right: 15px;
+  margin-bottom: 22px;
+}
+table.userinfo td {
+  vertical-align: top;
+}
 .user-deleted {
   color: #000000;
 }

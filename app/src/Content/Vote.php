@@ -89,4 +89,26 @@ public function notAlreadyVotedDown($userid, $contentid, $contenttype) {
 
 }
 
+    public function getNumVotes($userid, $contenttype) {
+    
+    //$this->db->setVerbose();
+    
+    $user = $this->db->select('userid, coalesce(count(contenttype), 0) as '.$contenttype.'')
+	    ->from($this->getSource())
+	    ->where('userid = ?')
+	    ->andWhere('contenttype = ?')
+	    ->groupBy('userid')
+	    ->executeFetchAll([$userid, $contenttype]);
+    if(!empty($user)) {
+    
+    if(!empty($user[0]->$contenttype)) {
+  
+      return $user[0]->$contenttype;
+      }
+   
+  }
+  else return 0;
+    
+    }
+
 }

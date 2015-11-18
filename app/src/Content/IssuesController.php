@@ -549,7 +549,7 @@ public function setupContentAction()
         'Hur spänna duk på ram',
         'hur-spanna-duk-pa-ram',
         'Jag har tänkt att göra målardukar själv istället för att köpa färdiga. Hur gör jag det?',
-        'user',
+        'doe',
         $now,
         $now
      ]);

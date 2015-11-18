@@ -65,6 +65,12 @@ public function initialize()
 	  ]
       )->execute();
       
+      }
+    
+    public function autoPopulateAction() 
+    {
+    
+      
       $this->di->db->insert(
 	  'vote',
 	  ['userid', 'contentid', 'contenttype', 'vote']
@@ -87,6 +93,15 @@ public function initialize()
 	  
     
     }
+    
+      public function setupPopulateAction() 
+  {
+  
+    $this->setupVoteAction();
+    $this->autoPopulateAction();
+    
+  
+  }
 
 }
 

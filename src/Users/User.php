@@ -264,5 +264,7 @@ user.acronym as uname, type.'.$acronymcolname.' as tname, coalesce(sum(coalesce(
          }
 
     }
+    
+
  
 }

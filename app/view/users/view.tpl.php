@@ -27,16 +27,17 @@ för att återställa användaren eller för att radera användaren permanent.</
 
 <h4><i class="<?=$faclass?>"></i> <?=$user->getProperties()['acronym']?> 
 (id <?=$user->getProperties()['id']?>)</h4>
-<table>
+<table class='userinfo'>
+<tbody>
 <tr><td>
 <img src='<?=$user->getProperties()['gravatar']?>?s=50'></td>
 <td><?=$user->getProperties()['name']?> 
-<br><?=$user->getProperties()['email']?>
+<?php if ($userinfo->getLoggedInUser()) :?><br><?=$user->getProperties()['email']?><?php endif;?>
 <br>Status: <?=$status?> <?=$date?>
 <br>Skapades <?=$user->getProperties()['created']?>
 <br><?=isset($user->getProperties()['updated'])?"Uppdaterad 
 ".$user->getProperties ( ) [ 'updated' ]:'';?>
-</td></tr></table>
+</td></tr></tbody></table>
 <p>
 <?php if ($userisloggedin || $userinfo->getLoggedInUser() == 'admin') : ?>
 <?php if ($user->getProperties()['deleted'] == null) : ?>
