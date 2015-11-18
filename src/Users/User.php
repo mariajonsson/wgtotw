@@ -153,6 +153,18 @@ class User extends \Anax\MVC\CDatabaseModel
 
     }
     
+     public function findNumAnswers($acronym) {
+    
+    $user = $this->db->select('t0.*, t1.name as name1, coalesce(COUNT(t0.acronym), 0) AS total')
+             ->from($this->getSource(). ' AS t0')
+             ->join('answer AS t1', 't0.acronym = t1.name')
+             ->where('t0.acronym = ?')
+             ->executeFetchAll([$acronym]);
+             
+    return $user;
+
+    }
+    
     public function findMostIssues() {
     
     $user = $this->db->select('t0.*, t1.acronym as name1, COUNT(t0.acronym) AS total')
@@ -166,6 +178,18 @@ class User extends \Anax\MVC\CDatabaseModel
     return $user;
 
     }
+    
+      public function findNumIssues($acronym) {
+    
+    $user = $this->db->select('t0.*, t1.acronym as name1, coalesce(COUNT(t0.acronym), 0) AS total')
+             ->from($this->getSource(). ' AS t0')
+             ->join('issues AS t1', 't0.acronym = t1.acronym')
+             ->where('t0.acronym = ?')
+             ->executeFetchAll([$acronym]);
+             
+    return $user;
+
+    }
     public function findMostComments() {
     
     $user = $this->db->select('t0.*, t1.name as name1, COUNT(t0.acronym) AS total')
@@ -175,6 +199,18 @@ class User extends \Anax\MVC\CDatabaseModel
              ->orderBy('total DESC')
              ->limit(3)
              ->executeFetchAll();
+             
+    return $user;
+
+    }
+    
+    public function findNumComments($acronym) {
+    
+    $user = $this->db->select('t0.*, t1.name as name1, coalesce(COUNT(t0.acronym), 0) AS total')
+             ->from($this->getSource(). ' AS t0')
+             ->join('comments AS t1', 't0.acronym = t1.name')
+             ->where('t0.acronym = ?')
+             ->executeFetchAll([$acronym]);
              
     return $user;
 
@@ -204,6 +240,29 @@ $user = $this->db->executeFetchAll($sql);
 
 return $user;
     
+    }
+    
+    public function getUserRank($userid, $contenttype, $table, $acronymcolname) {
+    //$this->db->setVerbose();
+    $user = $this->db->select('wgtotw_vote.*, type.id as tid, user.id as uid, 
+user.acronym as uname, type.'.$acronymcolname.' as tname, coalesce(sum(coalesce(vote, 0)), 0) as total')
+    		->from('user as user, wgtotw_'.$table.' as type, wgtotw_vote')         
+             ->where('contentid = type.id')
+             ->andWhere('contenttype = ?')
+             ->andWhere('user.acronym = type.'.$acronymcolname)
+             ->andWhere('user.id = ?')
+             ->groupBy('user.id')
+             ->executeFetchAll([$contenttype, $userid]);
+             
+             
+         if (!empty($user)) {
+         	 
+         	 return $user[0]->total;
+         }
+         else {
+         	 return '0';
+         }
+
     }
  
 }

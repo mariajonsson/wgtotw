@@ -84,9 +84,35 @@ public function listMostActiveAction()
        'title' => "Flest kommentarer",
        'users'  => $comments,
        'activity' => 'kommentarer',
-    ], 'sidebar');
+    ], 'sidebar'); 
+
+}
+
+
+public function listUserScoresAction($id) 
+{
+
+	$user = $this->users->find($id);
+	$answers = $this->users->findNumAnswers($user->acronym);
+    $issues = $this->users->findNumIssues($user->acronym);
+    $comments = $this->users->findNumComments($user->acronym);
     
+    $arank = $this->users->getUserRank($id, 'answer', 'answer', 'name');
+    $irank = $this->users->getUserRank($id, 'issues', 'issues', 'acronym');
+    $crank = $this->users->getUserRank($id, 'comments', 'comments', 'name');
     
+    $this->views->add('users/list-user-scores', [
+       'title' => "Antal poäng",
+       'user'  => $user,
+       'answer' => $answers[0]->total,
+       'issues' => $issues[0]->total,
+       'comments' => $comments[0]->total,
+       'arank' => $arank,
+       'irank' => $irank,
+       'crank' => $crank,
+       'activity' => 'poäng',
+    ], 'main');
+
 
 }
 
