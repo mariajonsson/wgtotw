@@ -88,6 +88,11 @@ class CFormUserAdd extends \Mos\HTMLForm\CForm
 
 	$this->newuser = new \Anax\Users\User();
         $this->newuser->setDI($this->di);
+        
+        $exists = $this->newuser->verifyAcronym($this->Value('acronym'));
+        
+        if (empty($exists)) {
+        
         $saved = $this->newuser->save(array('acronym' => $this->Value('acronym'), 'email' => $this->Value('email'), 'name' => $this->Value('name'), 'password' => password_hash($this->Value('password'), PASSWORD_DEFAULT), 'created' => $now, 'updated' => $now, 'deleted' => null, 'active' => $active, 'gravatar' => 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Value('email')))) . '.jpg'));
     
        // $this->saveInSession = true;
@@ -95,6 +100,12 @@ class CFormUserAdd extends \Mos\HTMLForm\CForm
         if($saved) 
         {
         return true;
+        }
+        }
+        
+        elseif (!empty($exists)) {
+        $this->AddOutput("<p><i>En användare med det användarnamnet/akronymen finns redan</i></p>");
+        return false;
         }
         else return false;
     }
@@ -129,7 +140,7 @@ class CFormUserAdd extends \Mos\HTMLForm\CForm
      */
     public function callbackFail()
     {
-        $this->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
+        //$this->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
         $this->redirectTo();
     }
 }

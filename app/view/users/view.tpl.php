@@ -30,7 +30,7 @@ för att återställa användaren eller för att radera användaren permanent.</
 <table class='userinfo'>
 <tbody>
 <tr><td>
-<img src='<?=$user->getProperties()['gravatar']?>?s=50'></td>
+<img src='<?=$user->getProperties()['gravatar']?>?s=50' alt='gravatar'></td>
 <td><?=$user->getProperties()['name']?> 
 <?php if ($userinfo->getLoggedInUser()) :?><br><?=$user->getProperties()['email']?><?php endif;?>
 <br>Status: <?=$status?> <?=$date?>
