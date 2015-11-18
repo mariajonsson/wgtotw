@@ -31,8 +31,10 @@ Some files need to be modified in order for the website to work.
 
 You need to set up the database before you can use the website (ie content and user management). 
 
-In your web browser, type in: `[installation path]/webroot/setup`  
+In your web browser, type in: `[YOUR_INSTALLATION_PATH]/webroot/setup`  
 The script will create tables and some example content (users, questions, answers, comments, tags). You should see the database output.
+
+If you want to start with an empty database, type in: `[YOUR_INSTALLATION_PATH]/webroot/setup-clean` in your web browser. 
 
 Using the site
 ---------------------
