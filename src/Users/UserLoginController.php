@@ -35,15 +35,17 @@ public function initialize()
      $form->setDI($this->di);
      $form->check();
       $this->theme->setTitle("Logga in");
-      
       $this->views->add('wgtotw/plain', [
         'content' => $message,
       ], 'flash');
+      $this->views->add('users/no-account', [
+      ], 'sidebar');
 
       $this->views->add('default/page', [
         'content' => $form->getHTML(),
         'title' => "Logga in",
       ], 'main');
+      
     }
     if($this->loggedin){
     
