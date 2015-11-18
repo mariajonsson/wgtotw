@@ -102,7 +102,7 @@ public function listUserScoresAction($id)
     $crank = $this->users->getUserRank($id, 'comments', 'comments', 'name');
     
     $this->views->add('users/list-user-scores', [
-       'title' => "Antal poäng",
+       'title' => "Ranking",
        'user'  => $user,
        'answer' => $answers[0]->total,
        'issues' => $issues[0]->total,
@@ -110,7 +110,6 @@ public function listUserScoresAction($id)
        'arank' => $arank,
        'irank' => $irank,
        'crank' => $crank,
-       'activity' => 'poäng',
     ], 'main');
 
 
@@ -144,7 +143,12 @@ public function idAction($id = null)
     ], 'main');
     $this->views->add('users/usermenu', [], 'sidebar');
     
-    
+    $this->dispatcher->forward([
+        'controller' => 'users',
+        'action'     => 'list-user-scores',
+        'params'     => [$id],
+
+    ]);
     $this->dispatcher->forward([
         'controller' => 'issues',
         'action'     => 'list-by-user',
