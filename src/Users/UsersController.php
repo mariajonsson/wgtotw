@@ -179,7 +179,9 @@ public function idAction($id = null)
 public function addAction($acronym = null)
 {
 
+$this->di->theme->setTitle("Lägg till användare");
     
+        
     $form = new \Anax\HTMLForm\CFormUserAdd();
     $form->setDI($this->di);
     $status = $form->check();
@@ -187,7 +189,7 @@ public function addAction($acronym = null)
     $info = $this->di->fileContent->get('users-addinfo.md');
     $info = $this->di->textFilter->doFilter($info, 'shortcode, markdown');
   
-    $this->di->theme->setTitle("Lägg till användare");
+    
     $this->di->views->add('default/page', [
         'title' => "Lägg till användare",
         'content' => $form->getHTML(), 
@@ -201,7 +203,7 @@ public function addAction($acronym = null)
 		       'href' => $this->url->create('users')]
         ),
      ], 'sidebar');
-    
+     
 
 }
 
@@ -214,6 +216,8 @@ public function addAction($acronym = null)
  */
 public function updateAction($id = null)
 {
+$this->di->theme->setTitle("Redigera användare");
+if ($this->users->isLoggedIn()) {
 
     $user = $this->users->find($id);
      if(empty($user)) {
@@ -221,7 +225,7 @@ public function updateAction($id = null)
 	$url = $this->url->create('users/no-such-user');
 	$this->response->redirect($url);
 	
-	}
+    }
     
     $name = $user->getProperties()['name'];
     $acronym = $user->getProperties()['acronym'];
@@ -230,6 +234,8 @@ public function updateAction($id = null)
     $deleted = $user->getProperties()['deleted'];
     $created = $user->getProperties()['created'];
     
+    if ($this->users->getLoggedInUser() == $acronym || $this->users->getLoggedInUser() == '') {
+    
     $form = new \Anax\HTMLForm\CFormUserUpdate($id, $acronym, $name, $email, $active, $created);
     $form->setDI($this->di);
     $status = $form->check();
@@ -237,7 +243,7 @@ public function updateAction($id = null)
     $info = $this->di->fileContent->get('users-editinfo.md');
     $info = $this->di->textFilter->doFilter($info, 'shortcode, markdown');
     
-    $this->di->theme->setTitle("Redigera användare");
+    
     $this->di->views->add('default/page', [
         'title' => "Redigera användare",
         'content' => "<h4>".$user->getProperties()['acronym']." 
@@ -250,8 +256,22 @@ public function updateAction($id = null)
 		      ['text' => 'Till huvudmeny', 
 		       'href' => $this->url->create('users')]),
       ], 'sidebar');
-    
-
+      
+      }
+      
+      else {
+      
+      $this->views->add('users/loginedituser-message', [
+    ], 'flash'); 
+     }
+    }
+ 
+  else {
+     $this->views->add('users/login-message', [
+    ], 'flash'); 
+     }
+  
+  
 }
 
 
@@ -395,7 +415,10 @@ public function inactiveAction()
 }
 
 public function discardedAction()
+
 {
+    if ($this->users->isLoggedIn()) {
+    
     $all = $this->users->query()
         ->where('deleted is NOT NULL')
         ->execute();
@@ -405,7 +428,16 @@ public function discardedAction()
         'users' => $all,
         'title' => "Papperskorgen",
     ], 'main');
-    $this->views->add('users/adminmenu', [], 'sidebar');
+    $this->views->add('users/usermenu', [], 'sidebar');
+    
+    }
+    
+    else {
+    
+    $this->views->add('users/login-admin-message', [
+    ], 'flash');
+    
+    }
 }
 
 public function resetUsersAction()
@@ -469,7 +501,7 @@ public function resetUsersAction()
         'Maria',
         password_hash('maria', PASSWORD_DEFAULT),
         $now,
-        null,
+        $now,
         'http://www.gravatar.com/avatar/' . md5(strtolower(trim('choklad@post.utfors.se'))) . '.jpg'
      ]);
      

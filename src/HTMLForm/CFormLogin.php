@@ -83,8 +83,16 @@ class CFormLogin extends \Mos\HTMLForm\CForm
     if ($this->verified) {
     
      $user = $this->verifyacronym[0];
+     
+     $deleted = $user->deleted;
+     
+     if (isset($deleted)) {
+      $this->AddOutput("<p><i>Den här användaren har blivit spärrad.<br>Kontakta sidans admin för att kunna logga in igen, eller skaffa en ny användare.<br>Användaren spärrades ".($deleted)."</i></p>");
+      return false;
+     
+     }
     
-     if(null !== $user->getProperties('acronym')) {
+     elseif(null !== $user->getProperties('acronym')) {
     
       $userdata = array();
       $userdata = $user->getProperties();

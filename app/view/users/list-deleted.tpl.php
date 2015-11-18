@@ -15,7 +15,7 @@
     <td><a href="<?=$this->url->create('users/activate').'/'.$user->getProperties()['id'].'/'.$this->request->getRoute()?>" title='Aktivera'><i class="fa fa-undo"></i></a>
     </td>
     <td>
-    <a href="<?=$this->url->create('users/delete').'/'.$user->getProperties()['id']?>" title='Ta bort permanent'><i class="fa fa-ban dark-red"></i></a>
+    <!-- <a href="<?=$this->url->create('users/delete').'/'.$user->getProperties()['id']?>" title='Ta bort permanent'><i class="fa fa-ban dark-red"></i></a> -->
     </td>
     </tr>
     <?php endforeach; ?>
@@ -23,8 +23,7 @@
 </table>
 <p></p>
 <div class='byline'>Klicka på ångra-symbolen <i class="fa fa-undo"></i> eller på 
-användarsymbolen för att flytta bort användaren från papperskorgen. Klicka på 
-raderasymbolen <i class="fa fa-ban"></i> för att radera permanent. </div>
+användarsymbolen för att flytta bort användaren från papperskorgen.</div>
 
 <?php elseif (empty($users)) : ?>
 <p>Det finns inga borttagna användare att visa.</p>
