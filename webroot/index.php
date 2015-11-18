@@ -156,6 +156,8 @@ $app->router->add('tags', function() use ($app) {
 $app->router->add('setup', function() use ($app) {
 		
 	$app->db->setVerbose();	
+	
+	$app->theme->setTitle("Återställ");
  
 	$app->dispatcher->forward([
         'controller' => 'users',
@@ -196,7 +198,9 @@ $app->router->add('setup', function() use ($app) {
 
 $app->router->add('setup-clean', function() use ($app) {
 		
-	$app->db->setVerbose();	
+	$app->db->setVerbose();
+	
+	$app->theme->setTitle("Återställ");
  
 	$app->dispatcher->forward([
         'controller' => 'users',
