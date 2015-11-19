@@ -234,7 +234,7 @@ if ($this->users->isLoggedIn()) {
     $deleted = $user->getProperties()['deleted'];
     $created = $user->getProperties()['created'];
     
-    if ($this->users->getLoggedInUser() == $acronym || $this->users->getLoggedInUser() == '') {
+    if ($this->users->getLoggedInUser() == $acronym || $this->users->getLoggedInUser() == 'admin') {
     
     $form = new \Anax\HTMLForm\CFormUserUpdate($id, $acronym, $name, $email, $active, $created);
     $form->setDI($this->di);

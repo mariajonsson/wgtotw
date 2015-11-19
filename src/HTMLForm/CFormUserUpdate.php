@@ -64,6 +64,8 @@ class CFormUserUpdate extends \Mos\HTMLForm\CForm
         $this->acronym = $acronym;
         $this->activedate = $activedate;
         
+        
+        
     }
 
 
@@ -120,14 +122,24 @@ class CFormUserUpdate extends \Mos\HTMLForm\CForm
      */
     public function callbackSubmitDelete()
     {
+	$users = new \Anax\Users\User();
+	$users->setDI($this->di);
+        
     
         if ($this->acronym == 'admin') {
     		$this->AddOutput("<p><i>Admin kan inte raderas</i></p>");
-        $this->redirectTo();
-    	}
-        
-        $this->redirectTo('users/soft-delete/' . $this->id);
         return false;
+    	}
+    	
+    	elseif ( $users->getLoggedInUser() != 'admin') {
+    		$this->AddOutput("<p><i>Endast admin kan radera användare</i></p>");
+       return false;
+    	}
+        else {
+        $this->redirectTo('users/soft-delete/' . $this->id);
+        
+        }
+        
     }
 
 
@@ -148,7 +160,7 @@ class CFormUserUpdate extends \Mos\HTMLForm\CForm
      */
     public function callbackFail()
     {
-        $this->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
+        //$this->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
         $this->redirectTo();
     }
 }

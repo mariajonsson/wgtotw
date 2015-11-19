@@ -26,6 +26,6 @@
 användarsymbolen för att flytta bort användaren från papperskorgen.</div>
 
 <?php elseif (empty($users)) : ?>
-<p>Det finns inga borttagna användare att visa.</p>
+<p>Det finns inga blockerade användare att visa.</p>
 <?php endif; ?>
 
