@@ -103,7 +103,7 @@ class CFormUserUpdate extends \Mos\HTMLForm\CForm
 
 	$this->user = new \Anax\Users\User();
         $this->user->setDI($this->di);
-        $saved = $this->user->save(array('id' => $this->id, 'acronym' => $this->acronym, 'email' => $this->Value('email'), 'name' => $this->Value('name'), 'password' => 'test', 'updated' => $now, 'deleted' => null, 'active' => $this->activedate));
+        $saved = $this->user->save(array('id' => $this->id, 'acronym' => $this->acronym, 'email' => $this->Value('email'), 'name' => $this->Value('name'), 'password' => 'test', 'updated' => $now, 'deleted' => null, 'active' => $this->activedate, 'gravatar' => 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($this->Value('email')))) . '.jpg'));
     
        // $this->saveInSession = true;
         

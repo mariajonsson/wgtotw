@@ -9,7 +9,7 @@
     <tr><td>Frågor:</td><td><?=$issues?></td><td><?=$irank?></td><td>= <?=($issues+$irank)?></td></tr>
     <tr><td>Svar: </td><td><?=$answer?></td><td><?=$arank?></td><td>= <?=($answer+$arank)?></td></tr>
     <tr><td>Kommentarer: </td><td><?=$comments?></td><td><?=$crank?></td><td>= <?=($comments+$crank)?></td></tr>
-    <tr><td>SUMMA </td><td><?=($issues+$answer+$comments)?></td><td> <?=($irank+$arank+$crank)?></td><td>= <strong><?=$total?></strong></td></tr>
+    <tr><td>SUMMA </td><td><?=($issues+$answer+$comments)?></td><td> <?=($irank+$arank+$crank)?></td><td>= <strong class='red'><?=$total?></strong></td></tr>
    </tbody>
 </table>
  <table class='userinfo'>
