@@ -363,7 +363,8 @@ public function softDeleteAction($id = null)
     if (!isset($id)) {
         die("Missing id");
     }
- 
+    
+
     $now = gmdate('Y-m-d H:i:s');
  
     $user = $this->users->find($id);

@@ -23,8 +23,9 @@ class CFormUserUpdate extends \Mos\HTMLForm\CForm
     public function __construct($id=null, $acronym='',$name='',$email='', $activedate=null)
     {
 	$activecheck = ($activedate == null) ? false : true;
-        
-        parent::__construct([], [
+	
+
+     parent::__construct([], [
             
             'name' => [
                 'type'        => 'text',
@@ -56,7 +57,7 @@ class CFormUserUpdate extends \Mos\HTMLForm\CForm
                 'type'      => 'submit',
                 'callback'  => [$this, 'callbackSubmitDelete'],
                 'value'     => 'Ta bort',
-            ],
+     ],
         ]);
         
         $this->id = $id;
@@ -86,6 +87,8 @@ class CFormUserUpdate extends \Mos\HTMLForm\CForm
      */
     public function callbackSubmit()
     {
+    	
+
     	
         $now = gmdate('Y-m-d H:i:s');
         
@@ -118,8 +121,10 @@ class CFormUserUpdate extends \Mos\HTMLForm\CForm
     public function callbackSubmitDelete()
     {
     
-        //$this->user = new \Anax\Users\User();
-        //$this->user->setDI($this->di);
+        if ($this->acronym == 'admin') {
+    		$this->AddOutput("<p><i>Admin kan inte raderas</i></p>");
+        $this->redirectTo();
+    	}
         
         $this->redirectTo('users/soft-delete/' . $this->id);
         return false;

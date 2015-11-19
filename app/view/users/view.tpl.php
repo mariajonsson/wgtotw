@@ -1,16 +1,16 @@
 <h2>Användare</h2>
 <?php $userisloggedin = ($user->getProperties()['acronym'] == $userinfo->getLoggedInUser()) ?>
 <?php if ($user->getProperties()['deleted'] != null) : ?>
-<p>Den här användaren är borttagen och kan inte redigeras. Gå till <a 
+<p>Den här användaren är blockerad. <?php if ($userisloggedin || $userinfo->getLoggedInUser() == 'admin') : ?>Gå till <a 
 href="<?=$this->di->get('url')->create('users/discarded')?>">papperskorgen</a> 
-för att återställa användaren eller för att radera användaren permanent.</p>
+för att återställa användaren.<?php endif;?></p>
 <?php endif; ?>
 
 <?php 
     $class = "";
     if ($user->getProperties()['deleted'] != null) {
       $faclass = "fa fa-user-times";
-      $status = "Borttagen";
+      $status = "Blockerad";
       $date = $user->getProperties()['deleted'];
     }
     elseif ($user->getProperties()['active'] == null) {

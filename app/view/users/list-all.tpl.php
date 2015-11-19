@@ -39,8 +39,10 @@
     <td>
     <?php if ($adminloggedin) : ?>
     <?php if ($user->getProperties()['deleted'] == null) : ?>
+    <?php if ($user->getProperties()['acronym'] != 'admin') :?>
     <a href="<?=$this->url->create('users/soft-delete').'/'.$user->getProperties()['id']?>" title='Ta bort'><i class="fa fa-trash"></i>
 </a>
+	<?php endif; ?>
     <?php endif; ?>
     <?php endif; ?>
     </td>
