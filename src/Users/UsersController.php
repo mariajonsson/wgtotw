@@ -102,6 +102,7 @@ public function listUserScoresAction($id)
 
     $user = $this->users->find($id);
     $answers = $this->users->findNumAnswers($user->acronym);
+    $acceptanswers = $this->users->findNumAcceptAnswers($user->acronym);
     $issues = $this->users->findNumIssues($user->acronym);
     $comments = $this->users->findNumComments($user->acronym);
     
@@ -120,6 +121,7 @@ public function listUserScoresAction($id)
        'title' => "Ranking",
        'user'  => $user,
        'answer' => $answers[0]->total,
+       'acceptanswer' => $acceptanswers[0]->total,
        'issues' => $issues[0]->total,
        'comments' => $comments[0]->total,
        'arank' => $arank,

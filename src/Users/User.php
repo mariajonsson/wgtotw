@@ -165,6 +165,21 @@ class User extends \Anax\MVC\CDatabaseModel
 
     }
     
+    public function findNumAcceptAnswers($acronym) {
+    
+   // $this->db->setVerbose();
+    
+    $user = $this->db->select('t0.*, t1.name as name1, coalesce(COUNT(t0.acronym), 0) AS total')
+             ->from($this->getSource(). ' AS t0')
+             ->join('answer AS t1', 't0.acronym = t1.name')
+             ->where('t0.acronym = ?')
+             ->andWhere('accepted = 1')
+             ->executeFetchAll([$acronym]);
+             
+    return $user;
+
+    }
+    
     public function findMostIssues() {
     
     $user = $this->db->select('t0.*, t1.acronym as name1, COUNT(t0.acronym) AS total')

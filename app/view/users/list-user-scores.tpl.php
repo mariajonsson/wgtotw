@@ -1,15 +1,16 @@
 <article>
 
 <?php if (!empty($user)) : ?>
-<?php $total = ($issues+$answer+$comments+$irank+$arank+$crank)?>
+<?php $total = ($issues+$answer+$comments+$irank+$arank+$crank+$acceptanswer)?>
 <h5>Poäng: <?=$total?></h5>
  <table class='userinfo'>
   <tbody> 
-    <tr><td>Poänggivande <br>aktivitet</td><td>antal</td><td>ranking</td><td>antal+ranking</td></tr>
+    <tr><td>Poänggivande <br>aktivitet</td><td>antal</td><td>ranking</td><td>summa</td></tr>
     <tr><td>Frågor:</td><td><?=$issues?></td><td><?=$irank?></td><td>= <?=($issues+$irank)?></td></tr>
     <tr><td>Svar: </td><td><?=$answer?></td><td><?=$arank?></td><td>= <?=($answer+$arank)?></td></tr>
+    <tr><td>Accepterade: </td><td><?=$acceptanswer?></td><td>-</td><td>= <?=($acceptanswer)?></td></tr>
     <tr><td>Kommentarer: </td><td><?=$comments?></td><td><?=$crank?></td><td>= <?=($comments+$crank)?></td></tr>
-    <tr><td>SUMMA </td><td><?=($issues+$answer+$comments)?></td><td> <?=($irank+$arank+$crank)?></td><td>= <strong class='red'><?=$total?></strong></td></tr>
+    <tr><td>SUMMA </td><td><?=($issues+$answer+$comments+$acceptanswer)?></td><td> <?=($irank+$arank+$crank)?></td><td>= <strong class='red'><?=$total?></strong></td></tr>
    </tbody>
 </table>
  <table class='userinfo'>
