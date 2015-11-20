@@ -33,12 +33,7 @@ class CFormUserAdd extends \Mos\HTMLForm\CForm
                 'validation'  => ['not_empty'],
             ],
             
-            'password' => [
-                'type'        => 'text',
-                'label'       => 'Lösenord',
-                'required'    => true,
-                'validation'  => ['not_empty'],
-            ],
+            
             'email' => [
                 'type'        => 'text',
                 'label'       => 'E-post',
@@ -46,10 +41,26 @@ class CFormUserAdd extends \Mos\HTMLForm\CForm
                 'validation'  => ['not_empty', 'email_adress'],
             ],
             
+            'password' => [
+                'type'        => 'password',
+                'label'       => 'Lösenord',
+                'required'    => true,
+                'validation'  => ['not_empty', 'not_empty'],
+            ],
+            
+            "passAgain" => [
+            "type" => "password",
+            "label" => "Repetera lösenord",
+            'required'    => true,
+            "validation" => [
+                "match" => "password", 'not_empty'
+            ],
+        ],
+            
             'active' => [
             	'type'        => 'checkbox',
             	'label'       => 'Aktivera',
-            	'checked'     => false,
+            	'checked'     => true,
             ],  
             
             'submit' => [

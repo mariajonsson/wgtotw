@@ -504,7 +504,7 @@ EOD;
             ],
 
             'not_empty' => [
-                'message' => 'Can not be empty.',
+                'message' => 'Får inte vara tom.',
                 'test' => 'return $value != "";'
             ],
 
@@ -519,14 +519,14 @@ EOD;
             ],
 
             'email_adress' => [
-                'message' => 'Must be an email adress.',
+                'message' => 'Måste vara en epostadress.',
                 'test' => function ($value) {
                     return preg_match('/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i', $value) === 1;
                 }
             ],
 
             'match' => [
-                'message' => 'The field does not match.',
+                'message' => 'Fälten matchar inte.',
                 'test' => 'return $value == $form[$arg]["value"] ;'
             ],
               
