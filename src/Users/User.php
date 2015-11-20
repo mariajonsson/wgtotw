@@ -218,7 +218,7 @@ class User extends \Anax\MVC\CDatabaseModel
     
     public function findMostActive() {
     
-    $sql = "SELECT user.*,  coalesce(count1, 0) as totansw, coalesce(count2, 0) as totiss, coalesce(count3, 0) as totcom, sum(coalesce(count1, 0)+coalesce(count2, 0)+coalesce(count3, 0)) as total
+    /*$sql = "SELECT user.*,  coalesce(count1, 0) as totansw, coalesce(count2, 0) as totiss, coalesce(count3, 0) as totcom, sum(coalesce(count1, 0)+coalesce(count2, 0)+coalesce(count3, 0)) as total
 FROM wgtotw_user user
 left join 
 	(SELECT wgtotw_answer.name, count(wgtotw_answer.name) AS count1 
@@ -232,6 +232,28 @@ left join
 	(select wgtotw_comments.name, count(wgtotw_comments.name) AS count3 
      from wgtotw_comments group by wgtotw_comments.name)
 	commentcount on user.acronym =commentcount.name
+group by user.acronym
+order by total DESC
+limit 3";*/
+
+	$sql = "SELECT user.*,  coalesce(count1, 0) as totansw, coalesce(count2, 0) as totiss, coalesce(count3, 0) as totcom, coalesce(count4, 0) as totvote, sum(coalesce(count1, 0)+coalesce(count2, 0)+coalesce(count3, 0)+coalesce(count4, 0)) as total
+FROM wgtotw_user user
+left join 
+	(SELECT wgtotw_answer.name, count(wgtotw_answer.name) AS count1 
+ 	from wgtotw_answer group by wgtotw_answer.name)
+	answercount on user.acronym = answercount.name 
+left join 
+	(select wgtotw_issues.acronym, count(wgtotw_issues.acronym) AS count2 
+     from wgtotw_issues group by wgtotw_issues.acronym)
+	issuecount on user.acronym =issuecount.acronym
+left join 
+	(select wgtotw_comments.name, count(wgtotw_comments.name) AS count3 
+     from wgtotw_comments group by wgtotw_comments.name)
+	commentcount on user.acronym =commentcount.name
+left join 
+	(select wgtotw_vote.userid, count(wgtotw_vote.userid) AS count4 
+     from wgtotw_vote group by wgtotw_vote.userid)
+	votecount on user.id =votecount.userid
 group by user.acronym
 order by total DESC
 limit 3";

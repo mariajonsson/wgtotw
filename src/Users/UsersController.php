@@ -18,7 +18,8 @@ public function initialize()
 {
     $this->users = new \Anax\Users\User();
     $this->users->setDI($this->di);
-    
+    $this->vote = new \Meax\Content\Vote();
+    $this->vote->setDI($this->di);
 
 }
 
@@ -56,7 +57,7 @@ public function listMostActiveAction()
     $issues = $this->users->findMostIssues();
     $comments = $this->users->findMostComments();
     $users = $this->users->findMostActive();
-    
+    $votes = $this->vote->getNumVotesAll();
 
     
     $this->di->views->add('wgtotw/plain', [
@@ -87,7 +88,12 @@ public function listMostActiveAction()
        'users'  => $comments,
        'activity' => 'kommentarer',
     ], 'sidebar'); 
-
+    
+    $this->views->add('users/list-most-active', [
+       'title' => "Flest röster",
+       'users'  => $votes,
+       'activity' => 'röster',
+    ], 'sidebar'); 
 }
 
 
