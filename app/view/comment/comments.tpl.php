@@ -29,7 +29,7 @@
 </div>
 <div class='comment-content'>
 <?php $userid = $user->getIdForAcronym($comment['name'])?>
-<?php $content = $this->di->textFilter->doFilter($comment['content'], 'shortcode, markdown');?>
+<?php $content = $this->di->textFilter->doFilter($comment['content'], 'markdown');?>
 <div><?=$content?></div>
  — <a href='<?=$this->url->create('users/id/'.$userid)?>'><?=$comment['name']?></a> för 
 <?php $elapsedsec = (time()-strtotime($comment['timestamp'])); ?>

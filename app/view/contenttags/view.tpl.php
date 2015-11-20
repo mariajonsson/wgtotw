@@ -40,7 +40,7 @@ title='redigera'><i class="fa fa-pencil"></i>
 <?php endif; ?>
 </p>
 
-<?php $content = $this->di->textFilter->doFilter($post->getProperties()['data'], 'shortcode, markdown');?>
+<?php $content = $this->di->textFilter->doFilter($post->getProperties()['data'], 'markdown');?>
 <p><?=$content?></p>
 
 

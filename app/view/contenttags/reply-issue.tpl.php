@@ -7,7 +7,7 @@
 
 <div class='article-content'>
 
-<p><?=$this->di->textFilter->doFilter($data, 'shortcode, markdown')?></p>
+<p><?=$this->di->textFilter->doFilter($data, 'markdown')?></p>
 
 </div>
 </article>

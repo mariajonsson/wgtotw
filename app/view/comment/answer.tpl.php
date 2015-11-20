@@ -44,7 +44,7 @@ if($vote->notAlreadyVotedDown($user->getIdForAcronym($user->getLoggedInUser()), 
 <div class='answer-content'>
 <?php $gravatar = $user->getGravatarForAcronym($answer->getProperties()['name'])?>
 
-<?php $content = $this->di->textFilter->doFilter($answer->getProperties()['content'], 'shortcode, markdown');?>
+<?php $content = $this->di->textFilter->doFilter($answer->getProperties()['content'], 'markdown');?>
 <div><?=$content?></div>
 
 
